@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+		<h2>Listado del Personal:</h2>
+		<input type="text" id="formulario" class="form-control">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Legajo</th>
+					<th scope="col">Nombre</th>
+					<th scope="col">Apellido</th>
+					<th scope="col">Sector</th>
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+	</div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript"> 
+		
+		var personal = /*[[${personal}]]*/ 'default'
+	
+		const formulario = document.querySelector('#formulario');
+		const resultado = document.querySelector('#fila');
+		
+		const filtrar = () => {
+			resultado.innerHTML = '';
+			
+			console.log(formulario.value);
+			const texto = formulario.value.toLowerCase();
+			for(let p of personal){
+				let nombre = p.nombre.toLowerCase();
+				let apellido = p.apellido.toLowerCase();
+				let legajo = p.nroLegajo;
+				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+					resultado.innerHTML += `
+					<tr>
+						<th scope="row" >${p.nroLegajo}</th>
+						<td >${p.nombre}</td>
+						<td >${p.apellido}</td>
+						<td >${p.sector}</td>
+					</tr>
+					`
+				}
+			}
+		}
+		
+		formulario.addEventListener('keyup', filtrar);
+		
+		filtrar();
+		
+		
+	</script>
+</body>
+</html>
