@@ -3,16 +3,19 @@
 <head th:replace="plantilla/template :: head">
 </head>
 <body>
-
+	<!-- th:href="@{/css/bootstrap.min.css}" -->
+	
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
 		<h2>Listado del Personal:</h2>
+				
 		<input type="text" id="formulario" class="form-control">
 		<table class="table">
 			<thead>
 				<tr>
 					<th scope="col">Legajo</th>
+					<th scope="col">Foto</th>
 					<th scope="col">Nombre</th>
 					<th scope="col">Apellido</th>
 					<th scope="col">Sector</th>
@@ -33,6 +36,10 @@
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#fila');
 		
+		
+
+		
+		
 		const filtrar = () => {
 			resultado.innerHTML = '';
 			
@@ -42,10 +49,19 @@
 				let nombre = p.nombre.toLowerCase();
 				let apellido = p.apellido.toLowerCase();
 				let legajo = p.nroLegajo;
+				
+				//me fijo si existe la imagen, de no existir pongo foto por defecto
+				let imagePath = `/images/${p.nroLegajo}.jpg`;
+				
+				if(checkFileExist(imagePath) == false){
+					imagePath = `/images/anonimo.jpg`;
+				}
+				
 				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
 					resultado.innerHTML += `
 					<tr>
-						<th scope="row" >${p.nroLegajo}</th>
+						<th scope="row">${p.nroLegajo}</th>
+						<td ><img src="${imagePath}" style="width:70px;height:70px"></td>
 						<td >${p.nombre}</td>
 						<td >${p.apellido}</td>
 						<td >${p.sector}</td>
@@ -55,10 +71,22 @@
 			}
 		}
 		
+		function checkFileExist(urlToFile) {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('HEAD', urlToFile, false);
+		    xhr.send();
+		     
+		    if (xhr.status == "404") {
+		        return false;
+		    } else {
+		        return true;
+		    }
+		}
+		
+		
 		formulario.addEventListener('keyup', filtrar);
 		
 		filtrar();
-		
 		
 	</script>
 </body>
