@@ -15,7 +15,6 @@
 			<thead>
 				<tr>
 					<th scope="col">Legajo</th>
-					<th scope="col">Foto</th>
 					<th scope="col">Nombre</th>
 					<th scope="col">Apellido</th>
 					<th scope="col">Sector</th>
@@ -26,7 +25,8 @@
 			</tbody>
 		</table>
 	</div>
-
+	<div class="mt-5"></div>
+	
 	<footer th:replace="plantilla/template ::footer"></footer>
 	
 	<script th:inline="javascript"> 
@@ -50,23 +50,26 @@
 				let apellido = p.apellido.toLowerCase();
 				let legajo = p.nroLegajo;
 				
-				//me fijo si existe la imagen, de no existir pongo foto por defecto
-				let imagePath = `/images/${p.nroLegajo}.jpg`;
-				
-				if(checkFileExist(imagePath) == false){
-					imagePath = `/images/anonimo.jpg`;
-				}
+
 				
 				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+					
+					/*   //para mostrar foto (es impracticable)
+					let imagePath = `/images/${p.nroLegajo}.jpg`;
+					
+					if(checkFileExist(imagePath) == false){
+						imagePath = `/images/anonimo.jpg`;
+					}*/
+					
 					resultado.innerHTML += `
 					<tr>
 						<th scope="row">${p.nroLegajo}</th>
-						<td ><img src="${imagePath}" style="width:70px;height:70px"></td>
 						<td >${p.nombre}</td>
 						<td >${p.apellido}</td>
 						<td >${p.sector}</td>
 					</tr>
 					`
+					//<td ><img src="${imagePath}" style="width:70px;height:70px"></td>
 				}
 			}
 		}

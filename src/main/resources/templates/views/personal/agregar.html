@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+
+	<div class="container">
+
+		<div class="card bg-light mt-3">
+			<div class="card-header bg-dark text-white">Agregar nuevo
+				empleado:</div>
+			<div class="card-body">
+				<div class="row">
+
+					<form th:object="${personal}"
+						th:action="@{/views/personal/guardar}" method="post">
+						<div class="form-group col-md-6">
+							<label for="nroLegajo">Legajo:</label> <input type="number"
+								class="form-control" id="nroLegajo"
+								placeholder="N&uacute;mero de legajo" th:field="*{nroLegajo}">
+						</div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('nroLegajo')}"
+							th:errors="*{nroLegajo}"></small>
+
+						<div class="form-group mt-3 col-md-6">
+							<label for="nombre">Nombre:</label> <input type="text"
+								class="form-control" id="nombre"
+								placeholder="Nombre del empleado" th:field="*{nombre}">
+						</div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+
+						<div class="form-group mt-3 col-md-6">
+							<label for="apellido">Apellido:</label> <input type="text"
+								class="form-control" id="apellido"
+								placeholder="Apellido del empleado" th:field="*{apellido}">
+						</div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
+
+						<div class="form-group mt-3 col-md-6">
+							<label for="sector">Sector:</label> <input type="text"
+								class="form-control" id="sector" placeholder="Sector de trabajo"
+								th:field="*{sector}">
+						</div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('sector')}" th:errors="*{sector}"></small>
+
+					<!-- 
+						<div class="form-group mt-3 col-md-6">
+							<label for="exampleFormControlFile1" style="display: block;">Cargar
+								foto del empleado:</label> <input type="file"
+								class="form-control-file mt-2" id="exampleFormControlFile1">
+						</div>
+					 -->	
+
+						<div class="card-footer bg-dark mt-3">
+							<input type="submit" class="btn btn-primary btn-sm"
+								value="Guardar" />
+						</div>
+
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="mt-5"></div>
+
+
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+</body>
+</html>

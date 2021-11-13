@@ -1,28 +1,44 @@
 package com.practicasupervisada.guardia2.domain;
 
-
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="Personal")
 public class Personal implements Comparable<Personal> {
 	
 	@Id
+	@Min(1)
+	@Max(5000)
 	private int nroLegajo;
+	@NotEmpty
 	private String nombre;
+	@NotEmpty
 	private String apellido;
+	@NotEmpty
 	private String sector;
+	@Lob
+	private String image;
 	
+	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public String getSector() {
 		return sector;
 	}
 	public void setSector(String sector) {
 		this.sector = sector;
 	}
-	public int getNroLegajo() {
+	public Integer getNroLegajo() {
 		return nroLegajo;
 	}
 	public void setNroLegajo(int nroLegajo) {
