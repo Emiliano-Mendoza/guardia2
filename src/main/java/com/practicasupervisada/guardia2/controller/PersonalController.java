@@ -37,7 +37,6 @@ public class PersonalController {
 		
 		List<Personal> listaPersonal = personalServ.getAllPersonal();
 		
-		
 		Collections.sort(listaPersonal);
 		
 		model.addAttribute("personal", listaPersonal);
@@ -56,32 +55,24 @@ public class PersonalController {
 	}
 	
 	@PostMapping("/guardar")
-	public String guardar(@Valid @ModelAttribute Personal personal, BindingResult result, Model model) throws IOException {
+	public String guardar(@Valid @ModelAttribute Personal personal, BindingResult result, Model model){
+		
+		if(!personalServ.findById(personal.getNroLegajo()).isEmpty()) {
+			//agrego un mensaje de error para el número de legajo repetido
+			result.rejectValue("nroLegajo", "error.personal", "Número de legajo existente");
+		} 
 		
 		if(result.hasErrors()) {
-			
-			
-			if(!personalServ.findById(personal.getNroLegajo()).isEmpty()) {
-				//agrego un mensaje de error para el número de legajo repetido
-				result.rejectValue("nroLegajo", "error.personal", "Número de legajo existente");
-			}
-			
 			
 			model.addAttribute("personal", personal);
 			
 			System.out.println("Formulario incorrecto");
+			System.out.println(result.toString());
 			
 			return "/views/personal/agregar";
 			
 		}
-		/*
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		
-		try {
-			personal.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
-		}catch (IOException e) {
-			e.printStackTrace();
-		}*/
 		
 		try {		
 			personalServ.crearPersonal(personal);

@@ -16,7 +16,7 @@
 				<div class="row">
 
 					<form th:object="${personal}"
-						th:action="@{/views/personal/guardar}" method="post">
+						th:action="@{/views/personal/guardar}" method="post" enctype="multipart/form-data">
 						<div class="form-group col-md-6">
 							<label for="nroLegajo">Legajo:</label> <input type="number"
 								class="form-control" id="nroLegajo"
@@ -50,10 +50,10 @@
 						<small class="form-text text-danger"
 							th:if="${#fields.hasErrors('sector')}" th:errors="*{sector}"></small>
 
-					<!-- 
+					<!--  
 						<div class="form-group mt-3 col-md-6">
 							<label for="exampleFormControlFile1" style="display: block;">Cargar
-								foto del empleado:</label> <input type="file"
+								foto del empleado:</label> <input type="file" name="image"
 								class="form-control-file mt-2" id="exampleFormControlFile1">
 						</div>
 					 -->	

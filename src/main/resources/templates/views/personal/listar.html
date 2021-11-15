@@ -11,13 +11,14 @@
 		<h2>Listado del Personal:</h2>
 				
 		<input type="text" id="formulario" class="form-control">
-		<table class="table">
+		<table class="table" style="width: 100%">
 			<thead>
 				<tr>
-					<th scope="col">Legajo</th>
-					<th scope="col">Nombre</th>
-					<th scope="col">Apellido</th>
-					<th scope="col">Sector</th>
+					<th scope="col" style="width: 15%;text-align:center;">Legajo</th>
+					<th scope="col" style="width: 20%;text-align:center;">Nombre</th>
+					<th scope="col" style="width: 20%;text-align:center;">Apellido</th>
+					<th scope="col" style="width: 20%;text-align:center;">Sector</th>
+					<th scope="col" style="width: 25%;text-align:center;" >Registrar Asistencia</th>
 				</tr>
 			</thead>
 			<tbody id="fila">
@@ -31,14 +32,12 @@
 	
 	<script th:inline="javascript"> 
 		
-		var personal = /*[[${personal}]]*/ 'default'
+		var personal = /*[[${personal}]]*/ 'default';
+		var link = /*[[@{/views/asistencia/empleado/}]]*/'';
+		var urlAsis = '';
 	
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#fila');
-		
-		
-
-		
 		
 		const filtrar = () => {
 			resultado.innerHTML = '';
@@ -61,12 +60,17 @@
 						imagePath = `/images/anonimo.jpg`;
 					}*/
 					
+					urlAsis = link + p.nroLegajo;
+					
 					resultado.innerHTML += `
 					<tr>
-						<th scope="row">${p.nroLegajo}</th>
-						<td >${p.nombre}</td>
-						<td >${p.apellido}</td>
-						<td >${p.sector}</td>
+						<th scope="row" style="text-align:center;">${p.nroLegajo}</th>
+						<td style="text-align:center;">${p.nombre}</td>
+						<td style="text-align:center;">${p.apellido}</td>
+						<td style="text-align:center;">${p.sector}</td>
+						<td style="text-align:center;">
+							<a href=${urlAsis} class="btn btn-success btn-sm" title:"Registrar Nueva Asistencia" >Asistencia</a>
+						</td>
 					</tr>
 					`
 					//<td ><img src="${imagePath}" style="width:70px;height:70px"></td>

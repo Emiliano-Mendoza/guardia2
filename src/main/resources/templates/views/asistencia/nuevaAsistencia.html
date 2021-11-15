@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container d-flex justify-content-center mt-5">
+		<div class="card mb-3" style="max-width: 900px;">
+			<div class="card-header bg-dark text-white">Registro de Ingreso
+				a la Planta</div>
+			<div class="row g-0 ">
+				<div class="col-md-4" id="imagen">
+					<!-- IMAGEN AGREGADA CON JAVASCRIPT -->
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title">Registrar asistencia del empleado:</h5>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Legajo:</b> [[${personal.nroLegajo}]]
+						</p>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Nombre:</b> [[${personal.nombre}]]
+						</p>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Apellido:</b> [[${personal.apellido}]]
+						</p>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Sector de trabajo: </b>[[${personal.sector}]]
+						</p>
+						<p class="card-text">
+							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span
+								id='date-time'></span>.</small>
+						</p>
+					</div>
+				</div>
+			</div>
+			<form th:object="${personal}"
+				th:action="@{/views/asistencia/empleado/} + ${personal.nroLegajo}"
+				method="post">
+				<div
+					class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+					<a type="button" class="btn btn-primary" th:href="@{/views/personal}">Volver</a>
+					
+					<input type="submit" class="btn btn-primary btn-sm"
+						value="Registrar" />
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+		var dt = new Date();
+		document.getElementById('date-time').innerHTML = dt;
+		
+		var p = /*[[${personal}]]*/ 'default';
+		let imagePath = `/images/${p.nroLegajo}.jpg`;
+		
+		if(checkFileExist(imagePath) == false){
+			imagePath = `/images/anonimo.jpg`;
+		}
+		
+		document.getElementById('imagen').innerHTML = `<img src="${imagePath}" class="img-fluid rounded-start">`;
+		
+		
+		function checkFileExist(urlToFile) {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('HEAD', urlToFile, false);
+		    xhr.send();
+		     
+		    if (xhr.status == "404") {
+		        return false;
+		    } else {
+		        return true;
+		    }
+		}
+	</script>
+</body>
+</html>

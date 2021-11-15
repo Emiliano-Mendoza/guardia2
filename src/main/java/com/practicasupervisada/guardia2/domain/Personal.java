@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -22,14 +23,16 @@ public class Personal implements Comparable<Personal> {
 	private String apellido;
 	@NotEmpty
 	private String sector;
+    
 	@Lob
-	private String image;
+	@Column(name = "Image")
+    private byte[] image;
 	
 	
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
 	public String getSector() {
