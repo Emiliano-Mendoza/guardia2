@@ -4,65 +4,28 @@
 </head>
 <body>
 	<!-- th:href="@{/css/bootstrap.min.css}" -->
-	
-	<header th:replace="plantilla/template :: header"></header>
-	
-		<div class="container d-flex justify-content-center mt-3">
-		<div class="card mb-3" style="max-width: 900px;">
-			<div class="card-header bg-dark text-white">Registro de Ingreso
-				a la Planta</div>
-			<div class="row g-0 ">
-				<div class="col-md-4" id="imagen">
-					<img src="/images/anonimo.jpg" class="img-fluid rounded-start">
-				</div>
-				<div class="col-md-8">
-					<div class="card-body">
-						<h5 class="card-title">Registrar asistencia del empleado:</h5>
-						<p class="card-text mt-3" th:inline="text">
-							<b>Legajo:</b> 
-						</p>
-						<p class="card-text mt-3" th:inline="text">
-							<b>Nombre:</b> 
-						</p>
-						<p class="card-text mt-3" th:inline="text">
-							<b>Apellido:</b> 
-						</p>
-						<p class="card-text mt-3" th:inline="text">
-							<b>Sector de trabajo: </b>
-						</p>
-						<p class="card-text">
-							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span
-								id='date-time'></span>.</small>
-						</p>
-					</div>
-				</div>
-			</div>
-			<form >
-				<div
-					class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
-					<a type="button" class="btn btn-primary"
-						th:href="@{/views/personal}">Volver</a> <input type="submit"
-						class="btn btn-primary btn-sm" value="Registrar" />
-				</div>
-			</form>
 
-		</div>
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container d-flex justify-content-center mt-3" id="cardAsis">
+		
 	</div>
-	
-	
-	
+
+
+
 	<div class="container">
 		<h2>Listado del Personal:</h2>
-				
+
 		<input type="text" id="formulario" class="form-control">
 		<table class="table" style="width: 100%">
 			<thead>
 				<tr>
-					<th scope="col" style="width: 15%;text-align:center;">Legajo</th>
-					<th scope="col" style="width: 20%;text-align:center;">Nombre</th>
-					<th scope="col" style="width: 20%;text-align:center;">Apellido</th>
-					<th scope="col" style="width: 20%;text-align:center;">Sector</th>
-					<th scope="col" style="width: 25%;text-align:center;" >Registrar Asistencia</th>
+					<th scope="col" style="width: 15%; text-align: center;">Legajo</th>
+					<th scope="col" style="width: 20%; text-align: center;">Nombre</th>
+					<th scope="col" style="width: 20%; text-align: center;">Apellido</th>
+					<th scope="col" style="width: 20%; text-align: center;">Sector</th>
+					<th scope="col" style="width: 25%; text-align: center;">Registrar
+						Asistencia</th>
 				</tr>
 			</thead>
 			<tbody id="fila">
@@ -71,17 +34,21 @@
 		</table>
 	</div>
 	<div class="mt-5"></div>
-	
+
 	<footer th:replace="plantilla/template ::footer"></footer>
-	
+
 	<script th:inline="javascript"> 
 		
 		var personal = /*[[${personal}]]*/ 'default';
-		var link = /*[[@{/views/asistencia/empleado/}]]*/'';
+		// var link = /*[[@{/views/asistencia/empleado/}]]*/'';
 		var urlAsis = '';
-	
+		
+		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#fila');
+		
+		const cardAsis = document.querySelector('#cardAsis');
+		cardAsis.innerHTML = '';
 		
 		const filtrar = () => {
 			resultado.innerHTML = '';
@@ -104,7 +71,7 @@
 						imagePath = `/images/anonimo.jpg`;
 					}*/
 					
-					urlAsis = link + p.nroLegajo;
+					//urlAsis = link + p.nroLegajo;
 					
 					resultado.innerHTML += `
 					<tr>
@@ -113,7 +80,11 @@
 						<td style="text-align:center;">${p.apellido}</td>
 						<td style="text-align:center;">${p.sector}</td>
 						<td style="text-align:center;">
-							<a href=${urlAsis} class="btn btn-success btn-sm" title:"Registrar Nueva Asistencia" >Asistencia</a>
+							<button class="btn btn-success btn-sm" 
+							title:"Registrar Nueva Asistencia" id="asisBtn" 
+							onclick="AsistenciaCard('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}')">
+							Asistencia
+							</button>
 						</td>
 					</tr>
 					`
@@ -122,23 +93,88 @@
 			}
 		}
 		
+		
+		async function AsistenciaCard (nroLegajo,nombre,apellido,sector){
+			
+			let urlA = "/views/asistencia/ingreso-empleado/" + nroLegajo;
+			
+			cardAsis.innerHTML = `
+				<div class="card mb-3" style="max-width: 900px;">
+				<div class="card-header bg-dark text-white">Registro de Ingreso
+					a la Planta</div>
+				<div class="row g-0 ">
+					<div class="col-md-4" id="imagen">
+						<img src="/images/anonimo.jpg" class="img-fluid rounded-start">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Registrar asistencia del empleado:</h5>
+							<p class="card-text mt-3" th:inline="text">
+								<b>Legajo:</b> ${nroLegajo}
+							</p>
+							<p class="card-text mt-3" th:inline="text">
+								<b>Nombre:</b> ${nombre}
+							</p>
+							<p class="card-text mt-3" th:inline="text">
+								<b>Apellido:</b> ${apellido}
+							</p>
+							<p class="card-text mt-3" th:inline="text">
+								<b>Sector de trabajo: </b> ${sector}
+							</p>
+							<p class="card-text">
+								<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span
+									id='date-time'></span>.</small>
+							</p>
+						</div>
+					</div>
+				</div>
+				<form 	
+						action=${urlA}
+						method="post"
+						onsubmit="return confirm('Quiere registrar asistencia del empleado ${nombre} ${apellido}?');">
+					<div
+						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+						<button type="button" class="btn btn-primary" onclick="CloseCard()"
+							>Cancelar</button> 
+							<input type="submit"
+							class="btn btn-primary btn-sm" value="Registrar" />
+					</div>
+				</form>
+
+			</div>
+			`;
+			
+			document.getElementById('date-time').innerHTML = new Date();;
+
+			let imagePath = `/images/${nroLegajo}.jpg`;
+
+			if (await checkFileExist(imagePath) == false) {
+				imagePath = `/images/anonimo.jpg`;
+			}
+			
+			console.log(imagePath);
+			
+			document.getElementById('imagen').innerHTML = `<img src="${imagePath}" class="img-fluid rounded-start">`;
+		}
+	
 		function checkFileExist(urlToFile) {
-		    var xhr = new XMLHttpRequest();
-		    xhr.open('HEAD', urlToFile, false);
-		    xhr.send();
-		     
-		    if (xhr.status == "404") {
-		        return false;
-		    } else {
-		        return true;
-		    }
+			var xhr = new XMLHttpRequest();
+			xhr.open('HEAD', urlToFile, false);
+			xhr.send();
+
+			if (xhr.status == "404") {
+				return false;
+			} else {
+				return true;
+			}
 		}
 		
+		function CloseCard(){
+			cardAsis.innerHTML = '';
+		}
 		
 		formulario.addEventListener('keyup', filtrar);
-		
 		filtrar();
-		
 	</script>
 </body>
 </html>
