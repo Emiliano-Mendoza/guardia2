@@ -18,9 +18,9 @@
 					<form th:object="${personal}"
 						th:action="@{/views/personal/guardar}" method="post" enctype="multipart/form-data">
 						<div class="form-group col-md-6">
-							<label for="nroLegajo">Legajo:</label> <input type="number"
+							<label for="nroLegajo">Número de Legajo:</label> <input type="number"
 								class="form-control" id="nroLegajo"
-								placeholder="N&uacute;mero de legajo" th:field="*{nroLegajo}">
+								placeholder="Número de legajo" th:field="*{nroLegajo}">
 						</div>
 						<small class="form-text text-danger"
 							th:if="${#fields.hasErrors('nroLegajo')}"

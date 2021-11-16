@@ -110,7 +110,7 @@
 						<div class="card-body">
 							<h5 class="card-title">Registrar asistencia del empleado:</h5>
 							<p class="card-text mt-3" th:inline="text">
-								<b>Legajo:</b> ${nroLegajo}
+								<b>Número de Legajo:</b> ${nroLegajo}
 							</p>
 							<p class="card-text mt-3" th:inline="text">
 								<b>Nombre:</b> ${nombre}
@@ -131,7 +131,7 @@
 				<form 	
 						action=${urlA}
 						method="post"
-						onsubmit="return confirm('Quiere registrar asistencia del empleado ${nombre} ${apellido}?');">
+						onsubmit="return confirm('Confirmar asistencia del empleado ${nombre} ${apellido}');">
 					<div
 						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
 						<button type="button" class="btn btn-primary" onclick="CloseCard()"
@@ -144,6 +144,7 @@
 			</div>
 			`;
 			
+			//Se carga la imagen
 			document.getElementById('date-time').innerHTML = new Date();;
 
 			let imagePath = `/images/${nroLegajo}.jpg`;
@@ -152,9 +153,9 @@
 				imagePath = `/images/anonimo.jpg`;
 			}
 			
-			console.log(imagePath);
-			
 			document.getElementById('imagen').innerHTML = `<img src="${imagePath}" class="img-fluid rounded-start">`;
+			
+			window.scroll(0, 0);
 		}
 	
 		function checkFileExist(urlToFile) {

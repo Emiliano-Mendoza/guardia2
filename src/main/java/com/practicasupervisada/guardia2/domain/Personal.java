@@ -24,6 +24,7 @@ public class Personal implements Comparable<Personal> {
 	@NotEmpty
 	private String sector;
     
+	/*
 	@Lob
 	@Column(name = "Image")
     private byte[] image;
@@ -35,6 +36,7 @@ public class Personal implements Comparable<Personal> {
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
+	*/
 	public String getSector() {
 		return sector;
 	}
