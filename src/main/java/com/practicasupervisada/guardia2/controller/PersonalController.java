@@ -3,6 +3,7 @@ package com.practicasupervisada.guardia2.controller;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -17,11 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
+import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.util.FileUploadUtil;
 
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Base64;
 
 
@@ -31,6 +36,8 @@ public class PersonalController {
 	
 	@Autowired
 	private PersonalService personalServ;
+	@Autowired
+	private AsistenciaService asistenciaServ;
 	
 	@GetMapping
 	public String listarClientes(Model model) {
@@ -38,6 +45,20 @@ public class PersonalController {
 		List<Personal> listaPersonal = personalServ.getAllPersonal();
 		
 		Collections.sort(listaPersonal);
+		// Busco la lista de asistencias sin egreso actual
+		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+		List<Asistencia> AsisSinEgreso = listaAsistencias
+										.stream()
+										.filter(a -> a.getSalida() == null)
+										.collect(Collectors.toList());
+		
+		// Busco al personal que aun no ha egresado
+		List<Personal> personalSinEgresar = new ArrayList <Personal> ();
+		AsisSinEgreso.stream().forEach(a -> personalSinEgresar.add(a.getPersonal()));
+		
+		// Remuevo al personal sin egresar de la lista 
+		personalSinEgresar.stream().forEach(p -> {listaPersonal.remove(p);});
+		
 		
 		model.addAttribute("personal", listaPersonal);
 		

@@ -6,7 +6,51 @@
 	<!-- th:href="@{/css/bootstrap.min.css}" -->
 	
 	<header th:replace="plantilla/template :: header"></header>
+	
+		<div class="container d-flex justify-content-center mt-3">
+		<div class="card mb-3" style="max-width: 900px;">
+			<div class="card-header bg-dark text-white">Registro de Ingreso
+				a la Planta</div>
+			<div class="row g-0 ">
+				<div class="col-md-4" id="imagen">
+					<img src="/images/anonimo.jpg" class="img-fluid rounded-start">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title">Registrar asistencia del empleado:</h5>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Legajo:</b> 
+						</p>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Nombre:</b> 
+						</p>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Apellido:</b> 
+						</p>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Sector de trabajo: </b>
+						</p>
+						<p class="card-text">
+							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span
+								id='date-time'></span>.</small>
+						</p>
+					</div>
+				</div>
+			</div>
+			<form >
+				<div
+					class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+					<a type="button" class="btn btn-primary"
+						th:href="@{/views/personal}">Volver</a> <input type="submit"
+						class="btn btn-primary btn-sm" value="Registrar" />
+				</div>
+			</form>
 
+		</div>
+	</div>
+	
+	
+	
 	<div class="container">
 		<h2>Listado del Personal:</h2>
 				

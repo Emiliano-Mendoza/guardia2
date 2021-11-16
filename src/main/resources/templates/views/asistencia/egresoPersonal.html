@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+
+	<div class="container d-flex justify-content-center mt-3"
+		th:each="asis:${asistencias}">
+		<div class="card mb-3" style="max-width: 900px;">
+			<div class="card-header bg-dark text-white">Registro de Egreso
+				a la Planta</div>
+			<div class="row g-0 ">
+				<div class="col-md-4" id="imagen">
+					<img src="/images/anonimo.jpg" class="img-fluid rounded-start">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title">Registrar egreso del empleado:</h5>
+						<p class="card-text mt-3" th:inline="text">
+							<b>Legajo:</b> [[${asis.personal.nroLegajo}]]
+						</p>
+						<p class="card-text" th:inline="text">
+							<b>Nombre:</b> [[${asis.personal.nombre}]]
+						</p>
+						<p class="card-text" th:inline="text">
+							<b>Apellido:</b> [[${asis.personal.apellido}]]
+						</p>
+						<p class="card-text" th:inline="text">
+							<b>Sector:</b> [[${asis.personal.sector}]]
+						</p>
+						<p class="card-text">
+							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span>
+									[[${asis.entrada}]] </span>.</small>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<form th:object="${asis}"
+				th:action="@{/views/asistencia/egreso-empleado/} + ${asis.idAsistencia}"
+				method="post">
+				<div
+					class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+					<input type="submit"
+						class="btn btn-primary btn-sm" value="Registrar" />
+				</div>
+			</form>
+
+		</div>
+	</div>
+	
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+</body>
+</html>

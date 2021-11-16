@@ -1,6 +1,8 @@
 package com.practicasupervisada.guardia2.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +47,7 @@ public class AsistenciaController {
 		return "/views/asistencia/nuevaAsistencia";
 	}
 	
-	@PostMapping("/empleado/{nroLegajo}")
+	@PostMapping("/ingreso-empleado/{nroLegajo}")
 	public String agregarNuevaAsistencia(@PathVariable("nroLegajo") int nroLegajo) {
 			
 		try {
@@ -62,7 +64,42 @@ public class AsistenciaController {
 			System.out.println(e.getLocalizedMessage());
 		}
 		
-		return "redirect:/home";
+		return "redirect:/views/personal";
 	}
 	
+	@GetMapping("/personal-ingresado")
+	public String mostrarAsistenciasEmpleadosIngresados(Model model){
+		
+		try {
+			List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+			List<Asistencia> AsisSinEgreso = listaAsistencias
+											.stream()
+											.filter(a -> a.getSalida() == null)
+											.collect(Collectors.toList());
+			
+			model.addAttribute("asistencias", AsisSinEgreso);
+			
+		}catch(Exception e) {
+			return "home";
+		}
+		
+		return "/views/asistencia/egresoPersonal";
+	}
+	
+	@PostMapping("/egreso-empleado/{idAsistencia}")
+	public String egreso(@PathVariable("idAsistencia") int idAsistencia) {
+			
+		try {
+			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
+			
+			asis.setSalida(new Date());
+			asis.setEnTransito(false);
+			asistenciaServ.crearAsistencia(asis);
+			
+		}catch(Exception e) {
+			System.out.println(e.getLocalizedMessage());
+		}
+		
+		return "redirect:/views/asistencia/personal-ingresado";
+	}
 }

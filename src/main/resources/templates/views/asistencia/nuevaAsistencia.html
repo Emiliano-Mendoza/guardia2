@@ -37,14 +37,13 @@
 				</div>
 			</div>
 			<form th:object="${personal}"
-				th:action="@{/views/asistencia/empleado/} + ${personal.nroLegajo}"
+				th:action="@{/views/asistencia/ingreso-empleado/} + ${personal.nroLegajo}"
 				method="post">
 				<div
 					class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
-					<a type="button" class="btn btn-primary" th:href="@{/views/personal}">Volver</a>
-					
-					<input type="submit" class="btn btn-primary btn-sm"
-						value="Registrar" />
+					<a type="button" class="btn btn-primary"
+						th:href="@{/views/personal}">Volver</a> <input type="submit"
+						class="btn btn-primary btn-sm" value="Registrar" />
 				</div>
 			</form>
 
@@ -57,27 +56,26 @@
 	<script th:inline="javascript">
 		var dt = new Date();
 		document.getElementById('date-time').innerHTML = dt;
-		
-		var p = /*[[${personal}]]*/ 'default';
+
+		var p = /*[[${personal}]]*/'default';
 		let imagePath = `/images/${p.nroLegajo}.jpg`;
-		
-		if(checkFileExist(imagePath) == false){
+
+		if (checkFileExist(imagePath) == false) {
 			imagePath = `/images/anonimo.jpg`;
 		}
-		
+
 		document.getElementById('imagen').innerHTML = `<img src="${imagePath}" class="img-fluid rounded-start">`;
-		
-		
+
 		function checkFileExist(urlToFile) {
-		    var xhr = new XMLHttpRequest();
-		    xhr.open('HEAD', urlToFile, false);
-		    xhr.send();
-		     
-		    if (xhr.status == "404") {
-		        return false;
-		    } else {
-		        return true;
-		    }
+			var xhr = new XMLHttpRequest();
+			xhr.open('HEAD', urlToFile, false);
+			xhr.send();
+
+			if (xhr.status == "404") {
+				return false;
+			} else {
+				return true;
+			}
 		}
 	</script>
 </body>

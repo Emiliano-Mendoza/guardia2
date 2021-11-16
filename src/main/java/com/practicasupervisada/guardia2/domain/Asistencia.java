@@ -89,6 +89,12 @@ public class Asistencia {
 	public void setEnTransito(Boolean enTransito) {
 		this.enTransito = enTransito;
 	}
+	@Override
+	public String toString() {
+		return "Asistencia [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
+				+ ", enTransito=" + enTransito + ", usuario=" + usuario + ", personal=" + personal + ", proveedor="
+				+ proveedor + ", transporte=" + transporte + "]";
+	}
 	
 	
 }
