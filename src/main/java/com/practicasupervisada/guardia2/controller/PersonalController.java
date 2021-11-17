@@ -65,6 +65,18 @@ public class PersonalController {
 		return "/views/personal/listar";
 	}
 	
+	@GetMapping("/autorizar-retiro")
+	public String listarClientesParaRetiroMaterial(Model model) {
+		
+		List<Personal> listaPersonal = personalServ.getAllPersonal();
+		
+		Collections.sort(listaPersonal);
+				
+		model.addAttribute("personal", listaPersonal);
+		
+		return "/views/retiro-material/autorizacion";
+	}
+	
 	@GetMapping("/agregar")
 	public String agregarPersonal(Model model) {
 		

@@ -60,7 +60,7 @@ public class AsistenciaController {
 			//asis.setUsuario(null);
 			asistenciaServ.crearAsistencia(asis);
 		}catch(Exception e) {
-			System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/views/personal";
@@ -96,7 +96,7 @@ public class AsistenciaController {
 			asistenciaServ.crearAsistencia(asis);
 			
 		}catch(Exception e) {
-			System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/views/asistencia/personal-ingresado";

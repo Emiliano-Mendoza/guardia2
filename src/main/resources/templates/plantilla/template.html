@@ -5,64 +5,78 @@
 <title>Guardia</title>
 
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/animate.min.css}">
+<link rel="stylesheet" th:href="@{/css/bootnavbar.css}">
+
+
 </head>
 <body>
 
 	<!-- BARRA DE NAVEGACION -->
 	<header th:fragment="header">
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+			id="main_navbar">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="#"><img th:src="@{/images/scolnik.png}" style="width:150px;height:70px"></a>
+				<a class="navbar-brand" href="#"><img
+					th:src="@{/images/scolnik.png}" style="width: 150px; height: 70px"></a>
 				<button class="navbar-toggler" type="button"
 					data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 					aria-controls="navbarSupportedContent" aria-expanded="false"
 					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				
+				<div class="collapse navbar-collapse" id="navbarSupportedContent" >
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" th:href="@{/home}">Inicio</a></li>
+							
 						<li class="nav-item dropdown">
-							<a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-							role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								Registrar Ingreso</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/views/personal}">Personal</a></li>
-								<li><a class="dropdown-item" href="#">Proveedor</a></li>
-								<li><a class="dropdown-item" href="#">Transporte</a></li>
-								<li><hr class="dropdown-divider"></li>
-							</ul>
-						</li>
-						<li class="nav-item dropdown">
-							<a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
-							role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								Registrar Egreso</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/views/asistencia/personal-ingresado}">Personal</a></li>
-								<li><a class="dropdown-item" href="#">Proveedor</a></li>
-								<li><a class="dropdown-item" href="#">Transporte</a></li>
-								<li><hr class="dropdown-divider"></li>
-							</ul>
-						</li>
-						<li class="nav-item dropdown">
-							<a
+						
+							<a class="nav-link dropdown-toggle" id="navbarDropdown1" role="button"> Registrar Actividad </a>
+							
+							<ul class="dropdown-menu">
+								<li class="nav-item dropdown"><a
+									class="dropdown-item dropdown-toggle" href="#" role="button"
+									data-bs-toggle="dropdown"> Registrar Ingreso</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" th:href="@{/views/personal}">Personal</a></li>
+										<li><a class="dropdown-item" href="#">Proveedor</a></li>
+										<li><a class="dropdown-item" href="#">Transporte</a></li>
+									</ul></li>
+								<li class="nav-item dropdown"><a
+									class="dropdown-item dropdown-toggle" href="#" role="button"
+									data-bs-toggle="dropdown">
+										Registrar Egreso</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item"
+											th:href="@{/views/asistencia/personal-ingresado}">Personal</a></li>
+										<li><a class="dropdown-item" href="#">Proveedor</a></li>
+										<li><a class="dropdown-item" href="#">Transporte</a></li>
+										
+									</ul></li>
+									<li><a class="dropdown-item" href="#">Evento</a></li>
+									<li><a class="dropdown-item" href="#">Acontecimiento</a></li>
+									<li><a class="dropdown-item" href="#">Retiro de Material</a></li>
+									
+							</ul></li>
+								
+						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Agregar Entidad</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/views/personal/agregar}">Personal</a></li>
+								<li><a class="dropdown-item"
+									th:href="@{/views/personal/agregar}">Personal</a></li>
 								<li><a class="dropdown-item" href="#">Proveedor</a></li>
 								<li><a class="dropdown-item" href="#">Transporte</a></li>
-								<li><hr class="dropdown-divider"></li>
-							</ul>
-						</li>
+								
+							</ul></li>
 						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" th:href="@{/home}">Retiro de Material</a></li>
-					</ul>
+							aria-current="page" th:href="@{/views/personal/autorizar-retiro}">Autorizar Retiro</a></li>
+							 
 
+					</ul>
 				</div>
 			</div>
 		</nav>
@@ -83,7 +97,19 @@
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 
+		<script type="text/javascript" th:src="@{/js/bootnavbar.js}"></script>
+
+		<script>
+		
+			new bootnavbar();
+			
+		</script>
+
+
 	</footer>
 
+
+
 </body>
+
 </html>

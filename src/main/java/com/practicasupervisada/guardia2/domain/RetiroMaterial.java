@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="RetiroMaterial")
@@ -17,9 +18,14 @@ public class RetiroMaterial {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idRetiro;
+	
+	@Size(max = 1000)
 	private String descripcion;
+	
 	private Date fechaLimite;
 	private Date fechaRetiro;
+	
+	@Size(max = 1000)
 	private String observacionGuardia;
 	
 	@ManyToOne
