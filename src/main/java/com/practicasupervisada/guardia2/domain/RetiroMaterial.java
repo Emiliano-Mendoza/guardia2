@@ -86,6 +86,13 @@ public class RetiroMaterial {
 	public void setObservacionGuardia(String observacionGuardia) {
 		this.observacionGuardia = observacionGuardia;
 	}
+	@Override
+	public String toString() {
+		return "RetiroMaterial [idRetiro=" + idRetiro + ", descripcion=" + descripcion + ", fechaLimite=" + fechaLimite
+				+ ", fechaRetiro=" + fechaRetiro + ", observacionGuardia=" + observacionGuardia + ", usuarioGuardia="
+				+ usuarioGuardia + ", usuarioResponsableSector=" + usuarioResponsableSector + ", personal=" + personal
+				+ "]";
+	}
 	
 	
 	
