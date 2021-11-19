@@ -44,7 +44,6 @@ public class RetiroMaterialController {
 			System.out.println(e.getMessage());
 		}
 		
-		//falta implementar
 		return "/views/retiro-material/retiro";
 	}
 	
