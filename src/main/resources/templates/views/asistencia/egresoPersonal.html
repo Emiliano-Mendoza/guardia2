@@ -32,8 +32,8 @@
 							<b>Sector:</b> [[${asis.personal.sector}]]
 						</p>
 						<p class="card-text">
-							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span>
-									[[${asis.entrada}]] </span>.</small>
+							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span th:text="${#dates.format(asis.entrada, 'dd/MM/yyyy HH:mm')}">
+									</span></small>
 						</p>
 					</div>
 				</div>
