@@ -32,11 +32,29 @@
 			</div>
 		</form>
 
-		<h5>Eventos próximos: </h5>
-		<p th:text="${listaEventos}"></p>
+		<h5 class="mt-3">Eventos próximos:</h5>
+
+		<div class="row">
+			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Evento:</h5>
+						<p class="card-text">
+							Descripción: <span th:text="${ev.descripcion}"></span>
+						</p>
+						<p class="card-text">
+							Fecha evento: <span
+								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
+						</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
-
+	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
 

@@ -37,4 +37,9 @@ public class EventoServiceImp implements EventoService {
 		return eventoRepo.findById(idEvento);
 	}
 
+	@Override
+	public List<Evento> findAllByOrderByFechaEventoAsc() {
+		return eventoRepo.findAllByOrderByFechaEventoAsc();
+	}
+
 }
