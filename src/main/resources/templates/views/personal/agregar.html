@@ -12,12 +12,12 @@
 		<div class="card bg-light mt-3">
 			<div class="card-header bg-dark text-white">Agregar nuevo
 				empleado:</div>
-			<div class="card-body">
-				<div class="row">
+			<div class="card-body row">
+				<div class="col-md-6">
 
 					<form th:object="${personal}"
 						th:action="@{/views/personal/guardar}" method="post" enctype="multipart/form-data">
-						<div class="form-group col-md-6">
+						<div class="form-group ">
 							<label for="nroLegajo">Número de Legajo:</label> <input type="number"
 								class="form-control" id="nroLegajo"
 								placeholder="Número de legajo" th:field="*{nroLegajo}">
@@ -26,7 +26,7 @@
 							th:if="${#fields.hasErrors('nroLegajo')}"
 							th:errors="*{nroLegajo}"></small>
 
-						<div class="form-group mt-3 col-md-6">
+						<div class="form-group mt-3 ">
 							<label for="nombre">Nombre:</label> <input type="text"
 								class="form-control" id="nombre"
 								placeholder="Nombre del empleado" th:field="*{nombre}">
@@ -34,7 +34,7 @@
 						<small class="form-text text-danger"
 							th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 
-						<div class="form-group mt-3 col-md-6">
+						<div class="form-group mt-3 ">
 							<label for="apellido">Apellido:</label> <input type="text"
 								class="form-control" id="apellido"
 								placeholder="Apellido del empleado" th:field="*{apellido}">
@@ -42,7 +42,7 @@
 						<small class="form-text text-danger"
 							th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
 
-						<div class="form-group mt-3 col-md-6">
+						<div class="form-group mt-3 ">
 							<label for="sector">Sector:</label> <input type="text"
 								class="form-control" id="sector" placeholder="Sector de trabajo"
 								th:field="*{sector}">
@@ -67,9 +67,13 @@
 
 
 				</div>
+				<div class="col-md-6">
+					<img src="/images/nueva-entidad.jpg" class="" 
+					style="display: block;margin: 0 auto;width: 300px"> 
+				</div>
 			</div>
 		</div>
-
+		
 	</div>
 
 

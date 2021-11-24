@@ -37,8 +37,8 @@
 		<div class="row">
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
 				<div class="card">
+					<h5 class="card-header">Evento Próximo:</h5>
 					<div class="card-body">
-						<h5 class="card-title">Evento:</h5>
 						<p class="card-text">
 							Descripción: <span th:text="${ev.descripcion}"></span>
 						</p>
