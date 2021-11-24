@@ -97,30 +97,22 @@
 			let urlA = "/views/asistencia/ingreso-empleado/" + nroLegajo;
 			
 			cardAsis.innerHTML = `
-				<div class="card mb-3" style="max-width: 900px;">
+				<div class="card mb-3" style="max-width: 700px;">
 				<div class="card-header bg-dark text-white">Registro de Ingreso
 					a la Planta</div>
 				<div class="row g-0 ">
 					<div class="col-md-4" id="imagen">
-						<img src="/images/anonimo.jpg" class="img-fluid rounded-start">
+						<img src="/images/anonimo.jpg" style="max-width: 100%; height: auto;">
 					</div>
 					<div class="col-md-8">
 						<div class="card-body">
-							<h5 class="card-title">Registrar asistencia del empleado:</h5>
-							<p class="card-text mt-3" th:inline="text">
-								<b>Número de Legajo:</b> ${nroLegajo}
-							</p>
-							<p class="card-text mt-3" th:inline="text">
-								<b>Nombre:</b> ${nombre}
-							</p>
-							<p class="card-text mt-3" th:inline="text">
-								<b>Apellido:</b> ${apellido}
-							</p>
-							<p class="card-text mt-3" th:inline="text">
-								<b>Sector de trabajo: </b> ${sector}
-							</p>
+							<h5 class="card-title">Registrar asistencia:</h5>
+							
+							<p class="card-text mt-3">Empleado: <span>${nombre} ${apellido}</span></p>
+							<p class="card-text mt-3">Número de Legajo: <span>${nroLegajo}</span></p>
+							<p class="card-text mt-3">Sector de trabajo: <span>${sector}</span></p>
 							<p class="card-text">
-								<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span
+								Fecha y hora del ingreso: <small class="text-muted"><span
 									id='date-time'></span></small>
 							</p>
 						</div>
@@ -132,10 +124,11 @@
 						onsubmit="return confirm('Confirmar asistencia del empleado ${nombre} ${apellido}');">
 					<div
 						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
-						<button type="button" class="btn btn-primary" onclick="CloseCard()"
-							>Cancelar</button> 
-							<input type="submit"
-							class="btn btn-primary btn-sm" value="Registrar" />
+						<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+							>Cancelar</button>
+							<button type="submit" class="btn btn-secondary"
+								>Registrar</button> 
+							
 					</div>
 				</form>
 
@@ -159,7 +152,7 @@
 				imagePath = `/images/anonimo.jpg`;
 			}
 			
-			document.getElementById('imagen').innerHTML = `<img src="${imagePath}" class="img-fluid rounded-start">`;
+			document.getElementById('imagen').innerHTML = `<img src="${imagePath}" style="max-width: 100%; height: auto;">`;
 			
 			window.scroll(0, 0);
 		}

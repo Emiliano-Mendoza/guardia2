@@ -9,7 +9,7 @@
 	<div class="container">
 		<h2 class="mt-2">Autorizaciones de retiro de material:</h2>
 
-		<h5 class="mt-3">Buscador:</h5>
+		<h5 class="mt-3">Buscar empleado:</h5>
 
 		<input type="text" id="formulario" class="form-control">
 
@@ -51,10 +51,10 @@
 					
 					resultado.innerHTML += `
 						<div class="col-sm-6 mt-3">
-						<div class="card" >
+						<div class="card text-dark bg-light mb-3" >
+						<h5 class="card-header">Autorización de retiro:</h5>
 						<div class="card-body">
-							<h5 class="card-title">Autorización de retiro:</h5>
-							<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
+							<p class="card-text ">Empleado: ${aut.personal.nombre}
 								${aut.personal.apellido}</p>
 							<p class="card-text">Descripción: ${aut.descripcion}</p>
 							<p class="card-text">

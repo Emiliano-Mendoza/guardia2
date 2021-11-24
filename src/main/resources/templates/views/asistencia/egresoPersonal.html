@@ -7,53 +7,67 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 
-	<div class="container d-flex justify-content-center mt-3"
-		th:each="asis:${asistencias}">
-		<div class="card mb-3" style="max-width: 900px;">
-			<div class="card-header bg-dark text-white">Registro de Egreso
-				a la Planta</div>
-			<div class="row g-0 ">
-				<div class="col-md-4" id="imagen">
-					<img src="/images/anonimo.jpg" class="img-fluid rounded-start">
-				</div>
-				<div class="col-md-8">
-					<div class="card-body">
-						<h5 class="card-title">Registrar egreso del empleado:</h5>
-						<p class="card-text mt-3" th:inline="text">
-							<b>Número de Legajo:</b> [[${asis.personal.nroLegajo}]]
-						</p>
-						<p class="card-text" th:inline="text">
-							<b>Nombre:</b> [[${asis.personal.nombre}]]
-						</p>
-						<p class="card-text" th:inline="text">
-							<b>Apellido:</b> [[${asis.personal.apellido}]]
-						</p>
-						<p class="card-text" th:inline="text">
-							<b>Sector:</b> [[${asis.personal.sector}]]
-						</p>
-						<p class="card-text">
-							<b>Fecha y hora del ingreso: </b> <small class="text-muted"><span th:text="${#dates.format(asis.entrada, 'dd/MM/yyyy HH:mm')}">
-									</span></small>
-						</p>
+	<div class="container mt-3">
+
+		<div class="row">
+
+			<div class="col-sm-6 mt-3" th:each="asis:${asistencias}">
+				<div class="card-header bg-dark text-white">Registro de Egreso
+					de la Planta</div>
+				<div class="row g-0 ">
+					<div class="col-md-4" id="imagen">
+						<img th:src="@{'/images/' + ${asis.personal.nroLegajo} + '.jpg'}"
+							th:id="'foo' + ${asis.personal.nroLegajo}"
+							style="max-width: 100%; height: auto;" onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Registrar egreso del empleado:</h5>
+
+							<p class="card-text mt-3">
+								Empleado: <span>[[${asis.personal.nombre}]]
+									[[${asis.personal.apellido}]]</span>
+							</p>
+							<p class="card-text mt-3">
+								Número de Legajo: <span>[[${asis.personal.nroLegajo}]]</span>
+							</p>
+							<p class="card-text mt-3">
+								Sector de trabajo: <span>[[${asis.personal.sector}]]</span>
+							</p>
+
+							<p class="card-text">
+								Fecha y hora del ingreso: <small class="text-muted"><span
+									th:text="${#dates.format(asis.entrada, 'dd/MM/yyyy HH:mm')}">
+								</span></small>
+							</p>
+						</div>
 					</div>
 				</div>
+
+				<form th:object="${asis}"
+					th:action="@{/views/asistencia/egreso-empleado/} + ${asis.idAsistencia}"
+					method="post"
+					th:data-nombre="${asis.personal.nombre}"
+					th:data-apellido="${asis.personal.apellido}"
+					onsubmit="return confirm('Confirmar egreso del empleado ' + this.getAttribute('data-nombre') + ' ' + this.getAttribute('data-apellido') + '?');">
+					<div
+						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+						<input type="submit" class="btn btn-primary btn-sm"
+							value="Registrar Egreso" />
+					</div>
+				</form>
+
 			</div>
-
-			<form th:object="${asis}"
-				th:action="@{/views/asistencia/egreso-empleado/} + ${asis.idAsistencia}"
-				method="post">
-				<div
-					class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
-					<input type="submit"
-						class="btn btn-primary btn-sm" value="Registrar Egreso" />
-				</div>
-			</form>
-
 		</div>
 	</div>
-	
+
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+
+	</script>
+
 </body>
 </html>
