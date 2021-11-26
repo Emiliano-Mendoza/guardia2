@@ -1,6 +1,5 @@
 package com.practicasupervisada.guardia2.controller;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
@@ -88,7 +88,10 @@ public class PersonalController {
 	}
 	
 	@PostMapping("/guardar")
-	public String guardar(@Valid @ModelAttribute Personal personal, BindingResult result, Model model){
+	public String guardar(@Valid @ModelAttribute Personal personal,
+							BindingResult result,
+							Model model,
+							RedirectAttributes atributos){
 		
 		if(!personalServ.findById(personal.getNroLegajo()).isEmpty()) {
 			//agrego un mensaje de error para el número de legajo repetido
@@ -98,9 +101,11 @@ public class PersonalController {
 		if(result.hasErrors()) {
 			
 			model.addAttribute("personal", personal);
+			model.addAttribute("error", "No se pudo crear el nuevo empleado");
 			
 			System.out.println("Formulario incorrecto");
 			System.out.println(result.toString());
+			
 			
 			return "/views/personal/agregar";
 			
@@ -109,11 +114,13 @@ public class PersonalController {
 		
 		try {		
 			personalServ.crearPersonal(personal);
+			
 		}catch(Exception e) {
-			return "error";
+			System.out.println(e.getMessage());
 		}
 		
-		return "redirect:/views/personal";
+		atributos.addFlashAttribute("success", "Empleado creado exitosamente!");
+		return "redirect:/views/personal/agregar";
 	}
 	
 }

@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="Usuario")
@@ -15,8 +16,11 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private int idUsuario;
+	@NotEmpty
 	private String usuario;
+	@NotEmpty
 	private String contraseña;
+	@NotEmpty
 	private String rol;
 	private Boolean enabled;
 	
@@ -51,5 +55,12 @@ public class Usuario {
 	public void setRol(String rol) {
 		this.rol = rol;
 	}
+	@Override
+	public String toString() {
+		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", contraseña=" + contraseña + ", rol="
+				+ rol + ", enabled=" + enabled + "]";
+	}
+	
+	
 	
 }

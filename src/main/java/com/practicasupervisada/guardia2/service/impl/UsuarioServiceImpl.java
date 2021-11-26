@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Usuario crearUsuario(Usuario us) {
 		
-		//String passCrip = new BCryptPasswordEncoder().encode(us.getContraseña()); 
+		String passCrip = new BCryptPasswordEncoder().encode(us.getContraseña()); 
 		
-		//us.setContraseña(passCrip);
+		us.setContraseña(passCrip);
+		us.setEnabled(true);
 		
 		return usuarioRepo.save(us);
 	}

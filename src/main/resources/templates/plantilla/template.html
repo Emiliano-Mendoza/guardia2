@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
 <meta charset="UTF-8">
 <title>Guardia</title>
@@ -25,16 +26,16 @@
 					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				
-				<div class="collapse navbar-collapse" id="navbarSupportedContent" >
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" th:href="@{/home}">Inicio</a></li>
-							
-						<li class="nav-item dropdown">
-						
-							<a class="nav-link dropdown-toggle" id="navbarDropdown1" role="button"> Registrar Actividad </a>
-							
+
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" id="navbarDropdown1"
+							role="button"> Registrar Actividad </a>
+
 							<ul class="dropdown-menu">
 								<li class="nav-item dropdown"><a
 									class="dropdown-item dropdown-toggle" href="#" role="button"
@@ -46,21 +47,22 @@
 									</ul></li>
 								<li class="nav-item dropdown"><a
 									class="dropdown-item dropdown-toggle" href="#" role="button"
-									data-bs-toggle="dropdown">
-										Registrar Egreso</a>
+									data-bs-toggle="dropdown"> Registrar Egreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item"
 											th:href="@{/views/asistencia/personal-ingresado}">Personal</a></li>
 										<li><a class="dropdown-item" href="#">Proveedor</a></li>
 										<li><a class="dropdown-item" href="#">Transporte</a></li>
-										
+
 									</ul></li>
-									<li><a class="dropdown-item" th:href="@{/views/evento}">Evento</a></li>
-									<li><a class="dropdown-item" th:href="@{/views/acontecimiento}">Acontecimiento</a></li>
-									<li><a class="dropdown-item" th:href="@{/views/retiro-material}">Retiro de Material</a></li> 
-									
+								<li><a class="dropdown-item" th:href="@{/views/evento}">Evento</a></li>
+								<li><a class="dropdown-item"
+									th:href="@{/views/acontecimiento}">Acontecimiento</a></li>
+								<li><a class="dropdown-item"
+									th:href="@{/views/retiro-material}">Retiro de Material</a></li>
+
 							</ul></li>
-								
+
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,17 +72,50 @@
 									th:href="@{/views/personal/agregar}">Personal</a></li>
 								<li><a class="dropdown-item" href="#">Proveedor</a></li>
 								<li><a class="dropdown-item" href="#">Transporte</a></li>
-								
+
 							</ul></li>
 						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" th:href="@{/views/personal/autorizar-retiro}">Autorizar Retiro</a></li>
+							aria-current="page" th:href="@{/views/personal/autorizar-retiro}">Autorizar
+								Retiro</a></li>
 						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" th:href="@{/views/evento/nuevo}">Nuevo Evento</a></li>
+							aria-current="page" th:href="@{/views/evento/nuevo}">Nuevo
+								Evento</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" th:href="@{/views/usuario/crear}">Crear
+								Usuario</a></li>
 
+					</ul>
+
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item" sec:authorize="!isAuthenticated()"><a
+							class="btn btn-outline-warning" aria-current="page"
+							th:href="@{/login}">Iniciar Sesión</a></li>
+						<li sec:authorize="isAuthenticated()">
+							<form th:action="@{/logout}" method="post">
+								<button type="submit" class="btn btn-outline-warning">Cerrar
+									Sesíon</button>
+							</form>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
+
+		<!-- MENSAJES -->
+		<div
+			class="alert alert-success alert-dismissable gap-2 d-md-flex justify-content-between"
+			th:if="${success != null}" role="alert">
+			<label th:text="${success}"></label>
+			<button type="button" class="btn-close mr-auto"
+				data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		<div
+			class="alert alert-danger alert-dismissable gap-2 d-md-flex justify-content-between"
+			th:if="${error != null}" role="alert">
+			<label th:text="${error}"></label>
+			<button type="button" class="btn-close mr-auto"
+				data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
 	</header>
 
 	<!-- CONTENIDO -->
@@ -89,7 +124,7 @@
 	<!-- PIE DE PAGINA -->
 	<footer th:fragment="footer"
 		class="bg-dark text-white text-center fixed-bottom ">
-		
+
 		<div>
 			<p>Práctica Supervisada</p>
 		</div>
@@ -101,9 +136,7 @@
 		<script type="text/javascript" th:src="@{/js/bootnavbar.js}"></script>
 
 		<script>
-		
 			new bootnavbar();
-			
 		</script>
 
 

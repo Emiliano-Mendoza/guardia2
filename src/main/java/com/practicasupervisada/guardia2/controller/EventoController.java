@@ -30,9 +30,7 @@ public class EventoController {
 		
 		try {
 			List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc();
-			
-
-			
+		    			
 			Date today = new Date();
 			Date beforeYesterday = new Date(today.getTime() - 2*(1000 * 60 * 60 * 24));	
 			

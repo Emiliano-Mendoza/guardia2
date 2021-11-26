@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
@@ -32,6 +33,7 @@ public class AsistenciaController {
 		return "home";
 	}
 	
+	/* OBSOLETO
 	@GetMapping("/empleado/{nroLegajo}")
 	public String mostrarNuevaAsistencia(@PathVariable("nroLegajo") int nroLegajo, Model model) throws Exception{
 		
@@ -45,9 +47,11 @@ public class AsistenciaController {
 		
 		return "/views/asistencia/nuevaAsistencia";
 	}
+	*/
 	
 	@PostMapping("/ingreso-empleado/{nroLegajo}")
-	public String agregarNuevaAsistencia(@PathVariable("nroLegajo") int nroLegajo) {
+	public String agregarNuevaAsistencia(@PathVariable("nroLegajo") int nroLegajo,
+										  RedirectAttributes atributos) {
 			
 		try {
 			Personal personal = personalServ.findById(nroLegajo).orElseThrow();
@@ -63,6 +67,7 @@ public class AsistenciaController {
 			System.out.println(e.getMessage());
 		}
 		
+		atributos.addFlashAttribute("success", "Ingreso registrado exitosamente!");
 		return "redirect:/views/personal";
 	}
 	
@@ -86,7 +91,8 @@ public class AsistenciaController {
 	}
 	
 	@PostMapping("/egreso-empleado/{idAsistencia}")
-	public String egreso(@PathVariable("idAsistencia") int idAsistencia) {
+	public String egreso(@PathVariable("idAsistencia") int idAsistencia,
+						RedirectAttributes atributos) {
 			
 		try {
 			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
@@ -99,6 +105,7 @@ public class AsistenciaController {
 			System.out.println(e.getMessage());
 		}
 		
+		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
 		return "redirect:/views/asistencia/personal-ingresado";
 	}
 }
