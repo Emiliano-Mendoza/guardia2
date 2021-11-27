@@ -63,7 +63,7 @@ public class UsuarioController {
 			
 			try {
 				usuarioServ.crearUsuario(usuarioNuevo);
-				atributos.addFlashAttribute("success", "Usuario creado exitosamente!");
+				
 			}catch(Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -89,6 +89,7 @@ public class UsuarioController {
 			System.out.println(e.getMessage());
 		} */
 		
+		atributos.addFlashAttribute("success", "Usuario creado exitosamente!");
 		return "redirect:/views/usuario/crear";
 	}
 }

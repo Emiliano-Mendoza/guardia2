@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.RetiroMaterial;
@@ -50,7 +50,8 @@ public class RetiroMaterialController {
 	@PostMapping("/autorizacion")
 	public String nuevaAutorizacionDeRetiro(@RequestParam(name = "desc") String desc,
 											@RequestParam(name = "fechaLimite") String fecha,
-											@RequestParam(name = "nroLegajo") int nroLegajo){
+											@RequestParam(name = "nroLegajo") int nroLegajo,
+											RedirectAttributes atributos){
 		
 		//Le doy el formato correcto a la fecha obtenida
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -72,12 +73,14 @@ public class RetiroMaterialController {
 			System.out.println(e.getMessage());
 		}
 		
+		atributos.addFlashAttribute("success", "Autorización creada exitosamente!");
 		return "redirect:/views/personal/autorizar-retiro";
 	}
 	
 	@PostMapping("/retiro/{idRetiro}")
 	public String egreso(@PathVariable("idRetiro") int idRetiro, 
-			@RequestParam(name = "observacionGuardia") String observacionGuardia) {
+			@RequestParam(name = "observacionGuardia") String observacionGuardia,
+			RedirectAttributes atributos) {
 				
 		try {
 			RetiroMaterial retiro = retiroServ.findById(idRetiro).orElseThrow();
@@ -96,6 +99,7 @@ public class RetiroMaterialController {
 			System.out.println(e.getMessage());
 		}
 		
+		atributos.addFlashAttribute("success", "Retiro de material registrado con éxito!");
 		return "redirect:/views/retiro-material";
 	}
 }

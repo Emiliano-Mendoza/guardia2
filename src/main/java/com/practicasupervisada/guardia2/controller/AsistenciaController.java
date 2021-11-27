@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
+import com.practicasupervisada.guardia2.service.UsuarioService;
 
 @Controller
 @RequestMapping("/views/asistencia")
@@ -27,6 +30,9 @@ public class AsistenciaController {
 	
 	@Autowired
 	private PersonalService personalServ;
+	
+	@Autowired
+	private UsuarioService usuarioServ;
 	
 	@GetMapping
 	public String index() {
@@ -61,7 +67,9 @@ public class AsistenciaController {
 			asis.setPersonal(personal);
 			asis.setEntrada(new Date());
 			asis.setEnTransito(false);
-			//asis.setUsuario(null);
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			asis.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
 			asistenciaServ.crearAsistencia(asis);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -99,6 +107,10 @@ public class AsistenciaController {
 			
 			asis.setSalida(new Date());
 			asis.setEnTransito(false);
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
+			
 			asistenciaServ.crearAsistencia(asis);
 			
 		}catch(Exception e) {

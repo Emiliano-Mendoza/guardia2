@@ -21,10 +21,13 @@ public class Asistencia {
 	private Date salida;
 	private Boolean enTransito;
 	
+	@ManyToOne
+	@JoinColumn(name = "ID_Usuario_Ingreso")
+	private Usuario usuarioIngreso;
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_Usuario")
-	private Usuario usuario;
+	@JoinColumn(name = "ID_Usuario_Egreso")
+	private Usuario usuarioEgreso;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_Personal")
@@ -38,14 +41,18 @@ public class Asistencia {
 	@JoinColumn(name = "id_Transporte")
 	private Transporte transporte;
 	
-	
-	public Usuario getUsuario() {
-		return usuario;
+	public Usuario getUsuarioIngreso() {
+		return usuarioIngreso;
 	}
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsuarioIngreso(Usuario usuarioIngreso) {
+		this.usuarioIngreso = usuarioIngreso;
 	}
-	
+	public Usuario getUsuarioEgreso() {
+		return usuarioEgreso;
+	}
+	public void setUsuarioEgreso(Usuario usuarioEgreso) {
+		this.usuarioEgreso = usuarioEgreso;
+	}
 	public Personal getPersonal() {
 		return personal;
 	}
@@ -92,9 +99,11 @@ public class Asistencia {
 	@Override
 	public String toString() {
 		return "Asistencia [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
-				+ ", enTransito=" + enTransito + ", usuario=" + usuario + ", personal=" + personal + ", proveedor="
-				+ proveedor + ", transporte=" + transporte + "]";
+				+ ", enTransito=" + enTransito + ", usuarioIngreso=" + usuarioIngreso + ", usuarioEgreso="
+				+ usuarioEgreso + ", personal=" + personal + ", proveedor=" + proveedor + ", transporte=" + transporte
+				+ "]";
 	}
+
 	
 	
 }

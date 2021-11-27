@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Evento;
 import com.practicasupervisada.guardia2.service.EventoService;
@@ -74,7 +75,8 @@ public class EventoController {
 	
 	@PostMapping("/crear")
 	public String crearNuevoEvento(@RequestParam(name = "desc") String desc,
-											@RequestParam(name = "fechaEvento") String fechaEvento){
+								   @RequestParam(name = "fechaEvento") String fechaEvento,
+								   RedirectAttributes atributos){
 		
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 		
@@ -92,12 +94,14 @@ public class EventoController {
 			e.printStackTrace();
 		}
 		
+		atributos.addFlashAttribute("success", "Nuevo evento creado exitosamente!");
 		return "redirect:/views/evento/nuevo";
 	}
 	
 	@PostMapping("/ocurrencia/{idEvento}")
 	public String egreso(@PathVariable("idEvento") int idEvento, 
-			@RequestParam(name = "observacionGuardia") String observacionGuardia) {
+			@RequestParam(name = "observacionGuardia") String observacionGuardia,
+			RedirectAttributes atributos) {
 				
 		try {
 			Evento evento = eventoServ.findById(idEvento).orElseThrow();
@@ -112,6 +116,7 @@ public class EventoController {
 			System.out.println(e.getMessage());
 		}
 		
+		atributos.addFlashAttribute("success", "Evento registrado exitosamente!");
 		return "redirect:/views/evento";
 	}
 }
