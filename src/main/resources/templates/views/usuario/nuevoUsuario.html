@@ -9,33 +9,37 @@
 	<div class="container">
 
 		<div class="card bg-light mt-3">
-			<div class="card-header bg-dark text-white">Crear un nuevo Usuario del sistema:</div>
+			<div class="card-header bg-dark text-white">Crear un nuevo
+				Usuario del sistema:</div>
 			<div class="card-body row">
 				<div class="col-md-6">
 
-					<form 
-						th:action="@{/views/usuario/guardar}" method="post">
+					<form th:action="@{/views/usuario/guardar}" method="post">
 
 						<div class="form-group">
-							<label for="usuario">Nombre de usuario:</label> <input type="text"
-								class="form-control" id="usuario"
+							<label for="usuario">Nombre de usuario:</label> <input
+								type="text" class="form-control" id="usuario"
 								placeholder="Nombre del usuario" name="usuario" required>
 						</div>
-						
+
 
 						<div class="form-group mt-3 ">
-							<label for="contraseña">Contraseña:</label> <input type="password"
-								class="form-control" id="contraseña" name="contraseña"
-								placeholder="Contraseña del usuario" required>
+							<label for="contraseña">Contraseña:</label> <input
+								type="password" class="form-control" id="contraseña"
+								name="contraseña" placeholder="Contraseña del usuario" required>
 						</div>
-						
+
 
 						<div class="form-group mt-3 ">
-							<label for="rol">Rol:</label> <input type="text"
-								class="form-control" id="rol" name="rol" placeholder="Rol del usuario"
-								required>
+							<label for="rol">Rol:</label> 
+							<select name="rol" id="rol" class="form-select" >
+								<option value="GUARDIA" selected>GUARDIA</option>
+								<option value="AUTORIZADOR">AUTORIZADOR</option>
+								<option value="NOTIFICADOR">NOTIFICADOR</option>
+								<option value="ADMIN">ADMIN</option>
+							</select>
 						</div>
-	
+
 
 
 						<div class="card-footer bg-dark mt-3">

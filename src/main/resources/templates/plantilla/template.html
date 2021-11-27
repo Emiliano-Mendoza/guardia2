@@ -32,7 +32,7 @@
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" th:href="@{/home}">Inicio</a></li>
 
-						<li class="nav-item dropdown"><a
+						<li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
 							class="nav-link dropdown-toggle" id="navbarDropdown1"
 							role="button"> Registrar Actividad </a>
 
@@ -63,8 +63,8 @@
 
 							</ul></li>
 
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link dropdown-toggle" id="navbarDropdown"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Agregar Entidad</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -74,13 +74,13 @@
 								<li><a class="dropdown-item" href="#">Transporte</a></li>
 
 							</ul></li>
-						<li class="nav-item"><a class="nav-link active"
+						<li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_AUTORIZADOR')"  ><a class="nav-link active"
 							aria-current="page" th:href="@{/views/personal/autorizar-retiro}">Autorizar
 								Retiro</a></li>
-						<li class="nav-item"><a class="nav-link active"
+						<li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_NOTIFICADOR')"><a class="nav-link active"
 							aria-current="page" th:href="@{/views/evento/nuevo}">Nuevo
 								Evento</a></li>
-						<li class="nav-item"><a class="nav-link active"
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a class="nav-link active"
 							aria-current="page" th:href="@{/views/usuario/crear}">Crear
 								Usuario</a></li>
 
