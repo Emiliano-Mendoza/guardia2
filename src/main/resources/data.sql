@@ -66,3 +66,11 @@ INSERT INTO public.personal VALUES(959,'VAZQUEZ','MAXIMILIANO EMANUEL','Enfardad
 INSERT INTO public.personal VALUES(44,'VEGA','HUGO ROBERTO','Pegadora');
 INSERT INTO public.personal VALUES(1,'VERCELLI','RUBEN CARLOS','Impresión');
 
+INSERT INTO public.usuario (id_usuario, contraseña, enabled, usuario) VALUES(100,'$2a$10$1EF13SS0g4miIVrvtpuxXueo6O0W/nJ5hNee2QqqCEYrxsfFXYLHa',true,'emiii');
+INSERT INTO public.roles (id_rol, rol) VALUES(1,'USER');
+INSERT INTO public.roles (id_rol, rol) VALUES(2,'ADMIN');
+INSERT INTO public.roles (id_rol, rol) VALUES(3,'GUARDIA');
+INSERT INTO public.roles (id_rol, rol) VALUES(4,'NOTIFICADOR');
+INSERT INTO public.roles (id_rol, rol) VALUES(5,'AUTORIZADOR');
+
+INSERT INTO public.usuario_roles (id_usuario, id_rol) VALUES(100,2);

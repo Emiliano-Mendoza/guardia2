@@ -2,13 +2,16 @@ package com.practicasupervisada.guardia2.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import com.practicasupervisada.guardia2.dao.UsuarioRepo;
+import com.practicasupervisada.guardia2.domain.Roles;
 import com.practicasupervisada.guardia2.domain.Usuario;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 
@@ -17,6 +20,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Autowired
 	private UsuarioRepo usuarioRepo;
+
 		
 	@Override
 	public Usuario crearUsuario(Usuario us) {
@@ -42,6 +46,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Usuario findByUsuario(String us) {
 		return usuarioRepo.findByUsuario(us);
+	}
+
+	@Override
+	public Usuario crearUsuario(Usuario us, Set<Roles> roles) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

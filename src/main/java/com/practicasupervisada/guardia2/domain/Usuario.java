@@ -1,13 +1,21 @@
 package com.practicasupervisada.guardia2.domain;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name="Usuario")
@@ -17,13 +25,19 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private int idUsuario;
 	@NotEmpty
+	@Column(unique=true)
 	private String usuario;
 	@NotEmpty
 	private String contraseña;
-	@NotEmpty
-	private String rol;
+	
 	private Boolean enabled;
 	
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "usuario_roles",
+		joinColumns = { @JoinColumn(name = "idUsuario")},
+		inverseJoinColumns = { @JoinColumn (name = "idRol")})
+	private Set<Roles> roles = new HashSet<>();
 	
 	public Boolean getEnabled() {
 		return enabled;
@@ -49,16 +63,18 @@ public class Usuario {
 	public void setContraseña(String contraseña) {
 		this.contraseña = contraseña;
 	}
-	public String getRol() {
-		return rol;
-	}
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
+
+    
 	@Override
 	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", contraseña=" + contraseña + ", rol="
-				+ rol + ", enabled=" + enabled + "]";
+		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", contraseña=" + contraseña + ", enabled="
+				+ enabled + ", roles=" + roles + "]";
+	}
+	public Set<Roles> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
 	}
 	
 	

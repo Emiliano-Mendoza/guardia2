@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.practicasupervisada.guardia2.dao.RolesRepo;
+import com.practicasupervisada.guardia2.domain.Roles;
 import com.practicasupervisada.guardia2.domain.Usuario;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 
@@ -24,6 +26,8 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService usuarioServ;
+	@Autowired
+	private RolesRepo rolesRepo;
 	
 	@GetMapping
 	public String listarUsuarios(Model model) {
@@ -48,18 +52,23 @@ public class UsuarioController {
 	@PostMapping("/guardar")
 	public String guardar(@RequestParam(name = "usuario") String usuario,
 						  @RequestParam(name = "contraseña") String contraseña,
-						  @RequestParam(name = "rol") String rol,
+						  @RequestParam(name = "rol") List<String> roles,
 						  RedirectAttributes atributos,
 						  Model model) {
 		
 		//arreglar
+		System.out.println(roles);
 		
-		if(usuario!=null && contraseña!=null && rol!=null &&
+		if(usuario!=null && contraseña!=null && !roles.isEmpty() &&
 				usuarioServ.findByUsuario(usuario)==null) {
 			Usuario usuarioNuevo = new Usuario();
 			usuarioNuevo.setContraseña(contraseña);
 			usuarioNuevo.setUsuario(usuario);
-			usuarioNuevo.setRol(rol);
+			//usuarioNuevo.setRol(roles.get(0));
+			
+			roles.forEach((rol)->{usuarioNuevo.getRoles().add(rolesRepo.findByRol(rol));});
+			
+			//usuarioNuevo.getRoles().add(rolesRepo.findByRol(rol));
 			
 			try {
 				usuarioServ.crearUsuario(usuarioNuevo);
