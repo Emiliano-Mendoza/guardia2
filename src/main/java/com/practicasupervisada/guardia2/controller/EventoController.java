@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Evento;
 import com.practicasupervisada.guardia2.service.EventoService;
+import com.practicasupervisada.guardia2.service.UsuarioService;
 
 @Controller
 @RequestMapping("/views/evento")
@@ -25,6 +28,8 @@ public class EventoController {
 	
 	@Autowired
 	private EventoService eventoServ;
+	@Autowired
+	private UsuarioService usuarioServ;
 	
 	@GetMapping
 	public String obtenerListaEventos(Model model) {
@@ -59,9 +64,12 @@ public class EventoController {
 			Date today = new Date();
 			Date beforeYesterday = new Date(today.getTime() - 2*(1000 * 60 * 60 * 24));
 			
-			//Los eventos proximos a mostrar deben depender del usuario que los hizo	
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			//Los eventos proximos a mostrar deben depender del usuario que los hizo
 			listaEventos = listaEventos.stream()
-					.filter(e -> (e.getOcurrencia()==false && e.getFechaEvento().after(beforeYesterday)))
+					.filter(e -> (e.getOcurrencia()==false && e.getFechaEvento().after(beforeYesterday)
+							&& e.getUsuarioSector().getUsuario().equals(auth.getName())))
 					.collect(Collectors.toList());
 			
 			model.addAttribute("evento", evento);
@@ -88,6 +96,9 @@ public class EventoController {
 			evento.setFechaEvento(fechaAux);
 			evento.setOcurrencia(false);
 			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			evento.setUsuarioSector(usuarioServ.findByUsuario(auth.getName()));
+			
 			eventoServ.crearEvento(evento);
 			
 		} catch (ParseException e) {
@@ -100,15 +111,17 @@ public class EventoController {
 	
 	@PostMapping("/ocurrencia/{idEvento}")
 	public String egreso(@PathVariable("idEvento") int idEvento, 
-			@RequestParam(name = "observacionGuardia") String observacionGuardia,
-			RedirectAttributes atributos) {
+						 @RequestParam(name = "observacionGuardia") String observacionGuardia,
+						 RedirectAttributes atributos) {
 				
 		try {
 			Evento evento = eventoServ.findById(idEvento).orElseThrow();
 			
 			evento.setOcurrencia(true);
-			
 			evento.setObservacionDeGuardia(observacionGuardia);
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			evento.setUsurioGuardia(usuarioServ.findByUsuario(auth.getName()));
 			
 			eventoServ.crearEvento(evento);
 			

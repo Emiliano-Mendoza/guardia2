@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.RetiroMaterial;
 import com.practicasupervisada.guardia2.service.PersonalService;
 import com.practicasupervisada.guardia2.service.RetiroMaterialService;
+import com.practicasupervisada.guardia2.service.UsuarioService;
 
 @Controller
 @RequestMapping("/views/retiro-material")
@@ -28,6 +31,8 @@ public class RetiroMaterialController {
 	private RetiroMaterialService retiroServ;
 	@Autowired
 	private PersonalService personalServ;
+	@Autowired
+	private UsuarioService usuarioServ;
 	
 	@GetMapping
 	public String obetenerRetirosDeMaterial(Model model) {
@@ -67,6 +72,9 @@ public class RetiroMaterialController {
 			
 			retiro.setPersonal(empleado);
 			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			retiro.setUsuarioSector(usuarioServ.findByUsuario(auth.getName()));
+			
 			retiroServ.crearRetiroMaterial(retiro);
 			
 		} catch (Exception e) {
@@ -88,10 +96,13 @@ public class RetiroMaterialController {
 			retiro.setFechaRetiro(new Date());
 			
 			if(retiro.getFechaRetiro().after(retiro.getFechaLimite())) {
-				throw new Exception("Autorizacion caducada");
+				throw new Exception("Autorización caducada");
 			}
 			
 			retiro.setObservacionGuardia(observacionGuardia);
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			retiro.setUsuarioGuardia(usuarioServ.findByUsuario(auth.getName()));
 			
 			retiroServ.crearRetiroMaterial(retiro);
 			

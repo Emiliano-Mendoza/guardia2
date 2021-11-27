@@ -41,8 +41,11 @@ public class AcontecimientoController {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaActual = formatter.parse(formatter.format(new Date()));
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				
 		listaAcontecimientos = listaAcontecimientos.stream()
-				.filter(a -> a.getFecha().after(fechaActual))
+				.filter(a -> a.getFecha().after(fechaActual)
+						&& auth.getName().equals(a.getUsuario().getUsuario()))
 				.collect(Collectors.toList());
 		
 		Acontecimiento acont = new Acontecimiento(); 
@@ -66,8 +69,11 @@ public class AcontecimientoController {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			Date fechaActual = formatter.parse(formatter.format(new Date()));
 			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
 			listaAcontecimientos = listaAcontecimientos.stream()
-					.filter(a -> a.getFecha().after(fechaActual))
+					.filter(a -> (a.getFecha().after(fechaActual)
+							&& auth.getName().equals(a.getUsuario().getUsuario())))
 					.collect(Collectors.toList());
 			
 			model.addAttribute("listaAcontecimientos", listaAcontecimientos);			
