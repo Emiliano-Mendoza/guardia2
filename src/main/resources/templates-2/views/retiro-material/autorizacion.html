@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container mt-3" id="cardAutorization"></div>
+
+
+
+	<div class="container mt-3">
+		<h2>Listado del Personal:</h2>
+
+		<input type="text" id="formulario" class="form-control">
+		<table class="table" style="width: 100%">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 15%; text-align: center;">Legajo</th>
+					<th scope="col" style="width: 20%; text-align: center;">Nombre</th>
+					<th scope="col" style="width: 20%; text-align: center;">Apellido</th>
+					<th scope="col" style="width: 20%; text-align: center;">Sector</th>
+					<th scope="col" style="width: 25%; text-align: center;">Autorizar
+						Retiro</th>
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+	</div>
+	<div class="mt-5"></div>
+
+
+	<script th:inline="javascript">
+	
+	var personal = /*[[${personal}]]*/ 'default';	
+	
+	const formulario = document.querySelector('#formulario');
+	const resultado = document.querySelector('#fila');
+	const cardAutorization = document.querySelector('#cardAutorization');
+	cardAutorization.innerHTML = '';
+	
+	
+	const filtrar = () => {
+		resultado.innerHTML = '';
+		
+		console.log(formulario.value);
+		const texto = formulario.value.toLowerCase();
+		for(let p of personal){
+			let nombre = p.nombre.toLowerCase();
+			let apellido = p.apellido.toLowerCase();
+			let legajo = p.nroLegajo;
+			
+			if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+								
+				resultado.innerHTML += `
+				<tr>
+					<th scope="row" style="text-align:center;">${p.nroLegajo}</th>
+					<td style="text-align:center;">${p.nombre}</td>
+					<td style="text-align:center;">${p.apellido}</td>
+					<td style="text-align:center;">${p.sector}</td>
+					<td style="text-align:center;">
+						<button class="btn btn-info" 
+						title:"Registrar Nueva Asistencia" id="asisBtn" 
+						onclick="myForm('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}')">
+						Autorizar
+						</button>
+					</td>
+				</tr>
+				`
+			}
+		}
+	}
+	
+	function myForm(nroLegajo,nombre,apellido,sector){
+		
+		let urlA = "/views/retiro-material/autorizacion";
+		
+		cardAutorization.innerHTML = `
+			<h5>Autorización de Retiro de Material</h5>
+			<p class="mt-3">Empleado autorizado: ${nombre} ${apellido}</p>
+			
+			<form id="formAutorization" action=${urlA} method="post"
+				onsubmit="return confirm('Desea confirmar la autorización al empleado ${nombre} ${apellido}?');">
+				
+				<div class="mb-3">
+					<label for="exampleInputEmail1" class="form-label">Descripción:</label>
+					<textarea class="form-control" id="desc" name="desc"
+						rows="3" required></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
+					<input type="date" id="fechaLimite" name="fechaLimite"
+			       		>
+				</div>
+				<div>
+					<input type="hidden" id="nroLegajo" name="nroLegajo" value="${nroLegajo}">
+				</div>
+				<div
+				class="card-footer bg-white d-grid gap-2 d-md-flex justify-content-between">
+				<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+					>Cancelar</button> 
+					<input type="submit"
+					class="btn btn-secondary btn-sm" value="Confirmar" />
+			</div>
+			</form>
+		`
+		
+		SetDate();
+
+		window.scroll(0, 0);
+	}
+	
+	function CloseCard(){
+		cardAutorization.innerHTML = '';
+	}
+	
+	function SetDate(){
+		
+		const today = new Date()
+		let tomorrow = new Date(today)
+		tomorrow.setDate(tomorrow.getDate() + 1)
+		
+		let dd = tomorrow.getDate();
+		let mm = tomorrow.getMonth() + 1; //January is 0!
+		let yyyy = tomorrow.getFullYear();
+		
+		if (dd < 10) {
+		   dd = '0' + dd;
+		}
+		if (mm < 10) {
+		   mm = '0' + mm;
+		} 
+		    
+		tomorrow = yyyy + '-' + mm + '-' + dd;
+		
+		document.getElementById('fechaLimite').setAttribute("min", tomorrow);
+		document.getElementById('fechaLimite').setAttribute("value", tomorrow);
+		
+	}
+	
+	formulario.addEventListener('keyup', filtrar);
+	filtrar();
+	
+	/*
+	
+	*/
+	</script>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+</body>
+</html>
