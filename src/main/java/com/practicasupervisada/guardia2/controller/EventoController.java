@@ -46,6 +46,7 @@ public class EventoController {
 			
 			model.addAttribute("listaEventos", listaEventos);
 			
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
 <body>
@@ -7,6 +8,7 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
+
 		<h2 class="mt-2">Autorizaciones de retiro de material:</h2>
 
 		<h5 class="mt-3">Buscar empleado:</h5>
@@ -22,69 +24,71 @@
 
 	<script th:inline="javascript">
 		
-		var autorizaciones = /*[[${listaRetiros}]]*/ 'default';
+	let autorizaciones = /*[[${listaRetiros}]]*/ 'default';
+	console.log(autorizaciones[0]);
+	
+	
+	const formulario = document.querySelector('#formulario');
+	const resultado = document.querySelector('#cardRetiro');
+	
+	
+	const filtrar = () => {
+		resultado.innerHTML = ''
 		
-		const formulario = document.querySelector('#formulario');
-		const resultado = document.querySelector('#cardRetiro');
+		const texto = formulario.value.toLowerCase();
 		
-		
-		const filtrar = () => {
-			resultado.innerHTML = ''
+		for(let aut of autorizaciones){
+			let nombre = aut.personal.nombre.toLowerCase();
+			let apellido = aut.personal.apellido.toLowerCase();
 			
-			const texto = formulario.value.toLowerCase();
-			
-			for(let aut of autorizaciones){
-				let nombre = aut.personal.nombre.toLowerCase();
-				let apellido = aut.personal.apellido.toLowerCase();
+			if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
 				
-				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
-					
-					let urlRetiro= "/views/retiro-material/retiro/" + aut.idRetiro;
-					
-					//le doy el formato correcto a la fecha
-					let d = new Date(aut.fechaLimite);
-					dformat = [d.getDate(),
-		  				d.getMonth()+1,
-		               d.getFullYear()].join('/')+' '+
-		              [d.getHours(),
-		               d.getMinutes()].join(':');
-					
-					resultado.innerHTML += `
-						<div class="col-sm-6 mt-3">
-						<div class="card text-dark bg-light mb-3" >
-						<h5 class="card-header">Autorización de retiro:</h5>
-						<div class="card-body">
-							<p class="card-text ">Empleado: ${aut.personal.nombre}
-								${aut.personal.apellido}</p>
-							<p class="card-text">Descripción: ${aut.descripcion}</p>
-							<p class="card-text">
-								Fecha límite: ${dformat}
-							</p>
+				let urlRetiro= "/views/retiro-material/retiro/" + aut.idRetiro;
+				
+				//le doy el formato correcto a la fecha
+				let d = new Date(aut.fechaLimite);
+				dformat = [d.getDate(),
+	  				d.getMonth()+1,
+	               d.getFullYear()].join('/')+' '+
+	              [d.getHours(),
+	               d.getMinutes()].join(':');
+				
+				resultado.innerHTML += `
+					<div class="col-sm-6 mt-3">
+					<div class="card text-dark bg-light mb-3" >
+					<h5 class="card-header">Autorización de retiro:</h5>
+					<div class="card-body">
+						<p class="card-text ">Empleado: ${aut.personal.nombre}
+							${aut.personal.apellido}</p>
+						<p class="card-text">Descripción: ${aut.descripcion}</p>
+						<p class="card-text">
+							Fecha límite: ${dformat}
+						</p>
 
 
-							<form action=${urlRetiro} method="post"
-								onsubmit="return confirm('Confirmar retiro del empleado?');">
-								<div class="form-group">
-								<label for="observacionGuardia">Observación:</label> <input type="text"
-									class="form-control" id="observacionGuardia"
-									name="observacionGuardia">
-								</div>
-								<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
-									<input type="submit" class="btn btn-primary btn-sm "
-										value="Confirmar Retiro" />
-								</div>
+						<form action=${urlRetiro} method="post"
+							onsubmit="return confirm('Confirmar retiro del empleado?');">
+							<div class="form-group">
+							<label for="observacionGuardia">Observación:</label> <input type="text"
+								class="form-control" id="observacionGuardia"
+								name="observacionGuardia">
+							</div>
+							<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
+								<input type="submit" class="btn btn-primary btn-sm "
+									value="Confirmar Retiro" />
+							</div>
 
-							</form>
-						</div>
+						</form>
 					</div>
-					</div>
-					`;
-				}
+				</div>
+				</div>
+				`;
 			}
 		}
-		
-		formulario.addEventListener('keyup', filtrar);
-		filtrar();
+	}
+	
+	formulario.addEventListener('keyup', filtrar);
+	filtrar();
 		
 	</script>
 </body>

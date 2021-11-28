@@ -45,6 +45,7 @@ public class RetiroMaterialController {
 					.collect(Collectors.toList());
 			
 			model.addAttribute("listaRetiros", listaRetiros);
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

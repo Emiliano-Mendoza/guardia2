@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.JoinColumn;
 
 @Entity
@@ -37,6 +40,7 @@ public class Usuario {
 	@JoinTable(name = "usuario_roles",
 		joinColumns = { @JoinColumn(name = "idUsuario")},
 		inverseJoinColumns = { @JoinColumn (name = "idRol")})
+	@JsonManagedReference
 	private Set<Roles> roles = new HashSet<>();
 	
 	public Boolean getEnabled() {
@@ -62,13 +66,12 @@ public class Usuario {
 	}
 	public void setContraseña(String contraseña) {
 		this.contraseña = contraseña;
-	}
+	} 
 
-    
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", contraseña=" + contraseña + ", enabled="
-				+ enabled + ", roles=" + roles + "]";
+				+ enabled + "]";
 	}
 	public Set<Roles> getRoles() {
 		return roles;

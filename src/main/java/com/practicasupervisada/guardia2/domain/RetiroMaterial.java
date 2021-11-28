@@ -9,7 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="RetiroMaterial")
@@ -19,31 +20,32 @@ public class RetiroMaterial {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idRetiro;
 	
-	@Size(max = 1000)
 	private String descripcion;
-	
 	private Date fechaLimite;
 	private Date fechaRetiro;
 	
-	@Size(max = 1000)
 	private String observacionGuardia;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
+	@JsonIgnore
 	private Usuario usuarioGuardia;
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioSector")
+	@JsonIgnore
 	private Usuario usuarioResponsableSector;
 	@ManyToOne
 	@JoinColumn(name = "ID_Personal")
 	private Personal personal;
 	
+	@JsonIgnore
 	public Usuario getUsuarioGuardia() {
 		return usuarioGuardia;
 	}
 	public void setUsuarioGuardia(Usuario usuarioGuardia) {
 		this.usuarioGuardia = usuarioGuardia;
 	}
+	@JsonIgnore
 	public Usuario getUsuarioSector() {
 		return usuarioResponsableSector;
 	}
@@ -89,10 +91,11 @@ public class RetiroMaterial {
 	@Override
 	public String toString() {
 		return "RetiroMaterial [idRetiro=" + idRetiro + ", descripcion=" + descripcion + ", fechaLimite=" + fechaLimite
-				+ ", fechaRetiro=" + fechaRetiro + ", observacionGuardia=" + observacionGuardia + ", usuarioGuardia="
-				+ usuarioGuardia + ", usuarioResponsableSector=" + usuarioResponsableSector + ", personal=" + personal
-				+ "]";
+				+ ", fechaRetiro=" + fechaRetiro + ", observacionGuardia=" + observacionGuardia + ", personal="
+				+ personal + "]";
 	}
+
+	
 	
 	
 	

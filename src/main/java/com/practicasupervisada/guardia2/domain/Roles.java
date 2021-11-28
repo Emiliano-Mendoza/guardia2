@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="Roles")
 public class Roles {
@@ -20,6 +22,7 @@ public class Roles {
 	private String rol;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "roles")
+	@JsonBackReference
 	private Set<Usuario> usuarios = new HashSet<>();
 
 	public int getIdRol() {
@@ -48,9 +51,10 @@ public class Roles {
 
 	@Override
 	public String toString() {
-		return "Roles [idRol=" + idRol + ", rol=" + rol + ", usuarios=" + usuarios + "]";
+		return "Roles [idRol=" + idRol + ", rol=" + rol + "]";
 	}
-	
+
+
 	
 
 	

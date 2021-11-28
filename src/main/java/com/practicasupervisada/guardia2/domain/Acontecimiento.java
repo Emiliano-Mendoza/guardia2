@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="Acontecimiento")
 public class Acontecimiento {
@@ -31,6 +33,7 @@ public class Acontecimiento {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
+	@JsonIgnore
 	private Usuario usuario;
 	
 	public int getIdAcontencimiento() {
@@ -57,6 +60,7 @@ public class Acontecimiento {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	@JsonIgnore
 	public Usuario getUsuario() {
 		return usuario;
 	}

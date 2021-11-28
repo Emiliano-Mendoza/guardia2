@@ -9,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="Evento")
@@ -25,10 +27,12 @@ public class Evento {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioSector")
+	@JsonIgnore
 	private Usuario usuarioResponsableSector;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
+	@JsonIgnore
 	private Usuario usurioGuardia;
 	
 	public int getIdEvento() {
@@ -61,12 +65,14 @@ public class Evento {
 	public void setOcurrencia(Boolean ocurrencia) {
 		this.ocurrencia = ocurrencia;
 	}
+	@JsonIgnore
 	public Usuario getUsuarioSector() {
 		return usuarioResponsableSector;
 	}
 	public void setUsuarioSector(Usuario usuarioResponsableSector) {
 		this.usuarioResponsableSector = usuarioResponsableSector;
 	}
+	@JsonIgnore
 	public Usuario getUsurioGuardia() {
 		return usurioGuardia;
 	}
