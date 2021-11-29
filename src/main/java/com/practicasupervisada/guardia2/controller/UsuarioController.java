@@ -26,8 +26,7 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService usuarioServ;
-	@Autowired
-	private RolesRepo rolesRepo;
+
 	
 	@GetMapping
 	public String listarUsuarios(Model model) {
@@ -64,14 +63,10 @@ public class UsuarioController {
 			Usuario usuarioNuevo = new Usuario();
 			usuarioNuevo.setContraseña(contraseña);
 			usuarioNuevo.setUsuario(usuario);
-			//usuarioNuevo.setRol(roles.get(0));
-			
-			roles.forEach((rol)->{usuarioNuevo.getRoles().add(rolesRepo.findByRol(rol));});
-			
-			//usuarioNuevo.getRoles().add(rolesRepo.findByRol(rol));
+
 			
 			try {
-				usuarioServ.crearUsuario(usuarioNuevo);
+				usuarioServ.crearUsuario(usuarioNuevo, roles);
 				
 			}catch(Exception e) {
 				System.out.println(e.getMessage());

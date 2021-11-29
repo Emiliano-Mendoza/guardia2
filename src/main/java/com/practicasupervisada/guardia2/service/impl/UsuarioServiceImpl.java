@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import com.practicasupervisada.guardia2.dao.RolesRepo;
 import com.practicasupervisada.guardia2.dao.UsuarioRepo;
 
 import com.practicasupervisada.guardia2.domain.Usuario;
@@ -19,6 +19,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Autowired
 	private UsuarioRepo usuarioRepo;
+	@Autowired
+	private RolesRepo rolesRepo;
 
 		
 	@Override
@@ -45,6 +47,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Usuario findByUsuario(String us) {
 		return usuarioRepo.findByUsuario(us);
+	}
+
+	@Override
+	public Usuario crearUsuario(Usuario us, List<String> roles) {
+		String passCrip = new BCryptPasswordEncoder().encode(us.getContraseña()); 
+		
+		us.setContraseña(passCrip);
+		us.setEnabled(true);
+		roles.forEach((rol)->{us.getRoles().add(rolesRepo.findByRol(rol));});
+		
+		//System.out.println(us.getRoles().toString());
+		
+		return usuarioRepo.save(us);
 	}
 
 
