@@ -51,6 +51,8 @@ public class UsuarioController {
 	@PostMapping("/guardar")
 	public String guardar(@RequestParam(name = "usuario") String usuario,
 						  @RequestParam(name = "contraseña") String contraseña,
+						  @RequestParam(name = "nombre") String nombre,
+						  @RequestParam(name = "apellido") String apellido,
 						  @RequestParam(name = "rol") List<String> roles,
 						  RedirectAttributes atributos,
 						  Model model) {
@@ -59,11 +61,12 @@ public class UsuarioController {
 		System.out.println(roles);
 		
 		if(usuario!=null && contraseña!=null && !roles.isEmpty() &&
-				usuarioServ.findByUsuario(usuario)==null) {
+				usuarioServ.findByUsuario(usuario)==null && nombre!=null && apellido!=null) {
 			Usuario usuarioNuevo = new Usuario();
 			usuarioNuevo.setContraseña(contraseña);
 			usuarioNuevo.setUsuario(usuario);
-
+			usuarioNuevo.setNombre(nombre);
+			usuarioNuevo.setApellido(apellido);
 			
 			try {
 				usuarioServ.crearUsuario(usuarioNuevo, roles);

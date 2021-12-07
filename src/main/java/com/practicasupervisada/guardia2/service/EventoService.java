@@ -12,5 +12,5 @@ public interface EventoService {
 	public void eliminarEvento(int idEvento);
 	public Optional<Evento> findById(int idEvento);
 	public List<Evento> findAllByOrderByFechaEventoAsc();
-	
+	public Boolean existeEvento(int idEvento);
 }

@@ -26,9 +26,8 @@ public class Evento {
 	private Boolean ocurrencia;
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_UsuarioSector")
-	@JsonIgnore
-	private Usuario usuarioResponsableSector;
+	@JoinColumn(name = "ID_UsuarioSector")	
+	private Usuario usuarioSector;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
@@ -65,12 +64,12 @@ public class Evento {
 	public void setOcurrencia(Boolean ocurrencia) {
 		this.ocurrencia = ocurrencia;
 	}
-	@JsonIgnore
+	
 	public Usuario getUsuarioSector() {
-		return usuarioResponsableSector;
+		return usuarioSector;
 	}
 	public void setUsuarioSector(Usuario usuarioResponsableSector) {
-		this.usuarioResponsableSector = usuarioResponsableSector;
+		this.usuarioSector = usuarioResponsableSector;
 	}
 	@JsonIgnore
 	public Usuario getUsurioGuardia() {
@@ -83,7 +82,7 @@ public class Evento {
 	public String toString() {
 		return "Evento [idEvento=" + idEvento + ", descripcion=" + descripcion + ", fechaEvento=" + fechaEvento
 				+ ", observacionDeGuardia=" + observacionDeGuardia + ", ocurrencia=" + ocurrencia
-				+ ", usuarioResponsableSector=" + usuarioResponsableSector + ", usurioGuardia=" + usurioGuardia + "]";
+				+ ", usuarioResponsableSector=" + usuarioSector + ", usurioGuardia=" + usurioGuardia + "]";
 	}
 	
 	

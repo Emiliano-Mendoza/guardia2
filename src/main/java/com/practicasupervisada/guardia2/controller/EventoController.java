@@ -2,6 +2,7 @@ package com.practicasupervisada.guardia2.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,10 @@ public class EventoController {
 					.filter(e -> (e.getOcurrencia()==false && e.getFechaEvento().after(beforeYesterday)))
 					.collect(Collectors.toList());				
 			
+			
+			
 			model.addAttribute("listaEventos", listaEventos);
+			//model.addAttribute("listaEventos", new ArrayList<>().addAll(listaEventos));
 			
 			
 		}catch(Exception e) {
@@ -111,7 +115,7 @@ public class EventoController {
 	}
 	
 	@PostMapping("/ocurrencia/{idEvento}")
-	public String egreso(@PathVariable("idEvento") int idEvento, 
+	public String ocurrencia(@PathVariable("idEvento") int idEvento, 
 						 @RequestParam(name = "observacionGuardia") String observacionGuardia,
 						 RedirectAttributes atributos) {
 				
@@ -133,4 +137,36 @@ public class EventoController {
 		atributos.addFlashAttribute("success", "Evento registrado exitosamente!");
 		return "redirect:/views/evento";
 	}
+	
+	@PostMapping("/editar/{idEvento}")
+	public String editarEvento(@PathVariable("idEvento") int idEvento,
+							   @RequestParam(name = "descripcion") String descripcion,
+							   @RequestParam(name = "fechaEvento") String fechaEvento,
+							   RedirectAttributes atributos) {
+		
+		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		
+		try {
+			
+			if(!eventoServ.existeEvento(idEvento)) {				
+				atributos.addFlashAttribute("error", "Evento inexistente");
+				return "redirect:/views/evento/nuevo";
+			}
+			
+			Evento evento = eventoServ.findById(idEvento).orElseThrow();
+			evento.setDescripcion(descripcion);
+			
+			Date fechaAux = formatter.parse(fechaEvento);			
+			evento.setFechaEvento(fechaAux);
+			
+			eventoServ.crearEvento(evento);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		atributos.addFlashAttribute("success", "Evento editado exitosamente!");
+		return "redirect:/views/evento/nuevo";
+	}
+	
 }

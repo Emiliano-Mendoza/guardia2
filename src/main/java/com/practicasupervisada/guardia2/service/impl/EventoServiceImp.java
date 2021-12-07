@@ -42,4 +42,9 @@ public class EventoServiceImp implements EventoService {
 		return eventoRepo.findAllByOrderByFechaEventoAsc();
 	}
 
+	@Override
+	public Boolean existeEvento(int idEvento) {
+		return eventoRepo.existsById(idEvento);
+	}
+
 }

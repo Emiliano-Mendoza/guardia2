@@ -36,7 +36,7 @@
 
 		<div class="row">
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
-				<div class="card">
+				<div class="card" th:id="'div'+${ev.idEvento}">
 					<h5 class="card-header">Evento Próximo:</h5>
 					<div class="card-body">
 						<p class="card-text">
@@ -47,7 +47,20 @@
 								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
 						</p>
 
+						<p class="card-text">
+							Encargado: <span>[[${ev.usuarioSector.nombre}]]
+								[[${ev.usuarioSector.apellido}]]</span>
+						</p>
+
 					</div>
+
+					<div class="card-footer gap-2 d-md-flex justify-content-md-end">
+						<button type="button" class="btn btn-success btn-sm"
+							th:attr="onclick=|editarEvento('${ev.idEvento}','${ev.descripcion}',
+							 '${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}','${ev.usuarioSector.nombre}','${ev.usuarioSector.apellido}' )|">Editar</button>
+						<button class="btn btn-danger btn-sm">Cancelar Evento</button>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -59,7 +72,87 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script th:inline="javascript">
-		function SetDate() {
+	
+		function editarEvento(idEvento, descripcion, fechaEvento, nombre, apellido){
+									
+			let aux = '#div' + idEvento;
+			let fechaN = 'fecha' + idEvento;
+			let action = '/views/evento/editar/' + idEvento; 
+			
+			const resultado = document.querySelector(aux);
+			
+			resultado.innerHTML = `
+				<h5 class="card-header">Evento Próximo:</h5>
+				
+				<form action=${action} method="post" onsubmit="return confirm('Confimar el editado de evento?');">
+					<div class="card-body" >
+					<div class="card-text">
+						<label for="exampleInput" class="form-label">Descripción:</label>
+						<textarea class="form-control" rows="3" id="descripcion" name="descripcion"
+							required placeholder="${descripcion}"></textarea>
+					</div>
+					<div class="card-text mt-3">
+						<label for="exampleInputDate" class="form-label">Fecha
+						del Evento: </label> <input type="datetime-local" name="fechaEvento"
+						id=${fechaN} required>
+					</div>
+	
+					<p class="card-text mt-3">
+						Encargado: <span>${nombre} ${apellido}</span>
+					</p>
+	
+					</div>
+		
+					<div class="card-footer gap-2 d-md-flex justify-content-between">
+						<input type="button" class="btn btn-danger btn-sm" value="Cancelar" 
+							onclick="cancelarEditado('${idEvento}','${descripcion}','${fechaEvento}','${nombre}','${apellido}')">
+						<input type="submit" class="btn btn-primary btn-sm" value="Confirmar">
+					</div>
+				</form>
+				
+			`;
+					
+			let fechaAuxiliar = fechaEvento[6]+fechaEvento[7]+fechaEvento[8]+fechaEvento[9]+
+								'-'+fechaEvento[3]+fechaEvento[4] + 
+								'-' + fechaEvento[0]+fechaEvento[1]+ 
+								'T'+ fechaEvento[11]+fechaEvento[12]+fechaEvento[13]+fechaEvento[14]+fechaEvento[15];
+			
+			SetDate(fechaN, fechaAuxiliar);
+		}
+		
+		function cancelarEditado(idEvento, descripcion, fechaEvento, nombre, apellido){
+			let aux = '#div' + idEvento;
+			//let fechaN = 'fecha' + idEvento;
+			
+			const resultado = document.querySelector(aux);
+			
+			resultado.innerHTML = `
+				<h5 class="card-header">Evento Próximo:</h5>
+				<div class="card-body">
+					<p class="card-text">
+						Descripción: <span>${descripcion}</span>
+					</p>
+					<p class="card-text">
+						Fecha evento: <span>${fechaEvento}</span>
+					</p>
+
+					<p class="card-text">
+						Encargado: <span>${nombre} ${apellido}</span>
+					</p>
+
+				</div>
+
+				<div class="card-footer gap-2 d-md-flex justify-content-md-end">
+					<button type="button" class="btn btn-success btn-sm"
+						onclick="editarEvento('${idEvento}','${descripcion}','${fechaEvento}','${nombre}','${apellido}')">Editar</button>
+						<button class="btn btn-danger btn-sm">Cancelar Evento</button>
+				</div>
+				
+			`;
+		}
+		
+	
+		function SetDate(dateField, currentDate) {
 
 			const today = new Date()
 			let aux = '';
@@ -76,13 +169,18 @@
 			}
 
 			aux = yyyy + '-' + mm + '-' + dd + 'T00:00';
-
-			document.getElementById('fechaEvento').setAttribute("min", aux);
-			document.getElementById('fechaEvento').setAttribute("value", aux);
-
+			
+			if(currentDate==null){
+				document.getElementById(dateField).setAttribute("min", aux);
+				document.getElementById(dateField).setAttribute("value", aux);
+			}else{
+				document.getElementById(dateField).setAttribute("min", aux);
+				document.getElementById(dateField).setAttribute("value", currentDate);
+			}
+			
 		}
 
-		SetDate();
+		SetDate('fechaEvento', null);
 	</script>
 
 </body>

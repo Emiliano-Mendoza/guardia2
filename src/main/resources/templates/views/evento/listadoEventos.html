@@ -23,7 +23,11 @@
 							Fecha evento: <span
 								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
 						</p>
-
+						<p class="card-text">
+							Encargado: <span >[[${ev.usuarioSector.nombre}]] [[${ev.usuarioSector.apellido}]]</span>
+							
+						</p>
+												
 						<form method="post"
 							th:action="@{/views/evento/ocurrencia/} + ${ev.idEvento}"
 							onsubmit="return confirm('Confirmar ocurrencia del evento?');">
@@ -51,6 +55,8 @@
 
 	<script th:inline="javascript">
 		
+
+	
 	</script>
 </body>
 </html>

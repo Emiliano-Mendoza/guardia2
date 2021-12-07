@@ -35,6 +35,9 @@ public class Usuario {
 	
 	private Boolean enabled;
 	
+	private String nombre;
+	private String apellido;
+	
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_roles",
@@ -71,13 +74,25 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", contraseña=" + contraseña + ", enabled="
-				+ enabled + "]";
+				+ enabled + ", nombre=" + nombre + ", apellido=" + apellido + "]";
 	}
 	public Set<Roles> getRoles() {
 		return roles;
 	}
 	public void setRoles(Set<Roles> roles) {
 		this.roles = roles;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getApellido() {
+		return apellido;
+	}
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 	
 	
