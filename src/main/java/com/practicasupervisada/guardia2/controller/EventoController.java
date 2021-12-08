@@ -65,6 +65,7 @@ public class EventoController {
 			Evento evento = new Evento();
 
 			List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc();
+		
 			
 			Date today = new Date();
 			Date beforeYesterday = new Date(today.getTime() - 2*(1000 * 60 * 60 * 24));
@@ -77,8 +78,20 @@ public class EventoController {
 							&& e.getUsuarioSector().getUsuario().equals(auth.getName())))
 					.collect(Collectors.toList());
 			
+			//ordeno la lista para dejar a los eventos cancelados al final
+			List<Evento> listaEventosCancelados = listaEventos.stream()
+					.filter(e -> (e.getCancelado()==true))
+					.collect(Collectors.toList());
+			listaEventos = listaEventos.stream()
+					.filter(e -> (e.getCancelado()==false))
+					.collect(Collectors.toList());
+			
+			List<Evento> listaOrdenada = new ArrayList<>();
+			listaOrdenada.addAll(listaEventos);
+			listaOrdenada.addAll(listaEventosCancelados);
+			
 			model.addAttribute("evento", evento);
-			model.addAttribute("listaEventos", listaEventos);
+			model.addAttribute("listaEventos", listaOrdenada);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

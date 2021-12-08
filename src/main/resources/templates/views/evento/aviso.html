@@ -38,8 +38,11 @@
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
 				<div class="card" th:id="'div'+${ev.idEvento}"
 					th:style="${ev.cancelado} == TRUE ? 'background-color: #ff8080' : ''">
-					<h5 class="card-header" th:text="${ev.cancelado} ? 'Evento Cancelado': 'Evento Próximo'">Evento Próximo</h5>
-					<div class="card-body">
+					<h5 class="card-header" th:text="${ev.cancelado} ? 'Evento Cancelado': 'Evento Próximo'"
+						></h5>
+					<div class="card-body"
+						th:style="${ev.cancelado} == TRUE ? 'background-color: #ffb3b3' : ''">
+						
 						<p class="card-text">
 							Descripción: <span th:text="${ev.descripcion}"></span>
 						</p>
