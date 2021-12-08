@@ -36,14 +36,15 @@
 
 		<div class="row">
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
-				<div class="card" th:id="'div'+${ev.idEvento}">
-					<h5 class="card-header">Evento Próximo:</h5>
+				<div class="card" th:id="'div'+${ev.idEvento}"
+					th:style="${ev.cancelado} == TRUE ? 'background-color: #ff8080' : ''">
+					<h5 class="card-header" th:text="${ev.cancelado} ? 'Evento Cancelado': 'Evento Próximo'">Evento Próximo</h5>
 					<div class="card-body">
 						<p class="card-text">
 							Descripción: <span th:text="${ev.descripcion}"></span>
 						</p>
 						<p class="card-text">
-							Fecha evento: <span
+							Fecha Evento: <span
 								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
 						</p>
 
@@ -52,13 +53,23 @@
 								[[${ev.usuarioSector.apellido}]]</span>
 						</p>
 
+						<p class="card-text">
+							<span th:text="${ev.cancelado} ? 'Motivo Cancelación: ' : ''"></span> 
+							<span th:text="${ev.cancelado} ? ${ev.descripcionCancelacion} : ''"></span>
+						</p>
+
 					</div>
 
 					<div class="card-footer gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-success btn-sm"
-							th:attr="onclick=|editarEvento('${ev.idEvento}','${ev.descripcion}',
-							 '${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}','${ev.usuarioSector.nombre}','${ev.usuarioSector.apellido}' )|">Editar</button>
-						<button class="btn btn-danger btn-sm">Cancelar Evento</button>
+						<input th:type="${ev.cancelado} ? hidden : button"
+							class="btn btn-success btn-sm"
+							th:attr="onclick=|editarEvento('${ev.idEvento}',`${ev.descripcion}`,
+							 '${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}','${ev.usuarioSector.nombre}','${ev.usuarioSector.apellido}' )|"
+							value="Editar" /> <input class="btn btn-secondary btn-sm"
+							th:type="${ev.cancelado} ? hidden : button"
+							th:attr="onclick=|CancelarEvento('${ev.idEvento}',`${ev.descripcion}`,
+							 '${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}','${ev.usuarioSector.nombre}','${ev.usuarioSector.apellido}' )|"
+							value="Cancelar Evento" />
 					</div>
 
 				</div>
@@ -72,7 +83,11 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script th:inline="javascript">
-	
+		// th:text="${ev.cancelado} ? '' : ${ev.descripcionCancelacion}"
+				
+		var personal = /*[[${listaEventos}]]*/ 'default';
+		console.log(personal);
+				
 		function editarEvento(idEvento, descripcion, fechaEvento, nombre, apellido){
 									
 			let aux = '#div' + idEvento;
@@ -105,7 +120,7 @@
 		
 					<div class="card-footer gap-2 d-md-flex justify-content-between">
 						<input type="button" class="btn btn-danger btn-sm" value="Cancelar" 
-							onclick="cancelarEditado('${idEvento}','${descripcion}','${fechaEvento}','${nombre}','${apellido}')">
+							onclick="cancelarEditado('${idEvento}',\`${descripcion}\`,'${fechaEvento}','${nombre}','${apellido}')">
 						<input type="submit" class="btn btn-primary btn-sm" value="Confirmar">
 					</div>
 				</form>
@@ -122,7 +137,6 @@
 		
 		function cancelarEditado(idEvento, descripcion, fechaEvento, nombre, apellido){
 			let aux = '#div' + idEvento;
-			//let fechaN = 'fecha' + idEvento;
 			
 			const resultado = document.querySelector(aux);
 			
@@ -139,19 +153,60 @@
 					<p class="card-text">
 						Encargado: <span>${nombre} ${apellido}</span>
 					</p>
-
+					
 				</div>
 
 				<div class="card-footer gap-2 d-md-flex justify-content-md-end">
 					<button type="button" class="btn btn-success btn-sm"
-						onclick="editarEvento('${idEvento}','${descripcion}','${fechaEvento}','${nombre}','${apellido}')">Editar</button>
-						<button class="btn btn-danger btn-sm">Cancelar Evento</button>
+						onclick="editarEvento('${idEvento}',\`${descripcion}\`,'${fechaEvento}','${nombre}','${apellido}')">Editar</button>
+						<button class="btn btn-secondary btn-sm"
+							onclick="CancelarEvento('${idEvento}',\`${descripcion}\`,'${fechaEvento}','${nombre}','${apellido}')">Cancelar Evento</button>
 				</div>
 				
 			`;
 		}
 		
+		function CancelarEvento(idEvento, descripcion, fechaEvento, nombre, apellido){
+			let aux = '#div' + idEvento;
+			let fechaN = 'fecha' + idEvento;
+			let action = '/views/evento/cancelar/' + idEvento; 
+			
+			const resultado = document.querySelector(aux);
+			
+			resultado.innerHTML = `
+				<h5 class="card-header">Evento Próximo:</h5>
+			
+				<form action=${action} method="post" onsubmit="return confirm('Confimar la cancelación del evento?');">
+					<div class="card-body">
+						<p class="card-text">
+							Descripción: <span>${descripcion}</span>
+						</p>
+						<p class="card-text">
+							Fecha evento: <span>${fechaEvento}</span>
+						</p>
 	
+						<p class="card-text">
+							Encargado: <span>${nombre} ${apellido}</span>
+						</p>
+						
+						<div class="card-text">
+						<label for="exampleInput" class="form-label">Motivo de la cancelación:</label>
+							<textarea class="form-control" rows="3" id="descripcionCancelacion" name="descripcionCancelacion"
+								required ></textarea>
+						</div>
+						
+					</div>
+	
+					<div class="card-footer gap-2 d-md-flex justify-content-between">
+						<button type="button" class="btn btn-secondary btn-sm"
+							onclick="cancelarEditado('${idEvento}',\`${descripcion}\`,'${fechaEvento}','${nombre}','${apellido}')">Volver</button>
+							<button class="btn btn-secondary btn-sm">Confirmar</button>
+					</div>
+				</form>		
+			`;
+		}
+		
+		
 		function SetDate(dateField, currentDate) {
 
 			const today = new Date()

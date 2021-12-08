@@ -24,6 +24,8 @@ public class Evento {
 	private Date fechaEvento;
 	private String observacionDeGuardia;
 	private Boolean ocurrencia;
+	private Boolean cancelado;
+	private String descripcionCancelacion;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioSector")	
@@ -78,13 +80,28 @@ public class Evento {
 	public void setUsurioGuardia(Usuario usurioGuardia) {
 		this.usurioGuardia = usurioGuardia;
 	}
+
+	public Boolean getCancelado() {
+		return cancelado;
+	}
+	public void setCancelado(Boolean cancelado) {
+		this.cancelado = cancelado;
+	}
+    
+	
+	
+	public String getDescripcionCancelacion() {
+		return descripcionCancelacion;
+	}
+	public void setDescripcionCancelacion(String descripcionCancelacion) {
+		this.descripcionCancelacion = descripcionCancelacion;
+	}
 	@Override
 	public String toString() {
 		return "Evento [idEvento=" + idEvento + ", descripcion=" + descripcion + ", fechaEvento=" + fechaEvento
-				+ ", observacionDeGuardia=" + observacionDeGuardia + ", ocurrencia=" + ocurrencia
-				+ ", usuarioResponsableSector=" + usuarioSector + ", usurioGuardia=" + usurioGuardia + "]";
+				+ ", observacionDeGuardia=" + observacionDeGuardia + ", ocurrencia=" + ocurrencia + ", cancelado="
+				+ cancelado + ", descripcionCancelacion=" + descripcionCancelacion + ", usuarioSector=" + usuarioSector
+				+ ", usurioGuardia=" + usurioGuardia + "]";
 	}
-	
-	
-	
+		
 }

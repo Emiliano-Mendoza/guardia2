@@ -42,7 +42,7 @@ public class EventoController {
 			Date beforeYesterday = new Date(today.getTime() - 2*(1000 * 60 * 60 * 24));	
 			
 			listaEventos = listaEventos.stream()
-					.filter(e -> (e.getOcurrencia()==false && e.getFechaEvento().after(beforeYesterday)))
+					.filter(e -> (e.getOcurrencia()==false && e.getCancelado()==false && e.getFechaEvento().after(beforeYesterday)))
 					.collect(Collectors.toList());				
 			
 			
@@ -92,7 +92,7 @@ public class EventoController {
 								   RedirectAttributes atributos){
 		
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-		
+				
 		try {
 			Date fechaAux = formatter.parse(fechaEvento);
 			
@@ -100,6 +100,7 @@ public class EventoController {
 			evento.setDescripcion(desc);
 			evento.setFechaEvento(fechaAux);
 			evento.setOcurrencia(false);
+			evento.setCancelado(false);
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			evento.setUsuarioSector(usuarioServ.findByUsuario(auth.getName()));
@@ -166,6 +167,34 @@ public class EventoController {
 		}
 		
 		atributos.addFlashAttribute("success", "Evento editado exitosamente!");
+		return "redirect:/views/evento/nuevo";
+	}
+	
+	@PostMapping("/cancelar/{idEvento}")
+	public String editarEvento(@PathVariable("idEvento") int idEvento,
+							   @RequestParam(name = "descripcionCancelacion") String descripcionCancelacion,
+							   RedirectAttributes atributos) {		
+		
+		try {
+			
+			if(!eventoServ.existeEvento(idEvento)) {				
+				atributos.addFlashAttribute("error", "Evento inexistente");
+				return "redirect:/views/evento/nuevo";
+			}
+			
+			Evento evento = eventoServ.findById(idEvento).orElseThrow();
+			
+			evento.setDescripcionCancelacion(descripcionCancelacion);
+			evento.setCancelado(true);
+			evento.setOcurrencia(false);
+			
+			eventoServ.crearEvento(evento);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		atributos.addFlashAttribute("success", "Evento cancelado exitosamente!");
 		return "redirect:/views/evento/nuevo";
 	}
 	
