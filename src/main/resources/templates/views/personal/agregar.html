@@ -16,49 +16,87 @@
 				<div class="col-md-6">
 
 					<form th:object="${personal}"
-						th:action="@{/views/personal/guardar}" method="post" enctype="multipart/form-data">
-						<div class="form-group ">
-							<label for="nroLegajo">Número de Legajo:</label> <input type="number"
-								class="form-control" id="nroLegajo"
-								placeholder="Número de legajo" th:field="*{nroLegajo}">
-						</div>
-						<small class="form-text text-danger"
-							th:if="${#fields.hasErrors('nroLegajo')}"
-							th:errors="*{nroLegajo}"></small>
+						th:action="@{/views/personal/guardar}" method="post"
+						enctype="multipart/form-data">
 
-						<div class="form-group mt-3 ">
-							<label for="nombre">Nombre:</label> <input type="text"
-								class="form-control" id="nombre"
-								placeholder="Nombre del empleado" th:field="*{nombre}">
-						</div>
-						<small class="form-text text-danger"
-							th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+						<div class="card-body row">
+							<div class="col-md-6">
+								<div class="form-group ">
+									<label for="nroLegajo">Número de Legajo:</label> <input
+										type="number" class="form-control" id="nroLegajo"
+										placeholder="Número de legajo" th:field="*{nroLegajo}">
+								</div>
+								<small class="form-text text-danger"
+									th:if="${#fields.hasErrors('nroLegajo')}"
+									th:errors="*{nroLegajo}"></small>
+							</div>
 
-						<div class="form-group mt-3 ">
-							<label for="apellido">Apellido:</label> <input type="text"
-								class="form-control" id="apellido"
-								placeholder="Apellido del empleado" th:field="*{apellido}">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="sector">Sector:</label> <select class="form-select"
+										th:field="*{sector}" id="sector">
+										<option value="Administrativo" selected>Administrativo</option>
+										<option value="Almacenes">Almacenes</option>
+										<option value="Ayud. Gral.">Ayud. Gral.</option>
+										<option value="Descartonado">Descartonado</option>
+										<option value="Enfardado">Enfardado</option>
+										<option value="Impresíon">Impresión</option>
+										<option value="Informática">Informática</option>
+										<option value="Mantenimiento">Mantenimiento</option>
+										<option value="Mantenimiento Electrico">Mantenimiento
+											Electrico</option>
+										<option value="Mantenimiento Mec">Mantenimiento Mec</option>
+										<option value="Movimientos Internos">Movimientos
+											Internos</option>
+										<option value="Oficina Tecnica">Oficina Tecnica</option>
+										<option value="Pegadora">Pegadora</option>
+										<option value="Preprensa">Preprensa</option>
+										<option value="Produccion">Produccion</option>
+										<option value="Tintas">Tintas</option>
+										<option value="Troquelado">Troquelado</option>
+										<option value="Otro">Otro</option>
+									</select>
+								</div>
+							</div>
 						</div>
-						<small class="form-text text-danger"
-							th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
 
-						<div class="form-group mt-3 ">
-							<label for="sector">Sector:</label> <input type="text"
-								class="form-control" id="sector" placeholder="Sector de trabajo"
-								th:field="*{sector}">
+
+						<div class="card-body row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="nombre">Nombre:</label> <input type="text"
+										class="form-control" id="nombre"
+										placeholder="Nombre del empleado" name="nombre"
+										th:field="*{nombre}">
+								</div>
+								<small class="form-text text-danger"
+									th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="apellido">Apellido:</label> <input type="text"
+										class="form-control" id="apellido"
+										placeholder="Apellido del empleado" name="apellido"
+										th:field="*{apellido}">
+								</div>
+								<small class="form-text text-danger"
+									th:if="${#fields.hasErrors('apellido')}"
+									th:errors="*{apellido}"></small>
+							</div>
 						</div>
-						<small class="form-text text-danger"
-							th:if="${#fields.hasErrors('sector')}" th:errors="*{sector}"></small>
 
-					<!--  
-						<div class="form-group mt-3 col-md-6">
-							<label for="exampleFormControlFile1" style="display: block;">Cargar
-								foto del empleado:</label> <input type="file" name="image"
-								class="form-control-file mt-2" id="exampleFormControlFile1">
+						<div class="card-body row">
+							<div class="form-group col-md-6 ">
+								<label for="exampleFormControlFile1" style="display: block;">Cargar
+									foto del empleado:</label> <input type="file" name="image"
+									class="form-control-file mt-2" id="exampleFormControlFile1">
+							</div>
 						</div>
-					 -->	
 
-						<div class="card-footer bg-dark mt-3">
+
+
+						<div class="card-footer bg-dark mt-3 gap-2 d-md-flex justify-content-md-end">
 							<input type="submit" class="btn btn-primary btn-sm"
 								value="Guardar" />
 						</div>
@@ -68,12 +106,12 @@
 
 				</div>
 				<div class="col-md-6">
-					<img src="/images/nueva-entidad.jpg" class="" 
-					style="display: block;margin: 0 auto;width: 300px"> 
+					<img src="/images/nueva-entidad.jpg" class=""
+						style="display: block; margin: 0 auto; width: 300px">
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 
 

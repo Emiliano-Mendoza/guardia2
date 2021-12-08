@@ -21,7 +21,7 @@ INSERT INTO public.personal VALUES(8,'CHA','JORGE ALBERTO','Mantenimiento Mec');
 INSERT INTO public.personal VALUES(7,'CHIOZZA','OSVALDO DANIEL','Impresión');
 INSERT INTO public.personal VALUES(80,'COSTANZO','RUBEN ARISTIDES','Mantenimiento Mec');
 INSERT INTO public.personal VALUES(83,'DE MANAS','ANDRES','Produccion');
-INSERT INTO public.personal VALUES(942,'DE SANCTIS','MAXIMILIANO','`Descartonaado');
+INSERT INTO public.personal VALUES(942,'DE SANCTIS','MAXIMILIANO','Descartonado');
 INSERT INTO public.personal VALUES(40,'DIAZ','SERGIO MIGUEL','Informática');
 INSERT INTO public.personal VALUES(67,'DIAZ','HECTOR FEDERICO','Descartonado');
 INSERT INTO public.personal VALUES(987,'ELGOTAS ','PABLO GABRIEL','Pegadora');
