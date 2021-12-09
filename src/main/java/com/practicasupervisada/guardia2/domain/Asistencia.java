@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class Asistencia {
 	
     @OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Transito> transito;
+    private List<Transito> transito = new ArrayList<>();
 	
 	@JsonIgnore
 	public Usuario getUsuarioIngreso() {
@@ -105,6 +106,12 @@ public class Asistencia {
 		return "Asistencia [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
 				+ ", enTransito=" + enTransito + ", usuarioIngreso=" + usuarioIngreso + ", usuarioEgreso="
 				+ usuarioEgreso + ", personal=" + personal + ", proveedor=" + proveedor + "]";
+	}
+	public List<Transito> getTransito() {
+		return transito;
+	}
+	public void setTransito(List<Transito> transito) {
+		this.transito = transito;
 	}
 
 	

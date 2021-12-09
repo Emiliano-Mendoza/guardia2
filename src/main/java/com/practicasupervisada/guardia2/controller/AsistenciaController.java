@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
+import com.practicasupervisada.guardia2.domain.Transito;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
@@ -128,19 +129,57 @@ public class AsistenciaController {
 		try {
 			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
 			
-			asis.setSalida(new Date());
-			asis.setEnTransito(false);
+			Transito transito = new Transito();
+			transito.setFechaSalidaTransitoria(new Date());
+			transito.setAsistencia(asis);
+			transito.setPersonal(asis.getPersonal());
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
+			transito.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
+			
+			asis.getTransito().add(transito);
+			asis.setEnTransito(true);
 			
 			asistenciaServ.crearAsistencia(asis);
+
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
-		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
+		atributos.addFlashAttribute("success", "Egreso transitorio registrado!");
+		return "redirect:/views/asistencia/personal-ingresado";
+	}
+	
+	@PostMapping("/reingreso-transitorio/{idAsistencia}")
+	public String reIngresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
+						RedirectAttributes atributos) {
+			
+		try {
+			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
+			
+			Transito transito = asis.getTransito().
+					stream().
+					filter(t -> (t.getFechaReingreso()==null && t.getUsuarioIngreso()==null)).
+					findFirst().orElseThrow();
+			
+			transito.setFechaReingreso(new Date());
+			transito.setPersonal(asis.getPersonal());
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			transito.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
+			
+
+			asis.setEnTransito(false);
+			
+			asistenciaServ.crearAsistencia(asis);
+
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Reingreso transitorio registrado!");
 		return "redirect:/views/asistencia/personal-ingresado";
 	}
 }

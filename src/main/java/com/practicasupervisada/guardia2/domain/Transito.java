@@ -97,6 +97,14 @@ public class Transito {
 	public void setUsuarioEgreso(Usuario usuarioEgreso) {
 		this.usuarioEgreso = usuarioEgreso;
 	}
+
+	public Asistencia getAsistencia() {
+		return asistencia;
+	}
+
+	public void setAsistencia(Asistencia asistencia) {
+		this.asistencia = asistencia;
+	}
 	
 	
 	

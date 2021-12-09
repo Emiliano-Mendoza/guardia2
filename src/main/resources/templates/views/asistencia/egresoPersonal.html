@@ -47,8 +47,7 @@
 						let apellido = aut.personal.apellido.toLowerCase();
 						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
-							
-							let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
+														
 							let imagenEmpleado= `/images/${aut.personal.nroLegajo}.jpg` ;
 							let idFoo= `foo${aut.personal.nroLegajo}`;
 						
@@ -60,50 +59,121 @@
 				              [d.getHours(),
 				               d.getMinutes()].join(':');
 							
-							resultado.innerHTML += `
-								<div class="col-sm-6 mt-3">
-								<div class="card text-dark bg-light mb-3" >
-								<div class="card-header bg-dark text-white">Registro de Egreso
-								de la Planta</div>
-								<div class="row g-0 ">
-									<div class="col-md-4">
-										<img src=${imagenEmpleado}
-											id=${idFoo}
-											style="max-width: 100%; height: auto;"
-											onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
-									</div>
-									<div class="card-body col-md-8">
-										<h5 class="card-title">Registrar egreso del empleado:</h5>
-										<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
-											${aut.personal.apellido}</p>
-										<p class="card-text">Número de legajo: ${aut.personal.nroLegajo}</p>
-										<p class="card-text mt-3">
-											Sector de trabajo: ${aut.personal.sector}
-										</p>
-										<p class="card-text">
-											Fecha y hora del ingreso: ${dformat}
-										</p>
-					
-									</div>
-								</div>
+							if(!aut.enTransito){
 								
-								<form 
+								let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
+								let urlEgresoTransitorio= '/views/asistencia/egreso-transitorio/' + aut.idAsistencia;
+								
+								resultado.innerHTML += `
+									<div class="col-sm-6 mt-3">
+									<div class="card text-dark bg-light mb-3" >
+									<div class="card-header bg-dark text-white">Registro de Egreso
+									de la Planta</div>
+									<div class="row g-0 ">
+										<div class="col-md-4">
+											<img src=${imagenEmpleado}
+												id=${idFoo}
+												style="max-width: 100%; height: auto;"
+												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+										</div>
+										<div class="card-body col-md-8">
+											<h5 class="card-title">Empleado ingresado:</h5>
+											<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
+												${aut.personal.apellido}</p>
+											<p class="card-text">Número de legajo: ${aut.personal.nroLegajo}</p>
+											<p class="card-text mt-3">
+												Sector de trabajo: ${aut.personal.sector}
+											</p>
+											<p class="card-text">
+												Fecha y hora del ingreso: ${dformat}
+											</p>
+						
+										</div>
+									</div>
+									
+									<div
+									class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+									<form 
+										action=${urlEgresoTransitorio}
+										object=${aut}
+										method="post"  
+											onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+										
+											<input type="submit" class="btn btn-secondary btn-sm"
+												value="Egreso Transitorio" />
+										
+									</form>
+									<form 
 									action=${urlEgreso}
 									object=${aut}
 									method="post"  
 										onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
-									<div
-										class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
-										<input type="button" class="btn btn-secondary btn-sm"
-											value="Egreso Transitorio" />
+									
 										<input type="submit" class="btn btn-primary btn-sm"
 											value="Registrar Egreso" />
+									
+									</form>
+									
 									</div>
-								</form>
+									
+								</div>
+								</div>
+								`;
 								
-							</div>
-							</div>
-							`;
+								//------------------
+								
+							}else{
+								
+								let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idAsistencia;								
+								
+								resultado.innerHTML += `
+									<div class="col-sm-6 mt-3">
+									<div class="card text-dark bg-light mb-3" >
+									<div class="card-header bg-dark text-white">Registro de Egreso
+									de la Planta</div>
+									<div class="row g-0 ">
+										<div class="col-md-4">
+											<img src=${imagenEmpleado}
+												id=${idFoo}
+												style="max-width: 100%; height: auto;"
+												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+										</div>
+										<div class="card-body col-md-8">
+											<h5 class="card-title">Empleado en tránsito:</h5>
+											<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
+												${aut.personal.apellido}</p>
+											<p class="card-text">Número de legajo: ${aut.personal.nroLegajo}</p>
+											<p class="card-text mt-3">
+												Sector de trabajo: ${aut.personal.sector}
+											</p>
+											<p class="card-text">
+												Fecha y hora del ingreso: ${dformat}
+											</p>
+						
+										</div>
+									</div>
+									
+									<div
+									class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+									<form 
+										action=${urlReingresoTransitorio}
+										object=${aut}
+										method="post"  
+											onsubmit="return confirm('Confirmar reingreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+										
+											<input type="submit" class="btn btn-secondary btn-sm"
+												value="Reingreso" />
+										
+									</form>
+									
+									</div>
+									
+								</div>
+								</div>
+								`;
+							}
+							
+							
 						}
 					}
 			}			
