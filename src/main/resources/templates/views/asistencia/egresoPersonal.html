@@ -31,6 +31,8 @@
 	<script th:inline="javascript">
 		
 		var asistencias = /*[[${asistencias}]]*/ 'default';
+		var listaVehiculos = /*[[${listaVehiculos}]]*/ 'default';
+		console.log(listaVehiculos);
 		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
@@ -67,6 +69,7 @@
 								let idForm = 'idForm' + aut.personal.nroLegajo;
 								let idButtonEgreso = 'idButtonEgreso' + aut.personal.nroLegajo;
 								let idCancelarButton = 'idCancelarButton' + aut.personal.nroLegajo;
+								let idConfirmarButton = 'idConfirmarButton' + aut.personal.nroLegajo;
 								let idEgresoTransitorio = 'idEgresoTransitorio' + aut.personal.nroLegajo;
 
 								
@@ -115,12 +118,13 @@
 											hidden>Cancelar</button>
 										
 											<button type="button" class="btn btn-secondary btn-sm" 
-											onclick="mostrarListaVehiculos('${idDiv}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}')"		
-											>Transito</button>
+											onclick="mostrarListaVehiculos('${idDiv}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+											id=${idEgresoTransitorio}
+											>Egreso Transitorio</button>
 										
 											<input type="submit" class="btn btn-secondary btn-sm"
-											    id=${idEgresoTransitorio} hidden
-												value="Egreso Transitorio" />
+												id=${idConfirmarButton} hidden
+												value="Confirmar" />
 												
 									</form>
 									<form 
@@ -141,8 +145,7 @@
 								</div>
 								`;
 								
-								//------------------
-								
+								//------------------	
 							}else{
 								
 								let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idAsistencia;								
@@ -200,25 +203,29 @@
 			}			
 		}
 		
-		function mostrarListaVehiculos(idDiv, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio){
+		function mostrarListaVehiculos(idDiv, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio, idConfirmarButton){
 						
-			const listaVehiculos = document.getElementById(idDiv);
+			const divVehiculos = document.getElementById(idDiv);
 			document.getElementById(idButtonEgreso).hidden = true;
 			document.getElementById(idCancelarButton).hidden = false;
-			document.getElementById(idEgresoTransitorio).hidden = false;
+			document.getElementById(idEgresoTransitorio).hidden = true;
+			document.getElementById(idConfirmarButton).hidden = false;
 			
-			listaVehiculos.innerHTML = `
+			idSelect = idDiv +'111';
+			
+			divVehiculos.innerHTML = `
 				<label>Vehiculo a utilizar:</label>
-				<select name="vehiculo" form=${idForm} class="form-select mt-2">
-				  <option value="value1">Value 1</option>
-				  <option value="value2">Value 2</option>
-				  <option value="value3">Value 3</option>
+				<select name="vehiculo" form=${idForm} class="form-select mt-2" id=${idSelect} forEach>
+				<option value="-1">Sin vehiculo</option>
 				</select>
-			`;			
+			`;
+			
+			const mySelect = document.getElementById(idSelect);
+			
+			listaVehiculos.forEach(v => mySelect.innerHTML+=`<option value=${v.idVehiculo}>${v.marca} ${v.modelo} - Patente: ${v.patente}</option>`);
+					
 		}
-		
-		
-		
+				
 		formulario.addEventListener('keyup', function(event) {
 		    event.preventDefault();
 		    if (event.keyCode === 13) {

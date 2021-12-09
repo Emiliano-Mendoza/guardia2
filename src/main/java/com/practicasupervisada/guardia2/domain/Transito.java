@@ -109,6 +109,14 @@ public class Transito {
 	public void setAsistencia(Asistencia asistencia) {
 		this.asistencia = asistencia;
 	}
+
+	public Vehiculo getVehiculo() {
+		return vehiculo;
+	}
+
+	public void setVehiculo(Vehiculo vehiculo) {
+		this.vehiculo = vehiculo;
+	}
 	
 	
 	

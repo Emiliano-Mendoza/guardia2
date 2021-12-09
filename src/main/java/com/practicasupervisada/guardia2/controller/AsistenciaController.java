@@ -19,9 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.Transito;
+import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
+import com.practicasupervisada.guardia2.service.VehiculoService;
 
 @Controller
 @RequestMapping("/views/asistencia")
@@ -35,6 +37,9 @@ public class AsistenciaController {
 	
 	@Autowired
 	private UsuarioService usuarioServ;
+	
+	@Autowired
+	private VehiculoService vehiculoServ;
 	
 	@GetMapping
 	public String index() {
@@ -91,7 +96,10 @@ public class AsistenciaController {
 											.filter(a -> a.getSalida() == null)
 											.collect(Collectors.toList());
 			
+			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
+			
 			model.addAttribute("asistencias", AsisSinEgreso);
+			model.addAttribute("listaVehiculos", listaVehiculos);
 			
 		}catch(Exception e) {
 			return "home";
@@ -125,15 +133,22 @@ public class AsistenciaController {
 	
 	@PostMapping("/egreso-transitorio/{idAsistencia}")
 	public String egresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
-						@RequestParam(name = "vehiculo") String vehiculo,
+						@RequestParam(name = "vehiculo") int idVehiculo,
 						RedirectAttributes atributos) {
 		
-		System.out.println(vehiculo);
+		System.out.println(idVehiculo);
 			
 		try {
 			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
 			
 			Transito transito = new Transito();
+			
+			if(idVehiculo != -1) {
+				Vehiculo vehiculo = vehiculoServ.findById(idVehiculo).orElseThrow();
+				transito.setVehiculo(vehiculo);				
+			}			
+
+			
 			transito.setFechaSalidaTransitoria(new Date());
 			transito.setAsistencia(asis);
 			transito.setPersonal(asis.getPersonal());
