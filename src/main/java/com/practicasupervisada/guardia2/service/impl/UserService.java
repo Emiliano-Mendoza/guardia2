@@ -34,10 +34,6 @@ public class UserService implements UserDetailsService {
 		
 		us.getRoles().forEach(rol -> {roles.add(new SimpleGrantedAuthority("ROLE_" + rol.getRol()));});
 		
-		//roles.add(new SimpleGrantedAuthority("ROLE_" + us.getRol()));
-		//roles.add(new SimpleGrantedAuthority(us.getRol()));
-		System.out.println(roles.toString());
-		
 		UserDetails userDet = new User(us.getUsuario(), us.getContraseña(), roles);
 		
 		return userDet;

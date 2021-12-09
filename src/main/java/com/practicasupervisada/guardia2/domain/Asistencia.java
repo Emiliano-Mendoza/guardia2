@@ -1,16 +1,20 @@
 package com.practicasupervisada.guardia2.domain;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="Asistencia")
@@ -41,9 +45,9 @@ public class Asistencia {
 	@JoinColumn(name = "id_Proveedor")
 	private Proveedor proveedor;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_Transporte")
-	private Transporte transporte;
+    @OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Transito> transito;
 	
 	@JsonIgnore
 	public Usuario getUsuarioIngreso() {
@@ -70,12 +74,6 @@ public class Asistencia {
 	}
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
-	}
-	public Transporte getTransporte() {
-		return transporte;
-	}
-	public void setTransporte(Transporte transporte) {
-		this.transporte = transporte;
 	}
 	
 	public int getIdAsistencia() {
@@ -106,8 +104,7 @@ public class Asistencia {
 	public String toString() {
 		return "Asistencia [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
 				+ ", enTransito=" + enTransito + ", usuarioIngreso=" + usuarioIngreso + ", usuarioEgreso="
-				+ usuarioEgreso + ", personal=" + personal + ", proveedor=" + proveedor + ", transporte=" + transporte
-				+ "]";
+				+ usuarioEgreso + ", personal=" + personal + ", proveedor=" + proveedor + "]";
 	}
 
 	

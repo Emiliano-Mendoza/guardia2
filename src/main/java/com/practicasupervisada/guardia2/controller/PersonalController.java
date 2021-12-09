@@ -109,8 +109,7 @@ public class PersonalController {
 			
 			return "/views/personal/agregar";
 			
-		}
-		
+		}	
 		
 		try {		
 			personalServ.crearPersonal(personal);

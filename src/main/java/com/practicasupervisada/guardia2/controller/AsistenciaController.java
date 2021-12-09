@@ -120,4 +120,27 @@ public class AsistenciaController {
 		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
 		return "redirect:/views/asistencia/personal-ingresado";
 	}
+	
+	@PostMapping("/egreso-transitorio/{idAsistencia}")
+	public String egresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
+						RedirectAttributes atributos) {
+			
+		try {
+			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
+			
+			asis.setSalida(new Date());
+			asis.setEnTransito(false);
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
+			
+			asistenciaServ.crearAsistencia(asis);
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
+		return "redirect:/views/asistencia/personal-ingresado";
+	}
 }

@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Vehiculo")
-public class Transporte{
+public class Vehiculo{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,6 @@ public class Transporte{
 	private String marca;
 	private String modelo;
 	
-	public Transporte(String patente, String marca, String modelo) {
-		super();
-		this.patente = patente;
-		this.marca = marca;
-		this.modelo = modelo;
-	}
 	
 	public String getPatente() {
 		return patente;
@@ -50,8 +44,11 @@ public class Transporte{
 	public void setIdVehiculo(int idVehiculo) {
 		this.idVehiculo = idVehiculo;
 	}
-
-
+	@Override
+	public String toString() {
+		return "Vehiculo [idVehiculo=" + idVehiculo + ", patente=" + patente + ", marca=" + marca + ", modelo=" + modelo
+				+ "]";
+	}
 	
 	
 }

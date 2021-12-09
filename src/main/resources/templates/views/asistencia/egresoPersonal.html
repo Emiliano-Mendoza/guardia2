@@ -8,57 +8,20 @@
 
 
 	<div class="container mt-3">
-
-		<div class="row">
-
-			<div class="col-sm-6 mt-3" th:each="asis:${asistencias}">
-				<div class="card-header bg-dark text-white">Registro de Egreso
-					de la Planta</div>
-				<div class="row g-0 ">
-					<div class="col-md-4" id="imagen">
-						<img th:src="@{'/images/' + ${asis.personal.nroLegajo} + '.jpg'}"
-							th:id="'foo' + ${asis.personal.nroLegajo}"
-							style="max-width: 100%; height: auto;" onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
-					</div>
-					<div class="col-md-8">
-						<div class="card-body">
-							<h5 class="card-title">Registrar egreso del empleado:</h5>
-
-							<p class="card-text mt-3">
-								Empleado: <span>[[${asis.personal.nombre}]]
-									[[${asis.personal.apellido}]]</span>
-							</p>
-							<p class="card-text mt-3">
-								Número de Legajo: <span>[[${asis.personal.nroLegajo}]]</span>
-							</p>
-							<p class="card-text mt-3">
-								Sector de trabajo: <span>[[${asis.personal.sector}]]</span>
-							</p>
-
-							<p class="card-text">
-								Fecha y hora del ingreso: <small class="text-muted"><span
-									th:text="${#dates.format(asis.entrada, 'dd/MM/yyyy HH:mm')}">
-								</span></small>
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<form th:object="${asis}"
-					th:action="@{/views/asistencia/egreso-empleado/} + ${asis.idAsistencia}"
-					method="post"
-					th:data-nombre="${asis.personal.nombre}"
-					th:data-apellido="${asis.personal.apellido}"
-					onsubmit="return confirm('Confirmar egreso del empleado ' + this.getAttribute('data-nombre') + ' ' + this.getAttribute('data-apellido') + '?');">
-					<div
-						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
-						<input type="submit" class="btn btn-primary btn-sm"
-							value="Registrar Egreso" />
-					</div>
-				</form>
-
+		
+		<h5>Buscar Empleado:</h5>
+		<div class="row mt-2">
+			<div class="col-md-11">
+				<input type="text" id="formulario" class="form-control">
 			</div>
+			<div class="col-md-1 ">
+				<button class="btn btn-primary" onclick="filtrar('buscador')">Buscar</button>
+			</div>
+			
 		</div>
+		<div class="row mt-3" id="cardEgreso"></div>
+
+		 
 	</div>
 
 	<div class="mt-5"></div>
@@ -66,8 +29,89 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script th:inline="javascript">
-	
-	
+		
+		var asistencias = /*[[${asistencias}]]*/ 'default';
+		
+		const formulario = document.querySelector('#formulario');
+		const resultado = document.querySelector('#cardEgreso');
+		
+		const filtrar = (auxBusqueda) => {
+			
+			if(formulario.value=='' || auxBusqueda=='buscador'){
+				resultado.innerHTML = ''
+					
+					const texto = formulario.value.toLowerCase();
+					
+					for(let aut of asistencias){
+						let nombre = aut.personal.nombre.toLowerCase();
+						let apellido = aut.personal.apellido.toLowerCase();
+						
+						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+							
+							let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
+							let imagenEmpleado= `/images/${aut.personal.nroLegajo}.jpg` ;
+							let idFoo= `foo${aut.personal.nroLegajo}`;
+						
+							//le doy el formato correcto a la fecha
+							let d = new Date(aut.entrada);
+							dformat = [d.getDate(),
+				  				d.getMonth()+1,
+				               d.getFullYear()].join('/')+' '+
+				              [d.getHours(),
+				               d.getMinutes()].join(':');
+							
+							resultado.innerHTML += `
+								<div class="col-sm-6 mt-3">
+								<div class="card text-dark bg-light mb-3" >
+								<div class="card-header bg-dark text-white">Registro de Egreso
+								de la Planta</div>
+								<div class="row g-0 ">
+									<div class="col-md-4">
+										<img src=${imagenEmpleado}
+											id=${idFoo}
+											style="max-width: 100%; height: auto;"
+											onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+									</div>
+									<div class="card-body col-md-8">
+										<h5 class="card-title">Registrar egreso del empleado:</h5>
+										<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
+											${aut.personal.apellido}</p>
+										<p class="card-text">Número de legajo: ${aut.personal.nroLegajo}</p>
+										<p class="card-text mt-3">
+											Sector de trabajo: ${aut.personal.sector}
+										</p>
+										<p class="card-text">
+											Fecha y hora del ingreso: ${dformat}
+										</p>
+					
+									</div>
+								</div>
+								
+								<form 
+									action=${urlEgreso}
+									object=${aut}
+									method="post"  
+										onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+									<div
+										class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+										<input type="button" class="btn btn-secondary btn-sm"
+											value="Egreso Transitorio" />
+										<input type="submit" class="btn btn-primary btn-sm"
+											value="Registrar Egreso" />
+									</div>
+								</form>
+								
+							</div>
+							</div>
+							`;
+						}
+					}
+			}			
+		}
+		
+		formulario.addEventListener('keyup', filtrar);
+		filtrar();
+		
 	</script>
 
 </body>
