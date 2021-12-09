@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Asistencia;
@@ -124,7 +125,10 @@ public class AsistenciaController {
 	
 	@PostMapping("/egreso-transitorio/{idAsistencia}")
 	public String egresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
+						@RequestParam(name = "vehiculo") String vehiculo,
 						RedirectAttributes atributos) {
+		
+		System.out.println(vehiculo);
 			
 		try {
 			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();

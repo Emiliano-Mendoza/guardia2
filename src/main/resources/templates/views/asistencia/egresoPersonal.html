@@ -15,9 +15,9 @@
 				<input type="text" id="formulario" class="form-control">
 			</div>
 			<div class="col-md-1 ">
-				<button class="btn btn-primary" onclick="filtrar('buscador')">Buscar</button>
+				<button class="btn btn-primary" onclick="filtrar()">Buscar</button>
 			</div>
-			
+				
 		</div>
 		<div class="row mt-3" id="cardEgreso"></div>
 
@@ -35,9 +35,9 @@
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
 		
-		const filtrar = (auxBusqueda) => {
+		const filtrar = () => {
 			
-			if(formulario.value=='' || auxBusqueda=='buscador'){
+			
 				resultado.innerHTML = ''
 					
 					const texto = formulario.value.toLowerCase();
@@ -49,7 +49,7 @@
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
 														
 							let imagenEmpleado= `/images/${aut.personal.nroLegajo}.jpg` ;
-							let idFoo= `foo${aut.personal.nroLegajo}`;
+							let idFoo= `foo${aut.personal.nroLegajo}`;							
 						
 							//le doy el formato correcto a la fecha
 							let d = new Date(aut.entrada);
@@ -63,6 +63,12 @@
 								
 								let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
 								let urlEgresoTransitorio= '/views/asistencia/egreso-transitorio/' + aut.idAsistencia;
+								let idDiv = 'vehiculo' + aut.personal.nroLegajo; 
+								let idForm = 'idForm' + aut.personal.nroLegajo;
+								let idButtonEgreso = 'idButtonEgreso' + aut.personal.nroLegajo;
+								let idCancelarButton = 'idCancelarButton' + aut.personal.nroLegajo;
+								let idEgresoTransitorio = 'idEgresoTransitorio' + aut.personal.nroLegajo;
+
 								
 								resultado.innerHTML += `
 									<div class="col-sm-6 mt-3">
@@ -87,7 +93,10 @@
 											<p class="card-text">
 												Fecha y hora del ingreso: ${dformat}
 											</p>
-						
+											
+											<div id=${idDiv}>
+												
+											</div>												
 										</div>
 									</div>
 									
@@ -97,11 +106,22 @@
 										action=${urlEgresoTransitorio}
 										object=${aut}
 										method="post"  
-											onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+										onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
+										id=${idForm}>									
+											
+											<button type="button" class="btn btn-secondary btn-sm"
+											id=${idCancelarButton}
+											onclick="filtrar()"
+											hidden>Cancelar</button>
+										
+											<button type="button" class="btn btn-secondary btn-sm" 
+											onclick="mostrarListaVehiculos('${idDiv}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}')"		
+											>Transito</button>
 										
 											<input type="submit" class="btn btn-secondary btn-sm"
+											    id=${idEgresoTransitorio} hidden
 												value="Egreso Transitorio" />
-										
+												
 									</form>
 									<form 
 									action=${urlEgreso}
@@ -110,6 +130,7 @@
 										onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
 									
 										<input type="submit" class="btn btn-primary btn-sm"
+											id=${idButtonEgreso}
 											value="Registrar Egreso" />
 									
 									</form>
@@ -174,12 +195,37 @@
 							}
 							
 							
-						}
+						
 					}
 			}			
 		}
 		
-		formulario.addEventListener('keyup', filtrar);
+		function mostrarListaVehiculos(idDiv, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio){
+						
+			const listaVehiculos = document.getElementById(idDiv);
+			document.getElementById(idButtonEgreso).hidden = true;
+			document.getElementById(idCancelarButton).hidden = false;
+			document.getElementById(idEgresoTransitorio).hidden = false;
+			
+			listaVehiculos.innerHTML = `
+				<label>Vehiculo a utilizar:</label>
+				<select name="vehiculo" form=${idForm} class="form-select mt-2">
+				  <option value="value1">Value 1</option>
+				  <option value="value2">Value 2</option>
+				  <option value="value3">Value 3</option>
+				</select>
+			`;			
+		}
+		
+		
+		
+		formulario.addEventListener('keyup', function(event) {
+		    event.preventDefault();
+		    if (event.keyCode === 13) {
+		        filtrar();
+		    }
+		});
+		
 		filtrar();
 		
 	</script>

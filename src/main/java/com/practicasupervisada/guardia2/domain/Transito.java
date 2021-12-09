@@ -28,6 +28,10 @@ public class Transito {
 	private Personal personal;
 	
 	@ManyToOne
+	@JoinColumn(name = "id_Vehiculo")
+	private Vehiculo vehiculo;
+	
+	@ManyToOne
 	@JoinColumn(name = "id_Asistencia")
 	@JsonBackReference
 	private Asistencia asistencia;
