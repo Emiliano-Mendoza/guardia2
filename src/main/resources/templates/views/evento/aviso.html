@@ -10,10 +10,11 @@
 
 		<h5>Notificar Nuevo Evento:</h5>
 
-
-		<form id="formAutorization" method="post"
-			th:action="@{/views/evento/crear}"
-			onsubmit="return confirm('Desea crear la nueva notificación de evento?');">
+		<!-- onsubmit="return confirm('Desea crear la nueva notificación de evento?');" -->
+		
+		<form id="formEvento" method="post"
+			th:action="@{/views/evento/crear}" 
+			>
 
 			<div class="mb-3">
 				<label for="exampleInputEmail1" class="form-label">Descripción:</label>
@@ -27,7 +28,7 @@
 			</div>
 			<div
 				class="card-footer bg-white d-grid gap-2 d-md-flex justify-content-between">
-				<input type="submit" class="btn btn-secondary btn-sm"
+				<input type="submit" class="btn btn-secondary btn-sm" 
 					value="Confirmar" />
 			</div>
 		</form>
@@ -86,10 +87,9 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script th:inline="javascript">
-		// th:text="${ev.cancelado} ? '' : ${ev.descripcionCancelacion}"
 				
 		var personal = /*[[${listaEventos}]]*/ 'default';
-		console.log(personal);
+		
 				
 		function editarEvento(idEvento, descripcion, fechaEvento, nombre, apellido){
 									
@@ -239,6 +239,28 @@
 		}
 
 		SetDate('fechaEvento', null);
+	</script>
+	
+	<script>
+		
+		
+		$("#formEvento").on('submit', function(event){
+		    event.preventDefault();
+		    
+		    if(result = window.confirm("Desea crear la nueva notificación de evento?")){
+		    	send();
+		    	this.submit();
+		    }
+		    
+		    
+		});
+		
+	
+		function send() {			
+			webSocket.send('Se ha añadido un nuevo evento próximo!');
+			return false;
+		}
+		
 	</script>
 
 </body>

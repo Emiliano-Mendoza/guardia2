@@ -6,7 +6,8 @@
 
 	<header th:replace="plantilla/template :: header"></header>
 
-
+	<div> <?php echo "Hello World" ?> </div>
+	
 	<div class="container mt-3">
 		
 		<h5>Buscar Empleado:</h5>
@@ -32,7 +33,6 @@
 		
 		var asistencias = /*[[${asistencias}]]*/ 'default';
 		var listaVehiculos = /*[[${listaVehiculos}]]*/ 'default';
-		console.log(listaVehiculos);
 		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
