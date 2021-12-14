@@ -9,14 +9,14 @@
 	<div class="container">
 	
 		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardEditar"></div>
-		
+				
 		<table class="table mt-3" id="myTable">
 			<thead>
 				<tr>
-					<th scope="col" style="width: 25%; text-align: center;">Usuario</th>
-					<th scope="col" style="width: 25%; text-align: center;">Habilitado</th>
-					<th scope="col" style="width: 25%; text-align: center;">Nombre</th>
-					<th scope="col" style="width: 25%; text-align: center;">Editar</th>
+					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Usuario</th>
+					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Habilitado</th>
+					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Editar</th>
 					
 				</tr>
 			</thead>
@@ -44,12 +44,16 @@
 	<script  th:inline="javascript">
 	
 		const cardEditar = document.getElementById('cardEditar');
-	
+			
 		function editarUsuario(us){
 			
 			let urlA = "/views/usuario/editar/" + us.idUsuario;
+			let selectRol = "rol" + us.idUsuario;
 			
-			console.log(urlA);
+			let idOption1 = "idOption1" + us.idUsuario;
+			let idOption2 = "idOption2" + us.idUsuario;
+			let idOption3 = "idOption3" + us.idUsuario;
+			let idOption4 = "idOption4" + us.idUsuario;
 			
 			cardEditar.innerHTML = `
 				<div class="col-md-6">
@@ -85,11 +89,11 @@
 								
 								<select class="form-select mt-2"
 									multiple aria-label="multiple select example" name="rol"
-									id="rol">
-									<option value="GUARDIA" selected>Guardia</option>
-									<option value="AUTORIZADOR">Autorizador</option>
-									<option value="NOTIFICADOR">Notificador</option>
-									<option value="ADMIN">Administrador</option>
+									id=${selectRol}>
+									<option id=${idOption1} value="GUARDIA">Guardia</option>
+									<option id=${idOption2} value="AUTORIZADOR">Autorizador</option>
+									<option id=${idOption3} value="NOTIFICADOR">Notificador</option>
+									<option id=${idOption4} value="ADMIN">Administrador</option>
 								</select>
 							</div>
 						</div>
@@ -119,13 +123,105 @@
 			</div>
 
 			`;
+			
+			rolesSeleccionados(us.roles, idOption1, idOption2, idOption3, idOption4);
+			
+			const checkB = document.getElementById('enabled');
+			
+			if(us.enabled){
+				checkB.checked = true;
+			}else checkB.checked = false;
 		}
 		
-		function cancelarEdit(){
-			
-			cardEditar.innerHTML = '';
+		function cancelarEdit(){			
+			cardEditar.innerHTML = '';		
+		}
+		
+		function rolesSeleccionados(usRoles, idOption1, idOption2, idOption3, idOption4){
+											
+			for(let rol of usRoles){
+				
+				if(rol.rol == "GUARDIA"){										
+					const option1 = document.getElementById(idOption1);
+					option1.selected = true;
+				}
+				if(rol.rol == "AUTORIZADOR"){										
+					const option2 = document.getElementById(idOption2);
+					option2.selected = true;
+				}
+				if(rol.rol == "NOTIFICADOR"){										
+					const option3 = document.getElementById(idOption3);
+					option3.selected = true;
+				}
+				if(rol.rol == "ADMIN"){										
+					const option4 = document.getElementById(idOption4);
+					option4.selected = true;
+				}
+				
+			}		
 			
 		}
+		
+		function sortTable(selector, compFunc) {
+		      var mySelector = '.sortable';
+		      var myCompFunc = function($td1, $td2, isAsc) {
+		        var v1 = $.trim($td1.text()).replace(/,|\s+|%/g, '');
+		        var v2 = $.trim($td2.text()).replace(/,|\s+|%/g, '');
+		        var pattern = /^\d+(\.\d*)?$/;
+		        if (pattern.test(v1) && pattern.test(v2)) {
+		          v1 = parseFloat(v1);
+		          v2 = parseFloat(v2);
+		        }
+		
+		        return isAsc ? v1 > v2 : v1 < v2;
+		      };
+		
+		      var doSort = function($tbody, index, compFunc, isAsc)
+		      {
+		        var $trList = $tbody.find("tr");
+		        var len = $trList.length;
+		        for(var i=0; i<len-1; i++) {
+		          for(var j=0; j<len-i-1; j++) {
+		            var $td1 = $trList.eq(j).find("td").eq(index);
+		            var $td2 = $trList.eq(j+1).find("td").eq(index);
+		
+		            if (compFunc($td1, $td2, isAsc)) {
+		              var t = $trList.eq(j+1);
+		              $trList.eq(j).insertAfter(t);
+		              $trList = $tbody.find("tr");
+		            }
+		          }
+		        }
+	      }
+
+	      var init = function() {
+	        var $th = $("th" + selector);
+	        this.$table = $th.closest("table");
+	        var that = this;
+	        $th.click(function(){
+	          var index = $(this).index();
+	          var asc = $(this).attr('data-asc');
+	          isAsc = asc === undefined ? true : (asc > 0 ? true : false);
+
+	          doSort(that.$table.find("tbody"), index, compFunc, isAsc);
+
+	          $(this).attr('data-asc', 1 - (isAsc ? 1 : 0));
+	        });
+
+	        $th.css({'cursor': 'pointer'})
+	           .attr('title', 'Haga clic para ordenar')
+	           .append('&nbsp;<i class="fa fa-long-arrow-down" style="color:#2196F3" aria-hidden="true"></i><i class="fa fa-long-arrow-up" style="color:#2196F3" aria-hidden="true"></i>');
+	      };
+
+
+	      selector = selector || mySelector;
+	      compFunc = compFunc || myCompFunc;
+
+	      init();
+	    }
+		
+		sortTable();
+		
 		
 	
 	</script>
