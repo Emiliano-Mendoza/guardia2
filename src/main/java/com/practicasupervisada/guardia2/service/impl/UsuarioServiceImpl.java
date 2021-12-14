@@ -29,7 +29,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		String passCrip = new BCryptPasswordEncoder().encode(us.getContraseña()); 
 		
 		us.setContraseña(passCrip);
-		us.setEnabled(true);
 		
 		return usuarioRepo.save(us);
 	}
@@ -54,10 +53,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 		String passCrip = new BCryptPasswordEncoder().encode(us.getContraseña()); 
 		
 		us.setContraseña(passCrip);
-		us.setEnabled(true);
+
 		roles.forEach((rol)->{us.getRoles().add(rolesRepo.findByRol(rol));});
 		
 		//System.out.println(us.getRoles().toString());
+		
+		return usuarioRepo.save(us);
+	}
+
+	@Override
+	public Usuario editarUsuario(Usuario us, List<String> roles) {
+		
+		roles.forEach((rol)->{us.getRoles().add(rolesRepo.findByRol(rol));});
 		
 		return usuarioRepo.save(us);
 	}

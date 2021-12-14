@@ -29,6 +29,9 @@ public class UserService implements UserDetailsService {
 		if(us==null) {
 			throw new UsernameNotFoundException("Usuario no encontrado");
 		}
+		if(!us.getEnabled()) {
+			throw new UsernameNotFoundException("Usuario deshabilitado");
+		}
 		
 		List<GrantedAuthority> roles = new ArrayList<>();
 		

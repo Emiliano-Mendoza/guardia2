@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.JoinColumn;
@@ -31,6 +32,7 @@ public class Usuario {
 	@Column(unique=true)
 	private String usuario;
 	@NotEmpty
+
 	private String contraseña;
 	
 	private Boolean enabled;
@@ -64,6 +66,7 @@ public class Usuario {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
+	
 	public String getContraseña() {
 		return contraseña;
 	}
@@ -73,7 +76,7 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", contraseña=" + contraseña + ", enabled="
+		return "Usuario [idUsuario=" + idUsuario + ", usuario=" + usuario + ", enabled="
 				+ enabled + ", nombre=" + nombre + ", apellido=" + apellido + "]";
 	}
 	public Set<Roles> getRoles() {

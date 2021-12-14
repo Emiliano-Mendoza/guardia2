@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+	
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardEditar"></div>
+		
+		<table class="table mt-3" id="myTable">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 25%; text-align: center;">Usuario</th>
+					<th scope="col" style="width: 25%; text-align: center;">Habilitado</th>
+					<th scope="col" style="width: 25%; text-align: center;">Nombre</th>
+					<th scope="col" style="width: 25%; text-align: center;">Editar</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="us:${listaUsuarios}">
+
+					<td th:text="${us.usuario}" style="text-align: center;"></td>
+					<td th:text="${us.enabled}" style="text-align: center;"></td>
+					<td  style="text-align: center;">[[${us.nombre}]] [[${us.apellido}]]</td>
+					<td  style="text-align: center;">
+						<button class="btn btn-success btn-sm"
+						 th:onclick="editarUsuario([[${us}]])">Editar</button>
+					</td>
+					
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="mt-5"></div>
+	
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script  th:inline="javascript">
+	
+		const cardEditar = document.getElementById('cardEditar');
+	
+		function editarUsuario(us){
+			
+			let urlA = "/views/usuario/editar/" + us.idUsuario;
+			
+			console.log(urlA);
+			
+			cardEditar.innerHTML = `
+				<div class="col-md-6">
+				
+				<div class="card-header bg-dark text-white">Editar Usuario:</div>
+			
+				<form action=${urlA} method="post" autocomplete="off">
+					
+				
+					<div class="card-body row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="nombre">Nombre:</label> <input type="text"
+									class="form-control" id="nombre" placeholder="Nombre"
+									name="nombre" required value=${us.nombre}>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="apellido">Apellido:</label> <input type="text"
+									class="form-control" id="apellido" placeholder="Apellido"
+									name="apellido" required value=${us.apellido}>
+							</div>
+						</div>
+					</div>
+
+					<div class="card-body row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="rol">Rol del usuario: </label> 
+								<small class="text-muted"><br><span> (Ctrl + click para selección múltiple)</span></small>
+								
+								<select class="form-select mt-2"
+									multiple aria-label="multiple select example" name="rol"
+									id="rol">
+									<option value="GUARDIA" selected>Guardia</option>
+									<option value="AUTORIZADOR">Autorizador</option>
+									<option value="NOTIFICADOR">Notificador</option>
+									<option value="ADMIN">Administrador</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="true" name="enabled" id="enabled" checked>
+								<label class="form-check-label" for="flexCheckDefault">
+							    Usuario Habilitado
+							  	</label>
+							</div>
+						</div>
+						
+					</div>
+
+
+					<div
+						class="card-footer bg-dark mt-3 d-grid gap-2 d-md-flex justify-content-between">
+						<input type="button" class="btn btn-primary btn-sm" onclick="cancelarEdit()"
+						value="Cancelar" />
+						<input type="submit" class="btn btn-primary btn-sm"
+							value="Confirmar" />
+					</div>
+
+				</form>
+
+
+			</div>
+
+			`;
+		}
+		
+		function cancelarEdit(){
+			
+			cardEditar.innerHTML = '';
+			
+		}
+		
+	
+	</script>
+</body>
+</html>

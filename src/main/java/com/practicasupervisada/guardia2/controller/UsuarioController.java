@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,14 +29,14 @@ public class UsuarioController {
 	private UsuarioService usuarioServ;
 
 	
-	@GetMapping
+	@GetMapping("/editar")
 	public String listarUsuarios(Model model) {
 		
 		List<Usuario> listaUsuarios = usuarioServ.getAllUsuario();
 		
 		model.addAttribute("listaUsuarios", listaUsuarios);
 		
-		return null;
+		return "/views/usuario/editarUsuario";
 	}
 	
 	@GetMapping("/crear")
@@ -65,6 +66,7 @@ public class UsuarioController {
 			usuarioNuevo.setUsuario(usuario);
 			usuarioNuevo.setNombre(nombre);
 			usuarioNuevo.setApellido(apellido);
+			usuarioNuevo.setEnabled(true);
 			
 			try {
 				usuarioServ.crearUsuario(usuarioNuevo, roles);
@@ -96,5 +98,40 @@ public class UsuarioController {
 		
 		atributos.addFlashAttribute("success", "Usuario creado exitosamente!");
 		return "redirect:/views/usuario/crear";
+	}
+	
+	@PostMapping("/editar/{idUsuario}")
+	public String editarUsuario(@PathVariable("idUsuario") int idUsuario,
+								@RequestParam(name = "nombre") String nombre,
+								@RequestParam(name = "apellido") String apellido,
+								@RequestParam(name = "rol") List<String> roles,
+								@RequestParam(name = "enabled", required = false) String enabled,
+								RedirectAttributes atributos,
+								Model model) {
+		
+		try {
+			Usuario user = usuarioServ.findById(idUsuario).orElseThrow();
+			user.setNombre(nombre);
+			user.setApellido(apellido);
+			
+			if(enabled == null) {
+				user.setEnabled(false);
+			}else if (enabled.equalsIgnoreCase("true")) {
+				user.setEnabled(true);
+			}
+			
+			user.getRoles().clear();
+					
+			usuarioServ.editarUsuario(user, roles);
+			
+			System.out.println(user);
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		atributos.addFlashAttribute("success", "Usuario editado exitosamente!");
+		return "redirect:/views/usuario/editar";
 	}
 }
