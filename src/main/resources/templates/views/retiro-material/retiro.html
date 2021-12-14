@@ -36,54 +36,129 @@
 		const texto = formulario.value.toLowerCase();
 		
 		for(let aut of autorizaciones){
-			let nombre = aut.personal.nombre.toLowerCase();
-			let apellido = aut.personal.apellido.toLowerCase();
 			
-			if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+			let urlRetiro= "/views/retiro-material/retiro/" + aut.idRetiro;
+			let materialesId = 'materiales' + aut.idRetiro;
+			
+			//le doy el formato correcto a la fecha
+			let d = new Date(aut.fechaLimite);
+			dformat = [d.getDate(),
+  				d.getMonth()+1,
+               d.getFullYear()].join('/')+' '+
+              [d.getHours(),
+               d.getMinutes()].join(':');			
+			
+			if(aut.personal != null){
+				let nombre = aut.personal.nombre.toLowerCase();
+				let apellido = aut.personal.apellido.toLowerCase();
 				
-				let urlRetiro= "/views/retiro-material/retiro/" + aut.idRetiro;
-				
-				//le doy el formato correcto a la fecha
-				let d = new Date(aut.fechaLimite);
-				dformat = [d.getDate(),
-	  				d.getMonth()+1,
-	               d.getFullYear()].join('/')+' '+
-	              [d.getHours(),
-	               d.getMinutes()].join(':');
-				
-				resultado.innerHTML += `
-					<div class="col-sm-6 mt-3">
-					<div class="card text-dark bg-light mb-3" >
-					<h5 class="card-header">Autorización de retiro:</h5>
-					<div class="card-body">
-						<p class="card-text ">Empleado: ${aut.personal.nombre}
-							${aut.personal.apellido}</p>
-						<p class="card-text">Descripción: ${aut.descripcion}</p>
-						<p class="card-text">
-							Fecha límite: ${dformat}
-						</p>
+				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+										
+					resultado.innerHTML += `
+						<div class="col-sm-6 mt-3">
+						<div class="card text-dark bg-light mb-3" >
+						<h5 class="card-header">Autorización de retiro:</h5>
+						<div class="card-body">
+							<p class="card-text ">Empleado autorizado: ${aut.personal.nombre}
+								${aut.personal.apellido}</p>
+							<p class="card-text">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</p>
+							<p class="card-text">Descripción: ${aut.descripcion}</p>
+							
+							<div class="mb-3">
+								<label for="exampleInput1" class="form-label">Materiales:</label>
+								<select class="form-select"
+									multiple aria-label="multiple select example" name=${materialesId}
+									id=${materialesId} disabled>
+							</select>
+							
+							<p class="card-text mt-2">
+								Fecha límite: ${dformat}
+							</p>
 
 
-						<form action=${urlRetiro} method="post"
-							onsubmit="return confirm('Confirmar retiro del empleado?');">
-							<div class="form-group">
-							<label for="observacionGuardia">Observación:</label> <input type="text"
-								class="form-control" id="observacionGuardia"
-								name="observacionGuardia">
-							</div>
-							<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
-								<input type="submit" class="btn btn-primary btn-sm "
-									value="Confirmar Retiro" />
-							</div>
+							<form action=${urlRetiro} method="post"
+								onsubmit="return confirm('Confirmar retiro del empleado?');">
+								<div class="form-group">
+								<label for="observacionGuardia">Observación:</label> <input type="text"
+									class="form-control" id="observacionGuardia"
+									name="observacionGuardia">
+								</div>
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
+									<input type="submit" class="btn btn-primary btn-sm "
+										value="Confirmar Retiro" />
+								</div>
 
-						</form>
+							</form>
+						</div>
 					</div>
-				</div>
-				</div>
-				`;
+					</div>
+					`;
+					
+					SetMateriales(materialesId, aut);
+				}
 			}
+			else{
+				let retiroExterno = 'retiro externo'.toLowerCase();
+				
+				if(retiroExterno.indexOf(texto) !== -1){
+					
+					resultado.innerHTML += `
+						<div class="col-sm-6 mt-3">
+						<div class="card text-dark bg-light mb-3" >
+						<h5 class="card-header">Autorización de retiro:</h5>
+						<div class="card-body">
+							<p class="card-text ">Retiro externo</p>
+							<p class="card-text">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</p>
+							<p class="card-text">Descripción: ${aut.descripcion}</p>
+							
+							<div class="mb-3">
+								<label for="exampleInput1" class="form-label">Materiales:</label>
+								<select class="form-select"
+									multiple aria-label="multiple select example" name=${materialesId}
+									id=${materialesId} disabled>
+							</select>
+							
+							<p class="card-text mt-2">
+								Fecha límite: ${dformat}
+							</p>
+							
+
+							<form action=${urlRetiro} method="post"
+								onsubmit="return confirm('Confirmar retiro externo?');">
+								<div class="form-group">
+								<label for="observacionGuardia">Observación:</label> <input type="text"
+									class="form-control" id="observacionGuardia"
+									name="observacionGuardia">
+								</div>
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
+									<input type="submit" class="btn btn-primary btn-sm "
+										value="Confirmar Retiro" />
+								</div>
+
+							</form>
+						</div>
+					</div>
+					</div>
+					`;
+					
+					SetMateriales(materialesId, aut);
+					
+				}
+			}
+			
 		}
 	}
+	
+	function SetMateriales(materialesId, aut){
+		
+		const materialSelect = document.getElementById(materialesId);
+				
+		for(let mat of aut.materiales){
+			
+			materialSelect.innerHTML += `<option value=${mat.id_material}>${mat.material}</option>`;
+		} 				
+	}
+	
 	
 	formulario.addEventListener('keyup', filtrar);
 	filtrar();

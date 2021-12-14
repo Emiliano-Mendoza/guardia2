@@ -57,26 +57,34 @@ public class RetiroMaterialController {
 	public String nuevaAutorizacionDeRetiro(@RequestParam(name = "desc") String desc,
 											@RequestParam(name = "fechaLimite") String fecha,
 											@RequestParam(name = "nroLegajo") int nroLegajo,
+											@RequestParam(name = "materiales") List<Integer> materiales,
 											RedirectAttributes atributos){
 		
 		//Le doy el formato correcto a la fecha obtenida
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		System.out.println(nroLegajo);
 
 		try {
-			Personal empleado = personalServ.findById(nroLegajo).orElseThrow();
+			
 			RetiroMaterial retiro = new RetiroMaterial();
+			
+			if(nroLegajo > 0) {
+				Personal empleado = personalServ.findById(nroLegajo).orElseThrow();
+				retiro.setPersonal(empleado);
+			}						
 			
 			retiro.setDescripcion(desc);
 			
 			Date fechaLimite = formatter.parse(fecha + " 23:59:59");
 			retiro.setFechaLimite(fechaLimite);
 			
-			retiro.setPersonal(empleado);
+			
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			retiro.setUsuarioSector(usuarioServ.findByUsuario(auth.getName()));
 			
-			retiroServ.crearRetiroMaterial(retiro);
+			retiroServ.crearRetiroMaterial(retiro, materiales);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

@@ -57,8 +57,6 @@ public class UsuarioController {
 						  RedirectAttributes atributos,
 						  Model model) {
 		
-		//arreglar
-		System.out.println(roles);
 		
 		if(usuario!=null && contraseña!=null && !roles.isEmpty() &&
 				usuarioServ.findByUsuario(usuario)==null && nombre!=null && apellido!=null) {

@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * --------Agregar el Modulo de Transito + Vehiculo 
  * Agregar lista desplegable de materiales que va a retirar un empleado
  * Inhabilitar usuario
- * Notificaciones X
+ * -------Notificaciones X
 */
 
 @SpringBootApplication

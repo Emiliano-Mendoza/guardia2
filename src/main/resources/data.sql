@@ -74,3 +74,13 @@ INSERT INTO public.roles (id_rol, rol) VALUES(4,'NOTIFICADOR');
 INSERT INTO public.roles (id_rol, rol) VALUES(5,'AUTORIZADOR');
 
 INSERT INTO public.usuario_roles (id_usuario, id_rol) VALUES(100,2);
+
+INSERT INTO public.material VALUES(1,'Nylon');
+INSERT INTO public.material VALUES(2,'Cauchos');
+INSERT INTO public.material VALUES(3,'Sub cauchos');
+INSERT INTO public.material VALUES(4,'Recortes cartulina');
+INSERT INTO public.material VALUES(5,'Pliegos malos');
+INSERT INTO public.material VALUES(6,'Pallets');
+INSERT INTO public.material VALUES(7,'Troquel dado de baja');
+INSERT INTO public.material VALUES(8,'Otro');
+

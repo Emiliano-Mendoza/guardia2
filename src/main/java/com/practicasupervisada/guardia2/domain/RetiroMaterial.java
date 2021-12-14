@@ -1,16 +1,23 @@
 package com.practicasupervisada.guardia2.domain;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="RetiroMaterial")
@@ -22,9 +29,15 @@ public class RetiroMaterial {
 	
 	private String descripcion;
 	private Date fechaLimite;
-	private Date fechaRetiro;
-	
+	private Date fechaRetiro;	
 	private String observacionGuardia;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "materiales_retiro",
+		joinColumns = { @JoinColumn(name = "idRetiro")},
+		inverseJoinColumns = { @JoinColumn (name = "idMaterial")})
+	@JsonManagedReference
+	private Set<Material> materiales = new HashSet<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
@@ -32,7 +45,6 @@ public class RetiroMaterial {
 	private Usuario usuarioGuardia;
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioSector")
-	@JsonIgnore
 	private Usuario usuarioResponsableSector;
 	@ManyToOne
 	@JoinColumn(name = "ID_Personal")
@@ -45,7 +57,7 @@ public class RetiroMaterial {
 	public void setUsuarioGuardia(Usuario usuarioGuardia) {
 		this.usuarioGuardia = usuarioGuardia;
 	}
-	@JsonIgnore
+	
 	public Usuario getUsuarioSector() {
 		return usuarioResponsableSector;
 	}
@@ -94,9 +106,15 @@ public class RetiroMaterial {
 				+ ", fechaRetiro=" + fechaRetiro + ", observacionGuardia=" + observacionGuardia + ", personal="
 				+ personal + "]";
 	}
+	public Set<Material> getMateriales() {
+		return materiales;
+	}
+	public void setMateriales(Set<Material> materiales) {
+		this.materiales = materiales;
+	}
 
-	
-	
+
+		
 	
 	
 }

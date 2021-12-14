@@ -19,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.service.AsistenciaService;
+import com.practicasupervisada.guardia2.service.MaterialService;
 import com.practicasupervisada.guardia2.service.PersonalService;
 import com.practicasupervisada.guardia2.domain.Asistencia;
+import com.practicasupervisada.guardia2.domain.Material;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.util.FileUploadUtil;
 
@@ -38,6 +40,8 @@ public class PersonalController {
 	private PersonalService personalServ;
 	@Autowired
 	private AsistenciaService asistenciaServ;
+	@Autowired
+	private MaterialService materialServ;
 	
 	@GetMapping
 	public String listarClientes(Model model) {
@@ -68,11 +72,13 @@ public class PersonalController {
 	@GetMapping("/autorizar-retiro")
 	public String listarClientesParaRetiroMaterial(Model model) {
 		
-		List<Personal> listaPersonal = personalServ.getAllPersonal();
-		
+		List<Personal> listaPersonal = personalServ.getAllPersonal();		
 		Collections.sort(listaPersonal);
+		
+		List<Material> listaMateriales = materialServ.getAllMaterial();
 				
 		model.addAttribute("personal", listaPersonal);
+		model.addAttribute("listaMateriales", listaMateriales);
 		
 		return "/views/retiro-material/autorizacion";
 	}
