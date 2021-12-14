@@ -96,7 +96,8 @@
 						rows="3" required></textarea>
 				</div>
 				<div class="mb-3">
-				<label for="exampleInput1" class="form-label">Materiales:</label>
+				<label for="exampleInput1" class="form-label">Materiales: </label>
+				<small class="text-muted"><span> (Ctrl + click para selección múltiple)</span></small>
 				<select class="form-select"
 					multiple aria-label="multiple select example" name="materiales"
 					id="materiales">
@@ -171,7 +172,14 @@
 		const materialSelect = document.querySelector('#materiales');
 		
 		for(let mat of listaMateriales){
-			materialSelect.innerHTML += `<option value=${mat.id_material}>${mat.material}</option>`;
+			
+			if(mat.id_material==1){
+				materialSelect.innerHTML += `<option value=${mat.id_material} selected>${mat.material}</option>`;
+			}else{
+				materialSelect.innerHTML += `<option value=${mat.id_material}>${mat.material}</option>`;
+			}
+			
+			
 		}				
 	}
 	

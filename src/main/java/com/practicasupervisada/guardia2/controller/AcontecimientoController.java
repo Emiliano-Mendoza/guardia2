@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
@@ -101,4 +102,29 @@ public class AcontecimientoController {
 		atributos.addFlashAttribute("success", "Acontecimiento registrado exitosamente!");
 		return "redirect:/views/acontecimiento";
 	}
+	
+	
+	@PostMapping("/previos")
+	public String listarAcontecimientosAnteriores(Model model,
+												  @RequestParam(name = "fechaAcontecimiento") String fechaAcontecimiento) throws ParseException {
+		
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date fechaAux = formatter.parse(fechaAcontecimiento);
+		Date fechaAuxTomorrow = new Date(fechaAux.getTime() + (1000 * 60 * 60 * 24));
+		
+		
+		List<Acontecimiento> listaAcontecimientos = acontecimientoServ.getAllAcontecimientos();
+		
+		listaAcontecimientos = listaAcontecimientos
+				.stream()
+				.filter(ac -> ac.getFecha().after(fechaAux) && ac.getFecha().before(fechaAuxTomorrow))
+				.collect(Collectors.toList());
+				
+		model.addAttribute("listaAcontecimientos", listaAcontecimientos);
+		model.addAttribute("diaSeleccionado", fechaAux);
+		
+		return "/views/acontecimiento/verAcontecimientosAnteriores";
+	}
+	
 }

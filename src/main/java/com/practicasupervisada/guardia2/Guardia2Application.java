@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * --------En el evento se debe figurar a quien debe avisar la guardia en el caso de ocurrencia
  * --------Agregar atributo de cancelación de evento + descripcion del motivo
  * --------Agregar el Modulo de Transito + Vehiculo 
- * Agregar lista desplegable de materiales que va a retirar un empleado
+ * --------Agregar lista desplegable de materiales que va a retirar un empleado
  * Inhabilitar usuario
  * -------Notificaciones X
 */

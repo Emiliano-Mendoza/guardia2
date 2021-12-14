@@ -7,8 +7,18 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
-		<h2 class="mt-3">Registro de acontecimientos:</h2>
-
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h2 class="">Registro de acontecimientos:</h2>
+			
+			<form th:action="@{/views/acontecimiento/previos}" method="post">
+				<input type="date" name="fechaAcontecimiento"
+						id="fechaAcontecimiento" required>
+				<button type="submit" class="btn btn-primary">Ir</button>
+			</form>
+			
+			
+		</div>
+		
 		<form th:object="${acont}"
 			th:action="@{/views/acontecimiento/guardar}" method="post"
 			class="mt-3">
@@ -63,7 +73,7 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script>
-			
+	
 		sortTable();	
 		
 		function sortTable() {
@@ -101,6 +111,37 @@
 				}
 			}
 		}
+		
+		function SetDate() {
+
+			const today = new Date();
+			const yesterday = new Date(today);
+			yesterday.setDate(yesterday.getDate() ); //-1
+						
+			let aux = '';
+
+			let dd = yesterday.getDate();
+			let mm = yesterday.getMonth() + 1; //January is 0!
+			let yyyy = yesterday.getFullYear();
+
+			if (dd < 10) {
+				dd = '0' + dd;
+			}
+			if (mm < 10) {
+				mm = '0' + mm;
+			}
+
+			aux = yyyy + '-' + mm + '-' + dd;
+			
+			document.getElementById('fechaAcontecimiento').setAttribute("max", aux);
+			document.getElementById('fechaAcontecimiento').setAttribute("value", aux);
+
+			
+		}
+
+		SetDate();
+		
+		
 	</script>
 </body>
 </html>
