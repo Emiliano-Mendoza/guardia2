@@ -50,7 +50,7 @@
 						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
 														
-							let imagenEmpleado= `/images/${aut.personal.nroLegajo}.jpg` ;
+							let imagenEmpleado= `/recursos/${aut.personal.imagen}` ;
 							let idFoo= `foo${aut.personal.nroLegajo}`;							
 						
 							//le doy el formato correcto a la fecha
@@ -75,31 +75,30 @@
 								
 								resultado.innerHTML += `
 									<div class="col-sm-6 mt-3">
-									<div class="card text-dark bg-light mb-3" >
+									<div class="card text-dark  mb-3" >
 									<div class="card-header bg-dark text-white">Registro de Egreso
 									de la Planta</div>
 									<div class="row g-0 ">
-										<div class="col-md-4">
+										<div class="col-md-4" >
 											<img src=${imagenEmpleado}
 												id=${idFoo}
-												style="max-width: 100%; height: auto;"
+												style="max-width: 100%; height: auto"
 												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 										</div>
 										<div class="card-body col-md-8">
 											<h5 class="card-title">Empleado ingresado:</h5>
-											<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
-												${aut.personal.apellido}</p>
-											<p class="card-text">Número de legajo: ${aut.personal.nroLegajo}</p>
-											<p class="card-text mt-3">
-												Sector de trabajo: ${aut.personal.sector}
-											</p>
-											<p class="card-text">
-												Fecha y hora del ingreso: ${dformat}
-											</p>
 											
-											<div id=${idDiv}>
-												
-											</div>												
+											<ul class="list-group list-group-flush">
+											  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+												${aut.personal.apellido}</li>
+											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
+											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+											  <li id=${idDiv} class="list-group-item"></li>
+											</ul>
+											
+											
+																						
 										</div>
 									</div>
 									
@@ -152,7 +151,7 @@
 								
 								resultado.innerHTML += `
 									<div class="col-sm-6 mt-3">
-									<div class="card text-dark bg-light mb-3" >
+									<div class="card text-dark mb-3" >
 									<div class="card-header bg-dark text-white">Registro de Egreso
 									de la Planta</div>
 									<div class="row g-0 ">
@@ -164,16 +163,15 @@
 										</div>
 										<div class="card-body col-md-8">
 											<h5 class="card-title">Empleado en tránsito:</h5>
-											<p class="card-text mt-3">Empleado: ${aut.personal.nombre}
-												${aut.personal.apellido}</p>
-											<p class="card-text">Número de legajo: ${aut.personal.nroLegajo}</p>
-											<p class="card-text mt-3">
-												Sector de trabajo: ${aut.personal.sector}
-											</p>
-											<p class="card-text">
-												Fecha y hora del ingreso: ${dformat}
-											</p>
-						
+											
+											<ul class="list-group list-group-flush">
+											  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+												${aut.personal.apellido}</li>
+											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
+											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+											</ul>
+											
 										</div>
 									</div>
 									
@@ -202,6 +200,8 @@
 					}
 			}			
 		}
+		
+
 		
 		function mostrarListaVehiculos(idDiv, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio, idConfirmarButton){
 						
@@ -232,6 +232,7 @@
 		        filtrar();
 		    }
 		});
+		
 		
 		filtrar();
 		

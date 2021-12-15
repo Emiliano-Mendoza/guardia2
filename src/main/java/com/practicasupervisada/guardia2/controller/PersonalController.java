@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,10 @@ import com.practicasupervisada.guardia2.util.FileUploadUtil;
 
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -69,6 +74,18 @@ public class PersonalController {
 		return "/views/personal/listar";
 	}
 	
+	@GetMapping("/editar")
+	public String listarPersonal(Model model) {
+		
+		List<Personal> listaPersonal = personalServ.getAllPersonal();	
+		Collections.sort(listaPersonal);
+		
+		model.addAttribute("listaPersonal", listaPersonal);
+		
+		return "/views/personal/editarPersonal";
+	}
+	
+	
 	@GetMapping("/autorizar-retiro")
 	public String listarClientesParaRetiroMaterial(Model model) {
 		
@@ -97,6 +114,7 @@ public class PersonalController {
 	public String guardar(@Valid @ModelAttribute Personal personal,
 							BindingResult result,
 							Model model,
+							@RequestParam(name = "file") MultipartFile imagen,
 							RedirectAttributes atributos){
 		
 		if(!personalServ.findById(personal.getNroLegajo()).isEmpty()) {
@@ -117,6 +135,23 @@ public class PersonalController {
 			
 		}	
 		
+		//trato la imagen
+		if(!imagen.isEmpty()) {
+			// Path directorioImagenes = Paths.get("src//main//resources//static/images");
+			// String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+			String rutaAbsoluta = "C://Personal//recursos";
+			
+			try {
+				byte[] bytesImg = imagen.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+				Files.write(rutaCompleta, bytesImg);
+				
+				personal.setImagen(imagen.getOriginalFilename());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		try {		
 			personalServ.crearPersonal(personal);
 			
@@ -126,6 +161,63 @@ public class PersonalController {
 		
 		atributos.addFlashAttribute("success", "Empleado creado exitosamente!");
 		return "redirect:/views/personal/agregar";
+	}
+	
+	@PostMapping("/editar/{nroLegajo}")
+	String editarPersonal(@PathVariable("nroLegajo") int nroLegajo,
+						  @RequestParam(name = "nombre") String nombre,
+						  @RequestParam(name = "apellido") String apellido,
+						  @RequestParam(name = "sector") String sector,
+						  Model model,
+						  @RequestParam(name = "file") MultipartFile imagen,
+						  RedirectAttributes atributos) {
+		
+		
+		Personal empleado = personalServ.findById(nroLegajo).get();
+		
+		if(nombre == null || apellido == null || sector == null 
+				|| nombre.length()==0 || apellido.length()==0 || sector.length()==0){			
+						
+			List<Personal> listaPersonal = personalServ.getAllPersonal();	
+			Collections.sort(listaPersonal);
+			
+			model.addAttribute("listaPersonal", listaPersonal);
+			model.addAttribute("error", "No se pudo editar el empleado");
+			
+			return "/views/personal/editarPersonal";
+		}
+				
+		if(!imagen.isEmpty()) {
+
+			String rutaAbsoluta = "C://Personal//recursos";
+			
+			try {
+
+				byte[] bytesImg = imagen.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+				Files.write(rutaCompleta, bytesImg);
+				
+				empleado.setImagen(imagen.getOriginalFilename());
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			empleado.setNombre(nombre);
+			empleado.setApellido(apellido);
+			empleado.setSector(sector);
+			
+			personalServ.crearPersonal(empleado);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+		
+		atributos.addFlashAttribute("success", "Empleado editado exitosamente!");
+		return "redirect:/views/personal/editar";
 	}
 	
 }
