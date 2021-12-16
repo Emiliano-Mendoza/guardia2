@@ -94,10 +94,9 @@
 											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
 											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
-											  <li id=${idDiv} class="list-group-item"></li>
+											  <li id=${idDiv} class="list-group-item" hidden></li>
 											</ul>
-											
-											
+																						
 																						
 										</div>
 									</div>
@@ -152,8 +151,9 @@
 								resultado.innerHTML += `
 									<div class="col-sm-6 mt-3">
 									<div class="card text-dark mb-3" >
-									<div class="card-header bg-dark text-white">Registro de Egreso
-									de la Planta</div>
+									<div class="card-header text-dark"
+										style="background-color:	#dcdcdc"><dt>Registro de Egreso
+									de la Planta</dt></div>
 									<div class="row g-0 ">
 										<div class="col-md-4">
 											<img src=${imagenEmpleado}
@@ -176,7 +176,8 @@
 									</div>
 									
 									<div
-									class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+									class="card-footer  d-grid gap-2 d-md-flex justify-content-md-end"
+										style="background-color:	#dcdcdc">
 									<form 
 										action=${urlReingresoTransitorio}
 										object=${aut}
@@ -206,6 +207,7 @@
 		function mostrarListaVehiculos(idDiv, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio, idConfirmarButton){
 						
 			const divVehiculos = document.getElementById(idDiv);
+			divVehiculos.hidden = false;
 			document.getElementById(idButtonEgreso).hidden = true;
 			document.getElementById(idCancelarButton).hidden = false;
 			document.getElementById(idEgresoTransitorio).hidden = true;

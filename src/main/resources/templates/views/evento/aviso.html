@@ -41,27 +41,22 @@
 					th:style="${ev.cancelado} == TRUE ? 'background-color: #ff8080' : ''">
 					<h5 class="card-header" th:text="${ev.cancelado} ? 'Evento Cancelado': 'Evento Próximo'"
 						></h5>
-					<div class="card-body"
-						th:style="${ev.cancelado} == TRUE ? 'background-color: #ffb3b3' : ''">
+					<div class="card-body rounded"
+						th:style="${ev.cancelado} == TRUE ? 'background-color: #FFFFFF' : ''" >
 						
-						<p class="card-text">
-							Descripción: <span th:text="${ev.descripcion}"></span>
-						</p>
-						<p class="card-text">
-							Fecha Evento: <span
-								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
-						</p>
-
-						<p class="card-text">
-							Encargado: <span>[[${ev.usuarioSector.nombre}]]
-								[[${ev.usuarioSector.apellido}]]</span>
-						</p>
-
-						<p class="card-text">
-							<span th:text="${ev.cancelado} ? 'Motivo Cancelación: ' : ''"></span> 
+						
+						<ul class="list-group list-group-flush ">
+						  <li class="list-group-item">Descripción: <span th:text="${ev.descripcion}"></span></li>
+						  <li class="list-group-item">Fecha Evento: <span
+								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span></li>
+						  <li class="list-group-item">Encargado: <span>[[${ev.usuarioSector.nombre}]]
+								[[${ev.usuarioSector.apellido}]]</span></li>
+						  <li class="list-group-item">
+						  	<span th:text="${ev.cancelado} ? 'Motivo Cancelación: ' : ''"></span> 
 							<span th:text="${ev.cancelado} ? ${ev.descripcionCancelacion} : ''"></span>
-						</p>
-
+						  </li>
+						</ul>
+						
 					</div>
 
 					<div class="card-footer gap-2 d-md-flex justify-content-md-end">

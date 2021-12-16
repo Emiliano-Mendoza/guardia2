@@ -39,6 +39,7 @@
 			
 			let urlRetiro= "/views/retiro-material/retiro/" + aut.idRetiro;
 			let materialesId = 'materiales' + aut.idRetiro;
+			let myform = 'myform' + aut.idRetiro;
 			
 			//le doy el formato correcto a la fecha
 			let d = new Date(aut.fechaLimite);
@@ -52,6 +53,7 @@
 				let nombre = aut.personal.nombre.toLowerCase();
 				let apellido = aut.personal.apellido.toLowerCase();
 				
+				
 				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
 										
 					resultado.innerHTML += `
@@ -59,35 +61,38 @@
 						<div class="card text-dark bg-light mb-3" >
 						<h5 class="card-header">Autorización de retiro:</h5>
 						<div class="card-body">
-							<p class="card-text ">Empleado autorizado: ${aut.personal.nombre}
-								${aut.personal.apellido}</p>
-							<p class="card-text">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</p>
-							<p class="card-text">Descripción: ${aut.descripcion}</p>
 							
-							<div class="mb-3">
-								<label for="exampleInput1" class="form-label">Materiales:</label>
+							
+							<ul class="list-group list-group-flush">
+							  <li class="list-group-item">Empleado autorizado: ${aut.personal.nombre}
+								${aut.personal.apellido}</li>
+							  <li class="list-group-item">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</li>
+							  <li class="list-group-item">Descripción: ${aut.descripcion}</li>
+							  <li class="list-group-item">
+							  	<label for="exampleInput1" class="form-label">Materiales:</label>
 								<select class="form-select"
 									multiple aria-label="multiple select example" name=${materialesId}
 									id=${materialesId} disabled>
-							</select>
-							
-							<p class="card-text mt-2">
-								Fecha límite: ${dformat}
-							</p>
-
-
-							<form action=${urlRetiro} method="post"
-								onsubmit="return confirm('Confirmar retiro del empleado?');">
-								<div class="form-group">
-								<label for="observacionGuardia">Observación:</label> <input type="text"
+									</select>
+							  </li>
+							  <li class="list-group-item">Fecha límite: ${dformat}</li>
+							  <li class="list-group-item ">
+							  	<label for="observacionGuardia">Observación:</label> <input type="text"
 									class="form-control" id="observacionGuardia"
-									name="observacionGuardia">
-								</div>
-								<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
+									name="observacionGuardia" form=${myform}>
+							  </li>
+							</ul>
+														
+						</div>
+						<div class="card-footer" > 
+							<form action=${urlRetiro} method="post"
+								onsubmit="return confirm('Confirmar retiro del empleado?');" id=${myform}>
+	
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
 									<input type="submit" class="btn btn-primary btn-sm "
 										value="Confirmar Retiro" />
 								</div>
-
+	
 							</form>
 						</div>
 					</div>
@@ -104,40 +109,43 @@
 					
 					resultado.innerHTML += `
 						<div class="col-sm-6 mt-3">
-						<div class="card text-dark bg-light mb-3" >
-						<h5 class="card-header">Autorización de retiro:</h5>
-						<div class="card-body">
-							<p class="card-text ">Retiro externo</p>
-							<p class="card-text">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</p>
-							<p class="card-text">Descripción: ${aut.descripcion}</p>
-							
-							<div class="mb-3">
-								<label for="exampleInput1" class="form-label">Materiales:</label>
+						<div class="card text-dark bg-light mb-3">
+						<h5 class="card-header" >Autorización de retiro:</h5>
+						<div class="card-body">							
+							<ul class="list-group list-group-flush">
+							  <li class="list-group-item">Retiro externo</li>
+							  <li class="list-group-item">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</li>
+							  <li class="list-group-item">Descripción: ${aut.descripcion}</li>
+							  <li class="list-group-item">
+							  	<label for="exampleInput1" class="form-label">Materiales:</label>
 								<select class="form-select"
 									multiple aria-label="multiple select example" name=${materialesId}
 									id=${materialesId} disabled>
-							</select>
-							
-							<p class="card-text mt-2">
-								Fecha límite: ${dformat}
-							</p>
-							
-
-							<form action=${urlRetiro} method="post"
-								onsubmit="return confirm('Confirmar retiro externo?');">
-								<div class="form-group">
-								<label for="observacionGuardia">Observación:</label> <input type="text"
+								</select>
+							  </li>
+							  <li class="list-group-item ">Fecha límite: ${dformat}</li>
+							  <li class="list-group-item ">
+							  	<label for="observacionGuardia">Observación:</label> <input type="text"
 									class="form-control" id="observacionGuardia"
-									name="observacionGuardia">
-								</div>
-								<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2"> 
-									<input type="submit" class="btn btn-primary btn-sm "
-										value="Confirmar Retiro" />
-								</div>
+									name="observacionGuardia" form=${myform}>
+							  </li>
+							</ul>
+													
+							
+						</div>
+						<div class="card-footer" > 
+						
+						<form action=${urlRetiro} method="post"
+							onsubmit="return confirm('Confirmar retiro externo?');" id=${myform}>
+							<div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
+								<input type="submit" class="btn btn-primary btn-sm "
+									value="Confirmar Retiro" />
+							</div>
 
-							</form>
+						</form>
 						</div>
 					</div>
+					
 					</div>
 					`;
 					
