@@ -131,7 +131,7 @@
 		    event.preventDefault();
 		    
 		    if(result = window.confirm("Desea confirmar la autorización al empleado " + nombre+" "+ apellido + "?")){
-		    	send();
+		    	//send();
 		    	this.submit();
 		    }
 		    
@@ -296,10 +296,10 @@
 	}
 	
 	
-	function send() {			
+	/* function send() {			
 		webSocket.send('Se ha añadido una nueva autorización de retiro!');
 		return false;
-	}
+	} */
 	
 	
 	</script>

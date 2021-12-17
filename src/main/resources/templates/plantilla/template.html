@@ -157,7 +157,24 @@
 		<script th:inline="javascript">
 						
 			const roles = document.getElementById("rolesUsuario").textContent;
-						
+			
+			
+			var time = new Date().getTime();
+		     $(document.body).bind("mousemove keypress", function(e) {
+		         time = new Date().getTime();
+		     });
+
+		     function refresh() {
+		         if(new Date().getTime() - time >= 60000) 
+		             window.location.reload(true);
+		         else 
+		             setTimeout(refresh, 10000);
+		     }
+
+		     setTimeout(refresh, 10000);
+			
+			
+			
 			
 /* 			function notificationCounter() {
 				
@@ -172,7 +189,7 @@
 				document.getElementById("NotificationBadge").innerHTML = counterNotification;
 			} <span id="NotificationBadge" class="badge" style="background-color: #f0ad4e">0</span>*/
 			
-
+/* 
 			var webSocket = new WebSocket('ws://localhost:8080/websocket');
 
 			webSocket.onerror = function(event) {
@@ -217,7 +234,7 @@
 				var txt = document.getElementById('inputmessage').value;
 				webSocket.send(txt);
 				return false;
-			}
+			} */
 		</script>
 
 	</footer>

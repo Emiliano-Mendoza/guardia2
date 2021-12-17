@@ -12,21 +12,21 @@
 
 		<div class="row">
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
-				<div class="card text-dark bg-light mb-3">
+				<div class="card text-dark bg-light  mb-3">
 					
 					<h5 class="card-header">Evento Próximo:</h5>
 					<div class="card-body">
 						
-						<ul class="list-group list-group-flush">
-						  <li class="list-group-item">Descripción: <span th:text="${ev.descripcion}"></span></li>
-						  <li class="list-group-item">
+						<ul class="list-group list-group-flush ">
+						  <li class="list-group-item bg-light">Descripción: <span th:text="${ev.descripcion}"></span></li>
+						  <li class="list-group-item bg-light">
 						  	Fecha evento: <span
 								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
 						  </li>
-						  <li class="list-group-item">
+						  <li class="list-group-item bg-light">
 						  	Encargado: <span >[[${ev.usuarioSector.nombre}]] [[${ev.usuarioSector.apellido}]]</span>
 						  </li>
-						  <li class="list-group-item">
+						  <li class="list-group-item bg-light">
 						  	<label for="observacionGuardia">Observación:</label> <input
 									type="text" class="form-control" id="observacionGuardia"
 									name="observacionGuardia" th:form="myform + ${ev.idEvento}">
