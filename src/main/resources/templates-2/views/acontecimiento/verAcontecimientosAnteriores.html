@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+		
+		<div class="gap-2 d-md-flex justify-content-between">
+			<h3 class="mt-3">Acontecimientos de la fecha: 
+			<span th:text="${#dates.format(diaSeleccionado, 'dd-MM-yyyy')}"></span></h3>
+			<button class="btn btn-success btn-sm mt-3" onclick="goBack()">Regresar</button>
+		</div>
+		<table class="table mt-3" id="myTable">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 20%; text-align: center;">Ronda</th>
+					<th scope="col" style="width: 30%; text-align: center;">Descripción</th>
+					<th scope="col" style="width: 20%; text-align: center;">Fecha </th>
+					<th scope="col" style="width: 30%; text-align: center;">Guardia </th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="ac:${listaAcontecimientos}">
+
+					<th scope="row" th:text="${ac.ronda}" style="text-align: center;"></th>
+					<td th:text="${ac.descripcion}" style="text-align: center;"></td>
+					<td th:text="${#dates.format(ac.fecha, 'dd-MM-yyyy')}" style="text-align: center;"></td>
+					<td  style="text-align: center;">[[${ac.usuario.nombre}]] [[${ac.usuario.apellido}]]</td>
+
+				</tr>
+
+			</tbody>
+		</table>
+		
+	</div>
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+		
+	sortTable();	
+	
+	function sortTable() {
+		var table, rows, switching, i, x, y, shouldSwitch;
+		table = document.getElementById("myTable");
+		switching = true;
+		/* Make a loop that will continue until
+		no switching has been done: */
+		while (switching) {
+			// Start by saying: no switching is done:
+			switching = false;
+			rows = table.rows;
+			/* Loop through all table rows (except the
+			first, which contains table headers): */
+			for (i = 1; i < (rows.length - 1); i++) {
+				// Start by saying there should be no switching:
+				shouldSwitch = false;
+				/* Get the two elements you want to compare,
+				one from current row and one from the next: */
+				x = rows[i].getElementsByTagName("TH")[0];
+				y = rows[i + 1].getElementsByTagName("TH")[0];
+				
+				// Check if the two rows should switch place:
+				if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+					// If so, mark as a switch and break the loop:
+					shouldSwitch = true;
+					break;
+				}
+			}
+			if (shouldSwitch) {
+				/* If a switch has been marked, make the switch
+				and mark that a switch has been done: */
+				rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+				switching = true;
+			}
+		}
+	}
+		
+	function goBack(){
+		window.history.back();
+	}
+	</script>
+</body>
+</html>

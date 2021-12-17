@@ -32,18 +32,20 @@
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" th:href="@{/home}">Inicio</a></li>
 
-						<li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
-							class="nav-link dropdown-toggle" id="navbarDropdown1"
-							role="button"> Registrar Actividad </a>
+						<li class="nav-item dropdown"
+							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
+							class="nav-link dropdown-toggle" id="navbarDropdown1" 
+							role="button"> Registrar Actividad
+							</a>
 
 							<ul class="dropdown-menu">
-								<li class="nav-item dropdown"><a
+								<li class="nav-item dropdown mt-0"><a
 									class="dropdown-item dropdown-toggle" href="#" role="button"
 									data-bs-toggle="dropdown"> Registrar Ingreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item" th:href="@{/views/personal}">Personal</a></li>
 										<li><a class="dropdown-item" href="#">Proveedor</a></li>
-										<li><a class="dropdown-item" href="#">Transporte</a></li>
+
 									</ul></li>
 								<li class="nav-item dropdown"><a
 									class="dropdown-item dropdown-toggle" href="#" role="button"
@@ -52,7 +54,7 @@
 										<li><a class="dropdown-item"
 											th:href="@{/views/asistencia/personal-ingresado}">Personal</a></li>
 										<li><a class="dropdown-item" href="#">Proveedor</a></li>
-										<li><a class="dropdown-item" href="#">Transporte</a></li>
+
 
 									</ul></li>
 								<li><a class="dropdown-item" th:href="@{/views/evento}">Evento</a></li>
@@ -63,26 +65,38 @@
 
 							</ul></li>
 
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')"><a
+						<li class="nav-item dropdown"
+							sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link dropdown-toggle" id="navbarDropdown"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Agregar Entidad</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<ul class="dropdown-menu mt-0" aria-labelledby="navbarDropdown">
+
 								<li><a class="dropdown-item"
 									th:href="@{/views/personal/agregar}">Personal</a></li>
 								<li><a class="dropdown-item" href="#">Proveedor</a></li>
-								<li><a class="dropdown-item" href="#">Transporte</a></li>
+								<li><a class="dropdown-item"
+									th:href="@{/views/vehiculo/agregar}">Vehiculo</a></li>
 
 							</ul></li>
-						<li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_AUTORIZADOR')"  ><a class="nav-link active"
-							aria-current="page" th:href="@{/views/personal/autorizar-retiro}">Autorizar
+						<li class="nav-item"
+							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_AUTORIZADOR')"><a
+							class="nav-link active" aria-current="page"
+							th:href="@{/views/personal/autorizar-retiro}">Autorizar
 								Retiro</a></li>
-						<li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_NOTIFICADOR')"><a class="nav-link active"
-							aria-current="page" th:href="@{/views/evento/nuevo}">Nuevo
-								Evento</a></li>
-						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a class="nav-link active"
-							aria-current="page" th:href="@{/views/usuario/crear}">Crear
-								Usuario</a></li>
+						<li class="nav-item"
+							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_NOTIFICADOR')"><a
+							class="nav-link active" aria-current="page"
+							th:href="@{/views/evento/nuevo}">Nuevo Evento</a></li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link active" aria-current="page"
+							th:href="@{/views/usuario/crear}">Crear Usuario</a></li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link active" aria-current="page"
+							th:href="@{/views/usuario/editar}">Editar Usuario</a></li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link active" aria-current="page"
+							th:href="@{/views/personal/editar}">Editar Empleado</a></li>
 
 					</ul>
 
@@ -127,8 +141,9 @@
 
 		<div>
 			<p>Práctica Supervisada</p>
+			<p hidden th:text="${#authentication.getAuthorities()}" id="rolesUsuario"></p>
 		</div>
-
+		
 		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
@@ -139,6 +154,71 @@
 			new bootnavbar();
 		</script>
 
+		<script th:inline="javascript">
+						
+			const roles = document.getElementById("rolesUsuario").textContent;
+						
+			
+/* 			function notificationCounter() {
+				
+				counterNotification += 1;
+			    			  			    
+			    document.getElementById("NotificationBadge").innerHTML = counterNotification;
+			}
+			
+			function ResetCounter(){
+				console.log("hola")
+				counterNotification = 0;
+				document.getElementById("NotificationBadge").innerHTML = counterNotification;
+			} <span id="NotificationBadge" class="badge" style="background-color: #f0ad4e">0</span>*/
+			
+
+			var webSocket = new WebSocket('ws://localhost:8080/websocket');
+
+			webSocket.onerror = function(event) {
+				onError(event)
+			};
+
+			webSocket.onopen = function(event) {
+				onOpen(event)
+			};
+			
+			webSocket.onmessage = function(event) {
+				onMessage(event)
+			};
+		
+			function onMessage(event) {
+				
+				if(roles.indexOf("ROLE_ADMIN")!==-1 || roles.indexOf("ROLE_GUARDIA")!==-1){
+					let notification = new Notification(event.data,{
+						icon: "http://localhost:8080/images/icono.jpg"
+					});
+					
+					notification.onclick = function () {
+						parent.focus();
+				        //window.focus();  no funciona en navegadores actuales
+				        this.close();
+				    };
+								
+				}
+				
+			}
+			
+
+			function onOpen(event) {
+				//document.getElementById('messages').innerHTML = 'Connection established';
+			}
+
+			function onError(event) {
+				//alert(event.data);
+			}
+
+			function send() {
+				var txt = document.getElementById('inputmessage').value;
+				webSocket.send(txt);
+				return false;
+			}
+		</script>
 
 	</footer>
 

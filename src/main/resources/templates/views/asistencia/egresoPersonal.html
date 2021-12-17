@@ -50,7 +50,12 @@
 						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
 														
-							let imagenEmpleado= `/recursos/${aut.personal.imagen}` ;
+							//let imagenEmpleado= `/recursos/${aut.personal.imagen}`;
+							
+							//reemplazo el espacion en blanco por %20 para tener el path correcto
+							let imagenAux = aut.personal.imagen.replace(/\s/g, "%20");
+							let imagenEmpleado= `/recursos/${imagenAux}` ;
+							
 							let idFoo= `foo${aut.personal.nroLegajo}`;							
 						
 							//le doy el formato correcto a la fecha

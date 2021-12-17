@@ -135,9 +135,8 @@
 	
 		function editarEmpleado(nroLegajo, nombre, apellido, sector, imagen){
 			
-			let urlA = "/views/personal/editar/" + nroLegajo;		
-			let imagenAux = imagen.replace(/\s/g, "%20");
-			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			let urlA = "/views/personal/editar/" + nroLegajo;
+			let imagenEmpleado= `/recursos/${imagen}` ;
 			
 			cardEditar.innerHTML = `
 				<div class="col-md-8">
@@ -172,7 +171,7 @@
 							<div class="form-group">
 								<label for="nombre">Nombre:</label> <input type="text"
 									class="form-control" id="nombre" placeholder="Nombre"
-									name="nombre" required value="${nombre}">
+									name="nombre" required value=${nombre}>
 							</div>
 						</div>
 
@@ -180,7 +179,7 @@
 							<div class="form-group">
 								<label for="apellido">Apellido:</label> <input type="text"
 									class="form-control" id="apellido" placeholder="Apellido"
-									name="apellido" required value="${apellido}">
+									name="apellido" required value=${apellido}>
 							</div>
 						</div>
 					</div>

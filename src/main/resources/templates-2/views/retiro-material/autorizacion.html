@@ -11,16 +11,20 @@
 
 
 	<div class="container mt-3">
-		<h2>Listado del Personal:</h2>
+		<div class="gap-2 d-md-flex justify-content-between">
+			<h2>Listado del Personal:</h2>
+			<button class="btn btn-info btn-sm" onclick="retiroExterno()">Retiro Externo</button>
+		</div>
+		
 
-		<input type="text" id="formulario" class="form-control">
+		<input type="text" id="formulario" class="form-control mt-2">
 		<table class="table" style="width: 100%">
 			<thead>
 				<tr>
-					<th scope="col" style="width: 15%; text-align: center;">Legajo</th>
-					<th scope="col" style="width: 20%; text-align: center;">Nombre</th>
-					<th scope="col" style="width: 20%; text-align: center;">Apellido</th>
-					<th scope="col" style="width: 20%; text-align: center;">Sector</th>
+					<th class="sortable" scope="col" style="width: 15%; text-align: center;">Legajo</th>
+					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Apellido</th>
+					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Sector</th>
 					<th scope="col" style="width: 25%; text-align: center;">Autorizar
 						Retiro</th>
 				</tr>
@@ -32,10 +36,12 @@
 	</div>
 	<div class="mt-5"></div>
 
-
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
 	<script th:inline="javascript">
 	
-	var personal = /*[[${personal}]]*/ 'default';	
+	var personal = /*[[${personal}]]*/ 'default';
+	var listaMateriales = /*[[${listaMateriales}]]*/ 'default';
 	
 	const formulario = document.querySelector('#formulario');
 	const resultado = document.querySelector('#fila');
@@ -46,7 +52,6 @@
 	const filtrar = () => {
 		resultado.innerHTML = '';
 		
-		console.log(formulario.value);
 		const texto = formulario.value.toLowerCase();
 		for(let p of personal){
 			let nombre = p.nombre.toLowerCase();
@@ -57,7 +62,7 @@
 								
 				resultado.innerHTML += `
 				<tr>
-					<th scope="row" style="text-align:center;">${p.nroLegajo}</th>
+					<td scope="row" style="text-align:center;">${p.nroLegajo}</td>
 					<td style="text-align:center;">${p.nombre}</td>
 					<td style="text-align:center;">${p.apellido}</td>
 					<td style="text-align:center;">${p.sector}</td>
@@ -82,13 +87,22 @@
 			<h5>Autorización de Retiro de Material</h5>
 			<p class="mt-3">Empleado autorizado: ${nombre} ${apellido}</p>
 			
-			<form id="formAutorization" action=${urlA} method="post"
-				onsubmit="return confirm('Desea confirmar la autorización al empleado ${nombre} ${apellido}?');">
+			<form id="formAut" action=${urlA} method="post"
+				>
 				
 				<div class="mb-3">
 					<label for="exampleInputEmail1" class="form-label">Descripción:</label>
 					<textarea class="form-control" id="desc" name="desc"
 						rows="3" required></textarea>
+				</div>
+				<div class="mb-3">
+				<label for="exampleInput1" class="form-label">Materiales: </label>
+				<small class="text-muted"><span> (Ctrl + click para selección múltiple)</span></small>
+				<select class="form-select"
+					multiple aria-label="multiple select example" name="materiales"
+					id="materiales">
+
+				</select>
 				</div>
 				<div class="mb-3">
 					<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
@@ -109,8 +123,22 @@
 		`
 		
 		SetDate();
+		SetMateriales();
 
 		window.scroll(0, 0);
+		
+ 		$("#formAut").on('submit', function(event){
+		    event.preventDefault();
+		    
+		    if(result = window.confirm("Desea confirmar la autorización al empleado " + nombre+" "+ apellido + "?")){
+		    	send();
+		    	this.submit();
+		    }
+		    
+		    
+		});		
+		
+		
 	}
 	
 	function CloseCard(){
@@ -140,15 +168,143 @@
 		document.getElementById('fechaLimite').setAttribute("value", tomorrow);
 		
 	}
+	function SetMateriales(){
+		const materialSelect = document.querySelector('#materiales');
+		
+		for(let mat of listaMateriales){
+			
+			if(mat.id_material==1){
+				materialSelect.innerHTML += `<option value=${mat.id_material} selected>${mat.material}</option>`;
+			}else{
+				materialSelect.innerHTML += `<option value=${mat.id_material}>${mat.material}</option>`;
+			}
+			
+			
+		}				
+	}
+	
 	
 	formulario.addEventListener('keyup', filtrar);
 	filtrar();
 	
-	/*
+	function sortTable(selector, compFunc) {
+	      var mySelector = '.sortable';
+	      var myCompFunc = function($td1, $td2, isAsc) {
+	        var v1 = $.trim($td1.text()).replace(/,|\s+|%/g, '');
+	        var v2 = $.trim($td2.text()).replace(/,|\s+|%/g, '');
+	        var pattern = /^\d+(\.\d*)?$/;
+	        if (pattern.test(v1) && pattern.test(v2)) {
+	          v1 = parseFloat(v1);
+	          v2 = parseFloat(v2);
+	        }
 	
-	*/
+	        return isAsc ? v1 > v2 : v1 < v2;
+	      };
+	
+	      var doSort = function($tbody, index, compFunc, isAsc)
+	      {
+	        var $trList = $tbody.find("tr");
+	        var len = $trList.length;
+	        for(var i=0; i<len-1; i++) {
+	          for(var j=0; j<len-i-1; j++) {
+	            var $td1 = $trList.eq(j).find("td").eq(index);
+	            var $td2 = $trList.eq(j+1).find("td").eq(index);
+	
+	            if (compFunc($td1, $td2, isAsc)) {
+	              var t = $trList.eq(j+1);
+	              $trList.eq(j).insertAfter(t);
+	              $trList = $tbody.find("tr");
+	            }
+	          }
+	        }
+    	}
+
+	    var init = function() {
+	      var $th = $("th" + selector);
+	      this.$table = $th.closest("table");
+	      var that = this;
+	      $th.click(function(){
+	        var index = $(this).index();
+	        var asc = $(this).attr('data-asc');
+	        isAsc = asc === undefined ? true : (asc > 0 ? true : false);
+	
+	        doSort(that.$table.find("tbody"), index, compFunc, isAsc);
+	
+	        $(this).attr('data-asc', 1 - (isAsc ? 1 : 0));
+	      });
+	
+	      $th.css({'cursor': 'pointer'})
+	         .attr('title', 'Haga clic para ordenar')
+	         .append('&nbsp;<i class="fa fa-long-arrow-down" style="color:#2196F3" aria-hidden="true"></i><i class="fa fa-long-arrow-up" style="color:#2196F3" aria-hidden="true"></i>');
+	    };
+	
+	
+	    selector = selector || mySelector;
+	    compFunc = compFunc || myCompFunc;
+	
+	    init();
+	  }
+	sortTable();
+	
+	
+	function retiroExterno(){
+		
+		let urlA = "/views/retiro-material/autorizacion";
+		
+		cardAutorization.innerHTML = `
+				<h5>Autorización de Retiro de Material</h5>
+				<p class="mt-3">Retiro externo</p>
+			
+				<form id="formAut" action=${urlA} method="post"
+				>
+				
+				<div class="mb-3">
+					<label for="exampleInputEmail1" class="form-label">Descripción:</label>
+					<textarea class="form-control" id="desc" name="desc"
+						rows="3" required></textarea>
+				</div>
+				<div class="mb-3">
+				<label for="exampleInput1" class="form-label">Materiales:</label>
+				<select class="form-select"
+					multiple aria-label="multiple select example" name="materiales"
+					id="materiales">
+
+				</select>
+				</div>
+				<div class="mb-3">
+					<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
+					<input type="date" id="fechaLimite" name="fechaLimite"
+			       		>
+				</div>
+				<div>
+					<input type="hidden" id="nroLegajo" name="nroLegajo" value=0>
+				</div>
+				<div
+				class="card-footer bg-white d-grid gap-2 d-md-flex justify-content-between">
+				<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+					>Cancelar</button> 
+					<input type="submit"
+					class="btn btn-secondary btn-sm" value="Confirmar" />
+			</div>
+			</form>
+		`;
+		
+		SetDate();
+		SetMateriales();
+		window.scroll(0, 0);
+		
+	}
+	
+	
+	function send() {			
+		webSocket.send('Se ha añadido una nueva autorización de retiro!');
+		return false;
+	}
+	
+	
 	</script>
 
-	<footer th:replace="plantilla/template ::footer"></footer>
+
+	
 </body>
 </html>

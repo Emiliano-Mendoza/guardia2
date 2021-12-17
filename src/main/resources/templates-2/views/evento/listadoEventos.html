@@ -13,32 +13,38 @@
 		<div class="row">
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
 				<div class="card text-dark bg-light mb-3">
+					
 					<h5 class="card-header">Evento Próximo:</h5>
 					<div class="card-body">
-
-						<p class="card-text">
-							Descripción: <span th:text="${ev.descripcion}"></span>
-						</p>
-						<p class="card-text">
-							Fecha evento: <span
+						
+						<ul class="list-group list-group-flush">
+						  <li class="list-group-item">Descripción: <span th:text="${ev.descripcion}"></span></li>
+						  <li class="list-group-item">
+						  	Fecha evento: <span
 								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
-						</p>
-
-						<form method="post"
-							th:action="@{/views/evento/ocurrencia/} + ${ev.idEvento}"
-							onsubmit="return confirm('Confirmar ocurrencia del evento?');">
-							<div class="form-group">
-								<label for="observacionGuardia">Observación:</label> <input
+						  </li>
+						  <li class="list-group-item">
+						  	Encargado: <span >[[${ev.usuarioSector.nombre}]] [[${ev.usuarioSector.apellido}]]</span>
+						  </li>
+						  <li class="list-group-item">
+						  	<label for="observacionGuardia">Observación:</label> <input
 									type="text" class="form-control" id="observacionGuardia"
-									name="observacionGuardia">
-							</div>
-							<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+									name="observacionGuardia" th:form="myform + ${ev.idEvento}">
+						  </li>
+						</ul>
+										
+						
+					</div>
+					<form method="post"
+							th:action="@{/views/evento/ocurrencia/} + ${ev.idEvento}"
+							onsubmit="return confirm('Confirmar ocurrencia del evento?');" th:id="myform + ${ev.idEvento}">
+
+							<div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end mt-2">
 								<input type="submit" class="btn btn-primary btn-sm "
 									value="Confirmar Evento" />
 							</div>
 
-						</form>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -51,6 +57,8 @@
 
 	<script th:inline="javascript">
 		
+
+	
 	</script>
 </body>
 </html>

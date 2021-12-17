@@ -102,7 +102,7 @@
 					<div class="card-text">
 						<label for="exampleInput" class="form-label">Descripción:</label>
 						<textarea class="form-control" rows="3" id="descripcion" name="descripcion"
-							required placeholder="${descripcion}"></textarea>
+							required >${descripcion}</textarea>
 					</div>
 					<div class="card-text mt-3">
 						<label for="exampleInputDate" class="form-label">Fecha
@@ -141,16 +141,13 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 				<div class="card-body">
-					<p class="card-text">
-						Descripción: <span>${descripcion}</span>
-					</p>
-					<p class="card-text">
-						Fecha evento: <span>${fechaEvento}</span>
-					</p>
-
-					<p class="card-text">
-						Encargado: <span>${nombre} ${apellido}</span>
-					</p>
+					
+					<ul class="list-group list-group-flush">
+					  <li class="list-group-item">Descripción: <span>${descripcion}</span></li>
+					  <li class="list-group-item">Fecha Evento: <span>${fechaEvento}</span></li>
+					  <li class="list-group-item">Encargado: <span>${nombre} ${apellido}</span></li>
+					</ul>	
+					
 					
 				</div>
 
@@ -176,22 +173,17 @@
 			
 				<form action=${action} method="post" onsubmit="return confirm('Confimar la cancelación del evento?');">
 					<div class="card-body">
-						<p class="card-text">
-							Descripción: <span>${descripcion}</span>
-						</p>
-						<p class="card-text">
-							Fecha evento: <span>${fechaEvento}</span>
-						</p>
-	
-						<p class="card-text">
-							Encargado: <span>${nombre} ${apellido}</span>
-						</p>
 						
-						<div class="card-text">
-						<label for="exampleInput" class="form-label">Motivo de la cancelación:</label>
+						<ul class="list-group list-group-flush">
+						  <li class="list-group-item">Descripción: <span>${descripcion}</span></li>
+						  <li class="list-group-item">Fecha Evento: <span>${fechaEvento}</span></li>
+						  <li class="list-group-item">Encargado: <span>${nombre} ${apellido}</span></li>
+						  <li class="list-group-item">
+						 	 <label for="exampleInput" class="form-label">Motivo de la cancelación:</label>
 							<textarea class="form-control" rows="3" id="descripcionCancelacion" name="descripcionCancelacion"
 								required ></textarea>
-						</div>
+						  </li>
+						</ul>						
 						
 					</div>
 	

@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2;
 
+/*
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,3 +47,4 @@ public class WebSocketTest {
   }
 
 }
+*/
