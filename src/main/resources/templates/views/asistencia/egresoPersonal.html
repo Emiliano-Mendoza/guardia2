@@ -5,8 +5,6 @@
 <body>
 
 	<header th:replace="plantilla/template :: header"></header>
-
-	<div> <?php echo "Hello World" ?> </div>
 	
 	<div class="container mt-3">
 		
@@ -88,7 +86,7 @@
 										<div class="col-md-4" >
 											<img src=${imagenEmpleado}
 												id=${idFoo}
-												style="max-width: 100%; height: auto"
+												width="215" height="230"
 												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 										</div>
 										<div class="card-body col-md-8">
@@ -164,7 +162,7 @@
 										<div class="col-md-4">
 											<img src=${imagenEmpleado}
 												id=${idFoo}
-												style="max-width: 100%; height: auto;"
+												width="215" height="230"
 												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 										</div>
 										<div class="card-body col-md-8">
@@ -176,6 +174,7 @@
 											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
 											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+											  <li class="list-group-item" hidden></li>
 											</ul>
 											
 										</div>

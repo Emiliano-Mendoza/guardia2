@@ -46,21 +46,6 @@ public class AsistenciaController {
 		return "home";
 	}
 	
-	/* OBSOLETO
-	@GetMapping("/empleado/{nroLegajo}")
-	public String mostrarNuevaAsistencia(@PathVariable("nroLegajo") int nroLegajo, Model model) throws Exception{
-		
-		try {
-			Personal personal = personalServ.findById(nroLegajo).orElseThrow();
-			System.out.println(personal.toString());
-			model.addAttribute("personal", personal);
-		}catch(Exception e) {
-			return "home";
-		}
-		
-		return "/views/asistencia/nuevaAsistencia";
-	}
-	*/
 	
 	@PostMapping("/ingreso-empleado/{nroLegajo}")
 	public String agregarNuevaAsistencia(@PathVariable("nroLegajo") int nroLegajo,
@@ -68,7 +53,6 @@ public class AsistenciaController {
 			
 		try {
 			Personal personal = personalServ.findById(nroLegajo).orElseThrow();
-			System.out.println(personal.toString());
 			
 			Asistencia asis = new Asistencia();
 			asis.setPersonal(personal);
@@ -136,7 +120,6 @@ public class AsistenciaController {
 						@RequestParam(name = "vehiculo") int idVehiculo,
 						RedirectAttributes atributos) {
 		
-		System.out.println(idVehiculo);
 			
 		try {
 			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();

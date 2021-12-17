@@ -7,8 +7,10 @@
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div class="container d-flex justify-content-center mt-3" id="cardAsis">
-
+	<div class="container" >
+		
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardAsis"></div>
+		
 	</div>
 
 	<div class="container">
@@ -156,13 +158,13 @@
 			let imagenEmpleado= `/recursos/${imagenAux}` ;
 			
 			cardAsis.innerHTML = `
-				<div class="card mb-3" style="max-width: 700px;">
+				<div class="col-md-8" >
 				<div class="card-header bg-dark text-white ">Registro de Ingreso
 					a la Planta</div>
 				<div class="row g-0 ">
 					<div class="col-md-4" id="imagen">
-						<img src=${imagenEmpleado}
-						style="max-width: 100%; height: auto;"
+						<img src=${imagenEmpleado} width="270" height="270"
+						
 						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 					</div>
 					<div class="col-md-8">
@@ -170,7 +172,7 @@
 							<h5 class="card-title">Registrar asistencia:</h5>
 							
 							
-							<ul class="list-group list-group-flush">
+							<ul class="list-group list-group-flush mt-4">
 							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
 							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
 							  <li class="list-group-item">Sector de trabajo: ${sector}</li>
