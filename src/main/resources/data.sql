@@ -14,13 +14,13 @@ INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(51
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(965,'CAIROLI','FERNANDO DAVID','Tintas', '965.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(138,'CAIROLI','IVAN ALEJANDRO','Administrativo', '138.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(966,'CAIROLI','JAVIER MARCELO','Impresión', '966.jpg');
-INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(34,'CAMARA','OSVALDO RAUL','Produccion', '34.jpg');
+INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(34,'CAMARA','OSVALDO RAUL','Producción', '34.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(50,'CAPOBLE','RUBEN DARIO','Almacenes', '50.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(43,'CARDAMONE','JUAN CARLOS','Preprensa', '43.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(8,'CHA','JORGE ALBERTO','Mantenimiento Mec', '8.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(7,'CHIOZZA','OSVALDO DANIEL','Impresión', '7.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(80,'COSTANZO','RUBEN ARISTIDES','Mantenimiento Mec', '80.jpg');
-INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(83,'DE MANAS','ANDRES','Produccion', '83.jpg');
+INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(83,'DE MANAS','ANDRES','Producción', '83.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(942,'DE SANCTIS','MAXIMILIANO','Descartonado', '942.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(40,'DIAZ','SERGIO MIGUEL','Informática', '40.jpg');
 INSERT INTO public.personal (nro_legajo,apellido,nombre,sector,imagen) VALUES(67,'DIAZ','HECTOR FEDERICO','Descartonado', '67.jpg');

@@ -11,5 +11,6 @@ public interface ProveedorService {
 	public List<Proveedor> getAllProveedor();
 	public void eliminarProveedor(int idProveedor);
 	public Optional<Proveedor> findById(int idProveedor);
+	public boolean existsByRazonSocial(String razon);
 	
 }

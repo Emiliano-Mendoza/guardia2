@@ -43,7 +43,7 @@
 									class="dropdown-item dropdown-toggle" href="#" role="button"
 									data-bs-toggle="dropdown"> Registrar Ingreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item" th:href="@{/views/personal}">Personal</a></li>
+										<li><a class="dropdown-item" th:href="@{/views/personal}">Empleado</a></li>
 										<li><a class="dropdown-item" href="#">Proveedor</a></li>
 
 									</ul></li>
@@ -52,7 +52,7 @@
 									data-bs-toggle="dropdown"> Registrar Egreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item"
-											th:href="@{/views/asistencia/personal-ingresado}">Personal</a></li>
+											th:href="@{/views/asistencia/personal-ingresado}">Empleado</a></li>
 										<li><a class="dropdown-item" href="#">Proveedor</a></li>
 
 
@@ -73,12 +73,31 @@
 							<ul class="dropdown-menu mt-0" aria-labelledby="navbarDropdown">
 
 								<li><a class="dropdown-item"
-									th:href="@{/views/personal/agregar}">Personal</a></li>
-								<li><a class="dropdown-item" href="#">Proveedor</a></li>
+									th:href="@{/views/personal/agregar}">Empleado</a></li>
+								<li><a class="dropdown-item" 
+									th:href="@{/views/proveedor/agregar}">Proveedor</a></li>
 								<li><a class="dropdown-item"
 									th:href="@{/views/vehiculo/agregar}">Vehiculo</a></li>
 
 							</ul></li>
+							
+							<li class="nav-item dropdown"
+							sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link dropdown-toggle" id="navbarDropdown2"
+							role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Editar Entidad</a>
+							<ul class="dropdown-menu mt-0" aria-labelledby="navbarDropdown">
+
+								<li><a class="dropdown-item"
+									th:href="@{/views/personal/editar}">Empleado</a></li>
+								<li><a class="dropdown-item" 
+									href=#>Proveedor</a></li>
+								<li><a class="dropdown-item"
+									href=#>Vehiculo</a></li>
+
+							</ul></li>
+							
+							
 						<li class="nav-item"
 							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_AUTORIZADOR')"><a
 							class="nav-link active" aria-current="page"
@@ -94,10 +113,9 @@
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/usuario/editar}">Editar Usuario</a></li>
-						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
-							class="nav-link active" aria-current="page"
-							th:href="@{/views/personal/editar}">Editar Empleado</a></li>
-
+						
+						
+						
 					</ul>
 
 					<ul class="navbar-nav mr-auto">
@@ -156,85 +174,27 @@
 
 		<script th:inline="javascript">
 						
-			const roles = document.getElementById("rolesUsuario").textContent;
-			
+			//const roles = document.getElementById("rolesUsuario").textContent;			
 			
 			var time = new Date().getTime();
+			
+			// cada vez que se mueva el mouse en el body o se toque una tecla se guarda el tiempo en el que se hizo
 		     $(document.body).bind("mousemove keypress", function(e) {
 		         time = new Date().getTime();
 		     });
 
 		     function refresh() {
-		         if(new Date().getTime() - time >= 60000) 
+		    	 //Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
+		         if(new Date().getTime() - time >= 30000) 
 		             window.location.reload(true);
 		         else 
 		             setTimeout(refresh, 10000);
 		     }
-
+		     
+			// Se llama a refresh cada 10 segundos
 		     setTimeout(refresh, 10000);
 			
-			
-			
-			
-/* 			function notificationCounter() {
-				
-				counterNotification += 1;
-			    			  			    
-			    document.getElementById("NotificationBadge").innerHTML = counterNotification;
-			}
-			
-			function ResetCounter(){
-				console.log("hola")
-				counterNotification = 0;
-				document.getElementById("NotificationBadge").innerHTML = counterNotification;
-			} <span id="NotificationBadge" class="badge" style="background-color: #f0ad4e">0</span>*/
-			
-/* 
-			var webSocket = new WebSocket('ws://localhost:8080/websocket');
 
-			webSocket.onerror = function(event) {
-				onError(event)
-			};
-
-			webSocket.onopen = function(event) {
-				onOpen(event)
-			};
-			
-			webSocket.onmessage = function(event) {
-				onMessage(event)
-			};
-		
-			function onMessage(event) {
-				
-				if(roles.indexOf("ROLE_ADMIN")!==-1 || roles.indexOf("ROLE_GUARDIA")!==-1){
-					let notification = new Notification(event.data,{
-						icon: "http://localhost:8080/images/icono.jpg"
-					});
-					
-					notification.onclick = function () {
-						parent.focus();
-				        //window.focus();  no funciona en navegadores actuales
-				        this.close();
-				    };
-								
-				}
-				
-			}
-			
-
-			function onOpen(event) {
-				//document.getElementById('messages').innerHTML = 'Connection established';
-			}
-
-			function onError(event) {
-				//alert(event.data);
-			}
-
-			function send() {
-				var txt = document.getElementById('inputmessage').value;
-				webSocket.send(txt);
-				return false;
-			} */
 		</script>
 
 	</footer>

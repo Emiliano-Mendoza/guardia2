@@ -1,5 +1,8 @@
 package com.practicasupervisada.guardia2.controller;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.VehiculoService;
 
@@ -30,6 +34,16 @@ public class VehiculoController {
 		model.addAttribute("vehiculo", vehiculo);
 		
 		return "/views/vehiculo/agregar_vehiculo";
+	}
+	
+	@GetMapping("/editar")
+	public String listarVehiculo(Model model) {
+		
+		List<Vehiculo> listaVehiculo = vehiculoServ.getAllVehiculo();	
+		
+		model.addAttribute("listaVehiculo", listaVehiculo);
+		
+		return "/views/personal/editar_vehiculo";
 	}
 	
 	@PostMapping("/guardar")

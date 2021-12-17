@@ -37,11 +37,11 @@
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
-
+	
+	
 	<script th:inline="javascript"> 
 		
 		var personal = /*[[${personal}]]*/ 'default';
-		// var link = /*[[@{/views/asistencia/empleado/}]]*/'';
 		var urlAsis = '';
 		
 		
@@ -50,7 +50,6 @@
 		const cardAsis = document.querySelector('#cardAsis');
 		cardAsis.innerHTML = '';
 		
-		//
 		function sortTable(selector, compFunc) {
 	      var mySelector = '.sortable';
 	      var myCompFunc = function($td1, $td2, isAsc) {
@@ -108,9 +107,6 @@
 
       init();
     }
-		//
-		
-		
 		
 		const filtrar = () => {
 			resultado.innerHTML = '';
@@ -144,7 +140,6 @@
 						</td>
 					</tr>
 					`
-					//<td ><img src="${imagePath}" style="width:70px;height:70px"></td>
 				}
 			}
 		}

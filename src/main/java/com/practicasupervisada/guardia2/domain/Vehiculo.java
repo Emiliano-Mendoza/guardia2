@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="Vehiculo")
@@ -13,8 +14,11 @@ public class Vehiculo{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idVehiculo;
+	@NotEmpty
 	private String patente;
+	@NotEmpty
 	private String marca;
+	@NotEmpty
 	private String modelo;
 	
 	

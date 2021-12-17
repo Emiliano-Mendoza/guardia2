@@ -37,4 +37,9 @@ public class ProovedorServiceImp implements ProveedorService {
 		return proveedorRepo.findById(idProveedor);
 	}
 
+	@Override
+	public boolean existsByRazonSocial(String razon) {
+		return proveedorRepo.existsByRazonSocial(razon);
+	}
+
 }
