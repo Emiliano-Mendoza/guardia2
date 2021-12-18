@@ -182,7 +182,7 @@ public class PersonalController {
 			Collections.sort(listaPersonal);
 			
 			model.addAttribute("listaPersonal", listaPersonal);
-			model.addAttribute("error", "No se pudo editar el empleado");
+			model.addAttribute("error", "Datos incompletos. No se pudo editar el empleado");
 			
 			return "/views/personal/editarPersonal";
 		}

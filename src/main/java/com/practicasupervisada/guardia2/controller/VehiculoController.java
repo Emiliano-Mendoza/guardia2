@@ -11,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Personal;
@@ -43,7 +45,7 @@ public class VehiculoController {
 		
 		model.addAttribute("listaVehiculo", listaVehiculo);
 		
-		return "/views/personal/editar_vehiculo";
+		return "/views/vehiculo/editar_vehiculo";
 	}
 	
 	@PostMapping("/guardar")
@@ -71,5 +73,44 @@ public class VehiculoController {
 		
 		atributos.addFlashAttribute("success", "Vehiculo cargado exitosamente!");
 		return "redirect:/views/vehiculo/agregar";
+	}
+	
+	@PostMapping("/editar/{idVehiculo}")
+	public String editar(@PathVariable("idVehiculo") int idVehiculo,
+						 @RequestParam(name = "marca") String marca,
+						 @RequestParam(name = "modelo") String modelo,
+						 @RequestParam(name = "patente") String patente,
+						 Model model,
+						 RedirectAttributes atributos){
+		
+		Vehiculo vehiculo = vehiculoServ.findById(idVehiculo).get();
+		
+		if(marca.length()==0 || modelo.length()==0 || patente.length()==0 || vehiculo == null) {
+			
+			List<Vehiculo> listaVehiculo = vehiculoServ.getAllVehiculo();	
+			
+			model.addAttribute("listaVehiculo", listaVehiculo);
+			
+			model.addAttribute("error", "No se pudo editar el nuevo vehiculo");
+			
+			System.out.println("Formulario incorrecto");			
+			
+			return "/views/vehiculo/editar_vehiculo";
+		}
+		
+				
+		try {
+			vehiculo.setMarca(marca);
+			vehiculo.setModelo(modelo);
+			vehiculo.setPatente(patente);
+			
+			System.out.println("Vehiculo editado correctamente.");
+			vehiculoServ.crearVehiculo(vehiculo);			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Vehiculo editado exitosamente!");
+		return "redirect:/views/vehiculo/editar";
 	}
 }

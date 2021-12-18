@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.practicasupervisada.guardia2.dao.RolesRepo;
-import com.practicasupervisada.guardia2.domain.Roles;
 import com.practicasupervisada.guardia2.domain.Usuario;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 
@@ -69,9 +65,16 @@ public class UsuarioController {
 						  RedirectAttributes atributos,
 						  Model model) {
 		
+		//verifico si ya existe el username
+		if(usuarioServ.findByUsuario(usuario)!=null) {
+
+			model.addAttribute("error", "Usuario existente. No se pudo crear el nuevo usuario.");
+			return "/views/usuario/nuevoUsuario";
+		}
 		
-		if(usuario!=null && contraseña!=null && !roles.isEmpty() &&
-				usuarioServ.findByUsuario(usuario)==null && nombre!=null && apellido!=null) {
+		if(usuario!=null && contraseña!=null && !roles.isEmpty() && nombre!=null && apellido!=null
+				&& usuario.length()>0 && contraseña.length()>5 && nombre.length()>0 && apellido.length()>0) {
+			
 			Usuario usuarioNuevo = new Usuario();
 			usuarioNuevo.setContraseña(contraseña);
 			usuarioNuevo.setUsuario(usuario);
@@ -87,25 +90,10 @@ public class UsuarioController {
 			}
 		}else {
 			
-			model.addAttribute("error", "No se pudo crear el nuevo usuario");
+			model.addAttribute("error", "Datos incompletos. No se pudo crear el nuevo usuario");
 			return "/views/usuario/nuevoUsuario";
 		}
 		
-		/*
-		if(result.hasErrors()) {
-			
-			model.addAttribute("usuario", usuario);
-			System.out.println("Formulario incorrecto");
-			System.out.println(result.toString());
-			
-			return "/views/usuario/nuevoUsuario";
-		}
-		
-		try {
-			usuarioServ.crearUsuario(usuario);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		} */
 		
 		atributos.addFlashAttribute("success", "Usuario creado exitosamente!");
 		return "redirect:/views/usuario/crear";
@@ -146,7 +134,6 @@ public class UsuarioController {
 				System.out.println("Se editó la contraseña del usuario");
 			}
 								
-			//System.out.println(user);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
