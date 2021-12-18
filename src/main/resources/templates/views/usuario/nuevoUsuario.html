@@ -30,6 +30,8 @@
 									<label for="contraseña">Contraseña:</label> <input
 										type="password" class="form-control" id="contraseña"
 										name="contraseña" placeholder="Contraseña del usuario"
+										pattern="(?=.*\d)(?=.*[a-z]).{6,}" 
+										title="La contraseña debe tener al menos un número, una letra en minúscula y como mínimo 6 caracteres"
 										required>
 								</div>
 							</div>

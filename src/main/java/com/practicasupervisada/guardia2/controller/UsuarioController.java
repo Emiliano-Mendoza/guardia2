@@ -1,10 +1,13 @@
 package com.practicasupervisada.guardia2.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +36,14 @@ public class UsuarioController {
 	public String listarUsuarios(Model model) {
 		
 		List<Usuario> listaUsuarios = usuarioServ.getAllUsuario();
+		
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		Usuario usuarioActual = usuarioServ.findByUsuario(auth.getName());
+//		
+//		//saco de la lista al usuario actual
+//		listaUsuarios = listaUsuarios.stream()
+//				.filter(us -> us.getIdUsuario() != usuarioActual.getIdUsuario())
+//				.collect(Collectors.toList());
 		
 		model.addAttribute("listaUsuarios", listaUsuarios);
 		
@@ -104,11 +115,12 @@ public class UsuarioController {
 	public String editarUsuario(@PathVariable("idUsuario") int idUsuario,
 								@RequestParam(name = "nombre") String nombre,
 								@RequestParam(name = "apellido") String apellido,
+								@RequestParam(name = "contraseña", required = false) String contraseña,
 								@RequestParam(name = "rol") List<String> roles,
 								@RequestParam(name = "enabled", required = false) String enabled,
 								RedirectAttributes atributos,
 								Model model) {
-		
+				
 		try {
 			Usuario user = usuarioServ.findById(idUsuario).orElseThrow();
 			user.setNombre(nombre);
@@ -121,10 +133,20 @@ public class UsuarioController {
 			}
 			
 			user.getRoles().clear();
-					
-			usuarioServ.editarUsuario(user, roles);
 			
-			System.out.println(user);
+			if(contraseña.equals("") || contraseña == null) {
+				
+				usuarioServ.editarUsuario(user, roles);
+				System.out.println("Se editó el usuario sin modificar la contraseña");
+				
+			}else {
+				
+				user.setContraseña(contraseña);
+				usuarioServ.crearUsuario(user, roles);
+				System.out.println("Se editó la contraseña del usuario");
+			}
+								
+			//System.out.println(user);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

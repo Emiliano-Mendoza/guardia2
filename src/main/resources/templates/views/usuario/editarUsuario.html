@@ -62,6 +62,24 @@
 			
 				<form action=${urlA} method="post" autocomplete="off">
 					
+					<div class="card-body row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="usuario">Nombre de usuario:</label> <input type="text"
+									class="form-control" id="usuario"
+									name="usuario" required value="${us.usuario}" disabled>
+							</div>
+						</div>
+	
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="contraseña">Contraseña: <span><small class="text-muted" >(No obligatorio)</small></span></label> <input type="password"
+									class="form-control" id="contraseña" placeholder="Nueva contraseña del usuario"									
+									title="La contraseña debe tener al menos un número, una letra en minúscula y como mínimo 6 caracteres"											
+									name="contraseña" >
+							</div>
+						</div>
+					</div>	
 				
 					<div class="card-body row">
 						<div class="col-md-6">
@@ -124,6 +142,8 @@
 
 			`;
 			
+			document.getElementById('contraseña').pattern = "(?=.*\\d)(?=.*[a-z]).{6,}";
+					
 			rolesSeleccionados(us.roles, idOption1, idOption2, idOption3, idOption4);
 			
 			const checkB = document.getElementById('enabled');
@@ -131,6 +151,10 @@
 			if(us.enabled){
 				checkB.checked = true;
 			}else checkB.checked = false;
+			
+			
+			window.scroll(0, 0);
+			
 		}
 		
 		function cancelarEdit(){			
