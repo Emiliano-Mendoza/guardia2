@@ -1,5 +1,7 @@
 package com.practicasupervisada.guardia2.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Proveedor;
+import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.ProveedorService;
 
 @Controller
@@ -32,6 +37,15 @@ public class ProveedorController {
 		return "/views/proveedor/agregarProveedor";
 	}
 	
+	@GetMapping("/editar")
+	public String editar(Model model) {
+		
+		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
+		
+		model.addAttribute("listaProveedor", listaProveedor);
+		
+		return "/views/proveedor/editarProveedor";
+	}
 	
 	@PostMapping("/guardar")
 	public String guardar(@Valid @ModelAttribute Proveedor proveedor,
@@ -66,5 +80,39 @@ public class ProveedorController {
 		return "redirect:/views/proveedor/agregar";
 	}
 
-	
+	@PostMapping("/editar/{idProveedor}")
+	public String editar(@PathVariable("idProveedor") int idProveedor,
+						 @RequestParam(name = "razonSocial") String razonSocial,
+						 Model model,
+						 RedirectAttributes atributos){
+		
+		Proveedor proveedor = proveedorServ.findById(idProveedor).get();
+		
+		if(razonSocial.length()==0 || proveedor == null) {
+			
+			List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
+			
+			model.addAttribute("listaProveedor", listaProveedor);
+			
+			model.addAttribute("error", "No se pudo editar el proveedor");
+			
+			System.out.println("Formulario incorrecto");			
+			
+			return "/views/proveedor/editarProveedor";
+		}
+		
+				
+		try {
+			proveedor.setRazonSocial(razonSocial);
+			
+			
+			proveedorServ.crearProveedor(proveedor);
+			System.out.println("Proveedor editado correctamente.");
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Proveedor editado exitosamente!");
+		return "redirect:/views/proveedor/editar";
+	}
 }

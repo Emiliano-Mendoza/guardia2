@@ -211,6 +211,8 @@ public class PersonalController {
 			empleado.setSector(sector);
 			
 			personalServ.crearPersonal(empleado);
+			
+			System.out.println("Empleado editado correctamente.");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

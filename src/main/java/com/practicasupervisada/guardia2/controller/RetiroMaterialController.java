@@ -63,7 +63,6 @@ public class RetiroMaterialController {
 		//Le doy el formato correcto a la fecha obtenida
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		System.out.println(nroLegajo);
 
 		try {
 			

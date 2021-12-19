@@ -91,7 +91,7 @@ public class VehiculoController {
 			
 			model.addAttribute("listaVehiculo", listaVehiculo);
 			
-			model.addAttribute("error", "No se pudo editar el nuevo vehiculo");
+			model.addAttribute("error", "No se pudo editar el vehiculo");
 			
 			System.out.println("Formulario incorrecto");			
 			
@@ -103,9 +103,9 @@ public class VehiculoController {
 			vehiculo.setMarca(marca);
 			vehiculo.setModelo(modelo);
 			vehiculo.setPatente(patente);
-			
+						
+			vehiculoServ.crearVehiculo(vehiculo);
 			System.out.println("Vehiculo editado correctamente.");
-			vehiculoServ.crearVehiculo(vehiculo);			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

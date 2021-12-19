@@ -15,14 +15,15 @@
 				<div class="col-md-6">
 
 					<form th:object="${vehiculo}"
-						th:action="@{/views/vehiculo/guardar}" method="post">
+						th:action="@{/views/vehiculo/guardar}" method="post"
+						onsubmit="return confirm('Confirmar la creación del nuevo vehiculo?');">
 
 						<div>
 							<div class="form-group">
 								<label for="nombre">Marca del vehiculo:</label> <input type="text"
 									class="form-control" id="marca"
 									placeholder="Ej: Renault" name="marca"
-									th:field="*{marca}">
+									th:field="*{marca}" required>
 							</div>
 							<small class="form-text text-danger"
 								th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></small>
@@ -33,7 +34,7 @@
 								<label for="apellido">Modelo del vehiculo:</label> <input type="text"
 									class="form-control" id="apellido"
 									placeholder="Ej: R9" name="apellido"
-									th:field="*{modelo}">
+									th:field="*{modelo}" required>
 							</div>
 							<small class="form-text text-danger"
 								th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></small>
@@ -44,7 +45,7 @@
 								<label for="apellido">Patente del vehiculo:</label> <input type="text"
 									class="form-control" id="patente"
 									placeholder="Ej: XYZ-643" name="patente"
-									th:field="*{patente}">
+									th:field="*{patente}" required>
 							</div>
 							<small class="form-text text-danger"
 								th:if="${#fields.hasErrors('patente')}" th:errors="*{patente}"></small>
