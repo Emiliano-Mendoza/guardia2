@@ -1,6 +1,7 @@
 package com.practicasupervisada.guardia2.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,30 +74,10 @@ public class AsistenciaController {
 		}
 		
 		atributos.addFlashAttribute("success", "Ingreso registrado exitosamente!");
-		return "redirect:/views/personal";
+		return "redirect:/views/asistencia/personal";
 	}
 	
-	@GetMapping("/personal-ingresado")
-	public String mostrarAsistenciasEmpleadosIngresados(Model model){
-		
-		try {
-			List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
-			List<Asistencia> AsisSinEgreso = listaAsistencias
-											.stream()
-											.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
-											.collect(Collectors.toList());
-			
-			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
-			
-			model.addAttribute("asistencias", AsisSinEgreso);
-			model.addAttribute("listaVehiculos", listaVehiculos);
-			
-		}catch(Exception e) {
-			return "home";
-		}
-		
-		return "/views/asistencia/egresoPersonal";
-	}
+
 	
 	@PostMapping("/egreso-empleado/{idAsistencia}")
 	public String egreso(@PathVariable("idAsistencia") int idAsistencia,
@@ -118,7 +99,7 @@ public class AsistenciaController {
 		}
 		
 		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
-		return "redirect:/views/asistencia/personal-ingresado";
+		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
 	@PostMapping("/egreso-transitorio/{idAsistencia}")
@@ -156,7 +137,7 @@ public class AsistenciaController {
 		}
 		
 		atributos.addFlashAttribute("success", "Egreso transitorio registrado!");
-		return "redirect:/views/asistencia/personal-ingresado";
+		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
 	@PostMapping("/reingreso-transitorio/{idAsistencia}")
@@ -188,7 +169,7 @@ public class AsistenciaController {
 		}
 		
 		atributos.addFlashAttribute("success", "Reingreso transitorio registrado!");
-		return "redirect:/views/asistencia/personal-ingresado";
+		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
 	
@@ -271,5 +252,54 @@ public class AsistenciaController {
 		
 		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
 		return "redirect:/views/asistencia/proveedor/egreso";
+	}
+	
+	
+	@GetMapping("/personal")
+	public String listarClientes(Model model) {
+		
+		List<Personal> listaPersonal = personalServ.getAllPersonal();
+		
+		Collections.sort(listaPersonal);
+		// Busco la lista de asistencias sin egreso actual
+		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+		List<Asistencia> AsisSinEgreso = listaAsistencias
+										.stream()
+										.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
+										.collect(Collectors.toList());
+		
+		// Busco al personal que aun no ha egresado
+		List<Personal> personalSinEgresar = new ArrayList <Personal> ();
+		AsisSinEgreso.stream().forEach(a -> personalSinEgresar.add(a.getPersonal()));
+		
+		// Remuevo al personal sin egresar de la lista 
+		personalSinEgresar.stream().forEach(p -> {listaPersonal.remove(p);});
+		
+		
+		model.addAttribute("personal", listaPersonal);
+		
+		return "/views/asistencia/ingresoPersonal";
+	}
+	
+	@GetMapping("/personal/egreso")
+	public String mostrarAsistenciasEmpleadosIngresados(Model model){
+		
+		try {
+			List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+			List<Asistencia> AsisSinEgreso = listaAsistencias
+											.stream()
+											.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
+											.collect(Collectors.toList());
+			
+			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
+			
+			model.addAttribute("asistencias", AsisSinEgreso);
+			model.addAttribute("listaVehiculos", listaVehiculos);
+			
+		}catch(Exception e) {
+			return "home";
+		}
+		
+		return "/views/asistencia/egresoPersonal";
 	}
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Proveedor;
-import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.ProveedorService;
 
 @Controller

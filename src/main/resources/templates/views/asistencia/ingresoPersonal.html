@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+	<!-- th:href="@{/css/bootstrap.min.css}" -->
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container" >
+		
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardAsis"></div>
+		
+	</div>
+
+	<div class="container">
+		<h2>Listado del Personal:</h2>
+
+		<input type="text" id="formulario" class="form-control">
+		<table class="table" style="width: 100%">
+			<thead>
+				<tr>
+					
+					<th class="sortable" scope="col" style="width: 15%; text-align: center;">Legajo</th>
+					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Apellido</th>
+					<th class="sortable" style="width: 20%; text-align: center;">Sector</th>
+					<th scope="col" style="width: 25%; text-align: center;">Registrar
+						Asistencia</th>
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+	</div>
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	
+	<script th:inline="javascript"> 
+		
+		var personal = /*[[${personal}]]*/ 'default';
+		var urlAsis = '';
+				
+		const formulario = document.querySelector('#formulario');
+		const resultado = document.querySelector('#fila');
+		const cardAsis = document.querySelector('#cardAsis');
+		cardAsis.innerHTML = '';
+				
+		const filtrar = () => {
+			resultado.innerHTML = '';
+						
+			const texto = formulario.value.toLowerCase();
+			for(let p of personal){
+				let nombre = p.nombre.toLowerCase();
+				let apellido = p.apellido.toLowerCase();
+				let legajo = p.nroLegajo;
+								
+				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+															
+					resultado.innerHTML += `
+					<tr>
+						<td scope="row" style="text-align:center;">${p.nroLegajo}</td>
+						<td style="text-align:center;">${p.nombre}</td>
+						<td style="text-align:center;">${p.apellido}</td>
+						<td style="text-align:center;">${p.sector}</td>						
+						<td style="text-align:center;">
+							<button class="btn btn-success btn-sm" 
+							title:"Registrar Nueva Asistencia" id="asisBtn" 
+							onclick="AsistenciaCard('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}')">
+							Asistencia
+							</button>
+						</td>
+					</tr>
+					`
+				}
+			}
+		}
+				
+		function AsistenciaCard (nroLegajo,nombre,apellido,sector, imagen){
+			
+			let urlA = "/views/asistencia/ingreso-empleado/" + nroLegajo;
+			//let imagenEmpleado= `/recursos/${imagen}` ;
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			
+			cardAsis.innerHTML = `
+				<div class="col-md-8" >
+				<div class="card-header bg-dark text-white ">Registro de Ingreso
+					a la Planta</div>
+				<div class="row g-0 ">
+					<div class="col-md-4" id="imagen">
+						<img src=${imagenEmpleado} width="270" height="270"
+						
+						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Registrar asistencia:</h5>
+							
+							
+							<ul class="list-group list-group-flush mt-4">
+							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
+							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
+							  <li class="list-group-item">Sector de trabajo: ${sector}</li>
+							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
+								id='date-time'></span></small></li>
+							</ul>
+							
+						</div>
+					</div>
+				</div>
+				<form 	
+						action=${urlA}
+						method="post"
+						onsubmit="return confirm('Confirmar asistencia del empleado ${nombre} ${apellido}');">
+					<div
+						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+						<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+							>Cancelar</button>
+							<button type="submit" class="btn btn-secondary"
+								>Registrar</button> 
+							
+					</div>
+				</form>
+
+			</div>
+			`;
+			
+			//formato de la fecha
+			var d = new Date,
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			
+			
+			
+			document.getElementById('date-time').innerHTML = dformat;
+				
+			window.scroll(0, 0);
+		}
+	
+		
+		function CloseCard(){
+			cardAsis.innerHTML = '';
+		}
+		
+		formulario.addEventListener('keyup', filtrar);
+		filtrar();
+
+	</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.practicasupervisada.guardia2.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.practicasupervisada.guardia2.domain.Material;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.RetiroMaterial;
+import com.practicasupervisada.guardia2.service.MaterialService;
 import com.practicasupervisada.guardia2.service.PersonalService;
 import com.practicasupervisada.guardia2.service.RetiroMaterialService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
@@ -33,6 +36,8 @@ public class RetiroMaterialController {
 	private PersonalService personalServ;
 	@Autowired
 	private UsuarioService usuarioServ;
+	@Autowired
+	private MaterialService materialServ;
 	
 	@GetMapping
 	public String obetenerRetirosDeMaterial(Model model) {
@@ -51,6 +56,20 @@ public class RetiroMaterialController {
 		}
 		
 		return "/views/retiro-material/retiro";
+	}
+	
+	@GetMapping("/autorizar")
+	public String listarClientesParaRetiroMaterial(Model model) {
+		
+		List<Personal> listaPersonal = personalServ.getAllPersonal();		
+		Collections.sort(listaPersonal);
+		
+		List<Material> listaMateriales = materialServ.getAllMaterial();
+				
+		model.addAttribute("personal", listaPersonal);
+		model.addAttribute("listaMateriales", listaMateriales);
+		
+		return "/views/retiro-material/autorizacion";
 	}
 	
 	@PostMapping("/autorizacion")
@@ -90,7 +109,7 @@ public class RetiroMaterialController {
 		}
 		
 		atributos.addFlashAttribute("success", "Autorización creada exitosamente!");
-		return "redirect:/views/personal/autorizar-retiro";
+		return "redirect:/views/retiro-material/autorizar";
 	}
 	
 	@PostMapping("/retiro/{idRetiro}")

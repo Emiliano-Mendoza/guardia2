@@ -43,7 +43,7 @@
 									class="dropdown-item dropdown-toggle" href="#" role="button"
 									data-bs-toggle="dropdown"> Registrar Ingreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item" th:href="@{/views/personal}">Empleado</a></li>
+										<li><a class="dropdown-item" th:href="@{/views/asistencia/personal}">Empleado</a></li>
 										<li><a class="dropdown-item" th:href="@{/views/asistencia/proveedor}">Proveedor</a></li>
 
 									</ul></li>
@@ -52,7 +52,7 @@
 									data-bs-toggle="dropdown"> Registrar Egreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item"
-											th:href="@{/views/asistencia/personal-ingresado}">Empleado</a></li>
+											th:href="@{/views/asistencia/personal/egreso}">Empleado</a></li>
 										<li><a class="dropdown-item" 
 											th:href="@{/views/asistencia/proveedor/egreso}">Proveedor</a></li>
 
@@ -102,7 +102,7 @@
 						<li class="nav-item"
 							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_AUTORIZADOR')"><a
 							class="nav-link active" aria-current="page"
-							th:href="@{/views/personal/autorizar-retiro}">Autorizar
+							th:href="@{/views/retiro-material/autorizar}">Autorizar
 								Retiro</a></li>
 						<li class="nav-item"
 							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_NOTIFICADOR')"><a

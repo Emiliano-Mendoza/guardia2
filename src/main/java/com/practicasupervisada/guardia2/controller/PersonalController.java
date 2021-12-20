@@ -2,7 +2,7 @@ package com.practicasupervisada.guardia2.controller;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import javax.validation.Valid;
 
@@ -19,23 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.practicasupervisada.guardia2.service.AsistenciaService;
-import com.practicasupervisada.guardia2.service.MaterialService;
-import com.practicasupervisada.guardia2.service.PersonalService;
-import com.practicasupervisada.guardia2.domain.Asistencia;
-import com.practicasupervisada.guardia2.domain.Material;
-import com.practicasupervisada.guardia2.domain.Personal;
-import com.practicasupervisada.guardia2.util.FileUploadUtil;
 
-import org.springframework.util.StringUtils;
+import com.practicasupervisada.guardia2.service.PersonalService;
+
+import com.practicasupervisada.guardia2.domain.Personal;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-
 
 @Controller
 @RequestMapping("/views/personal")
@@ -43,36 +35,7 @@ public class PersonalController {
 	
 	@Autowired
 	private PersonalService personalServ;
-	@Autowired
-	private AsistenciaService asistenciaServ;
-	@Autowired
-	private MaterialService materialServ;
 	
-	@GetMapping
-	public String listarClientes(Model model) {
-		
-		List<Personal> listaPersonal = personalServ.getAllPersonal();
-		
-		Collections.sort(listaPersonal);
-		// Busco la lista de asistencias sin egreso actual
-		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
-		List<Asistencia> AsisSinEgreso = listaAsistencias
-										.stream()
-										.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
-										.collect(Collectors.toList());
-		
-		// Busco al personal que aun no ha egresado
-		List<Personal> personalSinEgresar = new ArrayList <Personal> ();
-		AsisSinEgreso.stream().forEach(a -> personalSinEgresar.add(a.getPersonal()));
-		
-		// Remuevo al personal sin egresar de la lista 
-		personalSinEgresar.stream().forEach(p -> {listaPersonal.remove(p);});
-		
-		
-		model.addAttribute("personal", listaPersonal);
-		
-		return "/views/personal/listar";
-	}
 	
 	@GetMapping("/editar")
 	public String listarPersonal(Model model) {
@@ -85,20 +48,6 @@ public class PersonalController {
 		return "/views/personal/editarPersonal";
 	}
 	
-	
-	@GetMapping("/autorizar-retiro")
-	public String listarClientesParaRetiroMaterial(Model model) {
-		
-		List<Personal> listaPersonal = personalServ.getAllPersonal();		
-		Collections.sort(listaPersonal);
-		
-		List<Material> listaMateriales = materialServ.getAllMaterial();
-				
-		model.addAttribute("personal", listaPersonal);
-		model.addAttribute("listaMateriales", listaMateriales);
-		
-		return "/views/retiro-material/autorizacion";
-	}
 	
 	@GetMapping("/agregar")
 	public String agregarPersonal(Model model) {

@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers("/index", "/home", "/", "/css/**", "/images/**", "/js/**", "/websocket").permitAll()
 		.antMatchers("/views/personal").hasAnyRole("ADMIN","GUARDIA")
-		.antMatchers("/views/personal/autorizar-retiro").hasAnyRole("AUTORIZADOR", "ADMIN")
+		.antMatchers("/views/retiro-material/autorizar").hasAnyRole("AUTORIZADOR", "ADMIN")
 		.antMatchers("/views/retiro-material/autorizacion").hasAnyRole("AUTORIZADOR", "ADMIN")
 		.antMatchers("/views/retiro-material").hasAnyRole("ADMIN","GUARDIA")
 		.antMatchers("/views/retiro-material/retiro/**").hasAnyRole("GUARDIA")
@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/views/asistencia/egreso-transitorio/**").hasAnyRole("GUARDIA")
 		.antMatchers("/views/asistencia/reingreso-transitorio/**").hasAnyRole("GUARDIA")
 		.antMatchers("/views/asistencia/proveedor/**").hasAnyRole("GUARDIA","ADMIN")
+		.antMatchers("/views/asistencia/personal/**").hasAnyRole("GUARDIA","ADMIN")
 		.antMatchers("/views/acontecimiento").hasAnyRole("GUARDIA")
 		.antMatchers("/views/acontecimiento/guardar").hasAnyRole("GUARDIA")
 		.antMatchers("/views/acontecimiento/previos").hasAnyRole("GUARDIA")
