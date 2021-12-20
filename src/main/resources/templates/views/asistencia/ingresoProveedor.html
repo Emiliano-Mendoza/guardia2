@@ -6,11 +6,138 @@
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div class="container">
-		<h1>*Ingreso de proveedor*</h1>
+	<div class="container" >
+		
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardAsis"></div>
+		
 	</div>
 
+		<div class="container">
+		<h2>Listado de Proveedores:</h2>
 
+		<input type="text" id="formulario" class="form-control">
+		<table class="table" style="width: 100%">
+			<thead>
+				<tr>
+					
+					<th class="sortable" scope="col" style="width: 15%; text-align: center;">Razón Social</th>
+					<th scope="col" style="width: 25%; text-align: center;">Registrar
+						Ingreso</th>
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+	</div>
+	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+		
+		var listaProveedor = /*[[${listaProveedor}]]*/ 'default';
+		
+		const formulario = document.querySelector('#formulario');
+		const resultado = document.querySelector('#fila');
+		const cardAsis = document.querySelector('#cardAsis');
+		cardAsis.innerHTML = '';
+		
+		const filtrar = () => {
+			resultado.innerHTML = '';
+			
+			const texto = formulario.value.toLowerCase();
+			for(let p of listaProveedor){
+				
+				let razonSocial = p.razonSocial.toLowerCase();
+				
+				if(razonSocial.indexOf(texto) !== -1){
+					
+					resultado.innerHTML += `
+						<tr>
+							<td scope="row" style="text-align:center;">${p.razonSocial}</td>					
+							<td style="text-align:center;">
+								<button class="btn btn-success btn-sm" 
+								title:"Registrar Nueva Asistencia" id="asisBtn" 
+								onclick="AsistenciaCard('${p.idProveedor}','${p.razonSocial}')">
+								Ingreso
+								</button>
+							</td>
+						</tr>
+					`;
+					
+				}
+				
+			}
+		}
+		formulario.addEventListener('keyup', filtrar);
+		filtrar();
+		
+		function AsistenciaCard (idProveedor, razonSocial){
+			let urlA = "/views/asistencia/proveedor/ingreso/" + idProveedor;
+			
+			cardAsis.innerHTML = `
+				<div class="col-md-8" >
+				<div class="card-header bg-dark text-white ">Registro de Ingreso
+					a la Planta</div>
+				<div class="row g-0 ">
+					<div class="col-md-4" id="imagen">
+						<img src='/images/proveedor.jpg' width="270" height="270"
+						
+						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Registrar ingreso de proveedor:</h5>
+							
+							
+							<ul class="list-group list-group-flush mt-4">
+							  <li class="list-group-item">Razón social: ${razonSocial}</li>
+							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
+								id='date-time'></span></small></li>
+							</ul>
+							
+						</div>
+					</div>
+				</div>
+				<form 	
+						action=${urlA}
+						method="post"
+						onsubmit="return confirm('Confirmar ingreso del proveedor ${razonSocial}?');">
+					<div
+						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+						<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+							>Cancelar</button>
+							<button type="submit" class="btn btn-secondary"
+								>Registrar</button> 
+							
+					</div>
+				</form>
+
+			</div>
+			`;
+			
+			//formato de la fecha
+			var d = new Date,
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			
+			
+			
+			document.getElementById('date-time').innerHTML = dformat;
+				
+			window.scroll(0, 0);
+			
+			
+			
+		}
+		function CloseCard(){
+			cardAsis.innerHTML = '';
+		}
+		
+	</script>
 </body>

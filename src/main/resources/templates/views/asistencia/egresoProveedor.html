@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container mt-3">
+		
+		<h5>Buscar Proveedor:</h5>
+		<div class="row mt-2">
+			<div class="col-md-11">
+				<input type="text" id="formulario" class="form-control">
+			</div>
+			<div class="col-md-1 ">
+				<button class="btn btn-primary" onclick="filtrar()">Buscar</button>
+			</div>
+				
+		</div>
+		<div class="row mt-3" id="cardEgreso"></div>
+
+		 
+	</div>
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+		var asistencias = /*[[${asistencias}]]*/ 'default';	
+		
+		const formulario = document.querySelector('#formulario');
+		const resultado = document.querySelector('#cardEgreso');
+		
+		const filtrar = () => {
+			
+			resultado.innerHTML = ''
+			
+			const texto = formulario.value.toLowerCase();
+			for(let aut of asistencias){
+				let razonSocial = aut.proveedor.razonSocial.toLowerCase();
+				
+				if(razonSocial.indexOf(texto) !== -1){
+					
+					let urlEgreso= '/views/asistencia/proveedor/egreso/' + aut.idAsistencia;
+					
+					//le doy el formato correcto a la fecha
+					let d = new Date(aut.entrada);
+					dformat = `${
+					    d.getDate().toString().padStart(2, '0')}/${
+					    (d.getMonth()+1).toString().padStart(2, '0')}/${
+					    d.getFullYear().toString().padStart(4, '0')} ${
+					    d.getHours().toString().padStart(2, '0')}:${
+					    d.getMinutes().toString().padStart(2, '0')}`;
+										    					   					    
+					resultado.innerHTML += `
+						<div class="col-sm-6 mt-3">
+						<div class="card text-dark  mb-3" >
+						<div class="card-header bg-dark text-white">Registro de Egreso
+						de la Planta</div>
+						<div class="row g-0 ">
+							<div class="col-md-4" >
+								<img src='/images/proveedor.jpg'
+									width="215" height="230"
+									onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+							</div>
+							<div class="card-body col-md-8">
+								<h5 class="card-title">Proveedor ingresado:</h5>
+								
+								<ul class="list-group list-group-flush">
+								  <li class="list-group-item">Proveedor: ${aut.proveedor.razonSocial}</li>
+								  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+								</ul>																			
+																			
+							</div>
+						</div>
+						
+						<div
+						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+						
+						<form 
+						action=${urlEgreso}
+						method="post"  
+							onsubmit="return confirm('Confirmar egreso del proveedor ${aut.proveedor.razonSocial}?');">
+						
+							<input type="submit" class="btn btn-primary btn-sm"
+								value="Registrar Egreso" />
+						
+						</form>
+						
+						</div>
+						
+					</div>
+					</div>
+					`;
+					    
+					
+					   
+				}
+				
+			}
+		}
+		
+		formulario.addEventListener('keyup', function(event) {
+		    event.preventDefault();
+		    if (event.keyCode === 13) {
+		        filtrar();
+		    }
+		});
+		
+		filtrar();
+	</script>
+</body>
+</html>

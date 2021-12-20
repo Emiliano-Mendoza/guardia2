@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,7 +83,7 @@ public class AsistenciaController {
 			List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
 			List<Asistencia> AsisSinEgreso = listaAsistencias
 											.stream()
-											.filter(a -> a.getSalida() == null)
+											.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
 											.collect(Collectors.toList());
 			
 			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
@@ -195,17 +196,80 @@ public class AsistenciaController {
 	public String asistenciaProveedor(Model model) {
 		
 		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
-		model.addAttribute("listaProveedor", listaProveedor);
 		
+		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+		List<Asistencia> AsisSinEgreso = listaAsistencias
+				.stream()
+				.filter(a -> a.getSalida() == null && a.getProveedor()!=null && a.getPersonal()==null)
+				.collect(Collectors.toList());
+		
+		List<Proveedor> proveedorSinEgresar = new ArrayList <Proveedor> ();
+		AsisSinEgreso.stream().forEach(a -> proveedorSinEgresar.add(a.getProveedor()));
+		
+		proveedorSinEgresar.stream().forEach(p -> {listaProveedor.remove(p);});
+		
+		model.addAttribute("listaProveedor", listaProveedor);		
 		return "/views/asistencia/ingresoProveedor";
 	}
 	
 	@GetMapping("/proveedor/egreso")
 	public String proveedoresIngresados(Model model) {
 		
-		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
-		model.addAttribute("listaProveedor", listaProveedor);
+		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+		List<Asistencia> AsisSinEgreso = listaAsistencias
+										.stream()
+										.filter(a -> a.getSalida() == null && a.getPersonal()==null && a.getProveedor()!=null)
+										.collect(Collectors.toList());		
+		
+		model.addAttribute("asistencias", AsisSinEgreso);
 		
 		return "/views/asistencia/egresoProveedor";
+	}
+	
+	
+	@PostMapping("/proveedor/ingreso/{idProveedor}")
+	public String nuevaAsistenciaProveedor(@PathVariable("idProveedor") int idProveedor,
+										  RedirectAttributes atributos) {
+			
+		try {
+			Proveedor proveedor = proveedorServ.findById(idProveedor).orElseThrow();
+			
+			Asistencia asis = new Asistencia();
+			asis.setProveedor(proveedor);
+			asis.setEntrada(new Date());
+			asis.setEnTransito(false);
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			asis.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
+			asistenciaServ.crearAsistencia(asis);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Ingreso registrado exitosamente!");
+		return "redirect:/views/asistencia/proveedor";
+	}
+	
+	
+	@PostMapping("/proveedor/egreso/{idAsistencia}")
+	public String egresoProveedor(@PathVariable("idAsistencia") int idAsistencia,
+										  RedirectAttributes atributos) {
+			
+		try {
+			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
+			
+			asis.setSalida(new Date());
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
+			
+			asistenciaServ.crearAsistencia(asis);
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
+		return "redirect:/views/asistencia/proveedor/egreso";
 	}
 }

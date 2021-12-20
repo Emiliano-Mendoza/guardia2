@@ -58,7 +58,7 @@ public class PersonalController {
 		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
 		List<Asistencia> AsisSinEgreso = listaAsistencias
 										.stream()
-										.filter(a -> a.getSalida() == null)
+										.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
 										.collect(Collectors.toList());
 		
 		// Busco al personal que aun no ha egresado
