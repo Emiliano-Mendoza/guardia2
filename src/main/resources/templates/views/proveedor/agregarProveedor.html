@@ -22,7 +22,7 @@
 							<div class="form-group">
 								<label for="nombre">Razón social:</label> <input
 									type="text" class="form-control" id="razonSocial"
-									name="razonSocial" th:field="*{razonSocial}">
+									name="razonSocial" th:field="*{razonSocial}" required>
 							</div>
 							<small class="form-text text-danger"
 								th:if="${#fields.hasErrors('razonSocial')}" th:errors="*{razonSocial}"></small>
