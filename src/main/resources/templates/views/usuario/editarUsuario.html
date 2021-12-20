@@ -17,7 +17,7 @@
 				<tr>
 					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Usuario</th>
 					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Habilitado</th>
-					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Nombre y Apellido</th>
 					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Editar</th>
 					
 				</tr>
@@ -62,7 +62,8 @@
 				
 				<div class="card-header bg-dark text-white">Editar Usuario:</div>
 			
-				<form action=${urlA} method="post" autocomplete="off">
+				<form action=${urlA} method="post" autocomplete="off"
+					onsubmit="return confirm('Está seguro que desea editar el usuario?');">
 					
 					<div class="card-body row">
 						<div class="col-md-6">

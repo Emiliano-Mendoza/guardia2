@@ -18,10 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
+import com.practicasupervisada.guardia2.domain.Proveedor;
 import com.practicasupervisada.guardia2.domain.Transito;
 import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
+import com.practicasupervisada.guardia2.service.ProveedorService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 import com.practicasupervisada.guardia2.service.VehiculoService;
 
@@ -40,6 +42,9 @@ public class AsistenciaController {
 	
 	@Autowired
 	private VehiculoService vehiculoServ;
+	
+	@Autowired
+	private ProveedorService proveedorServ;
 	
 	@GetMapping
 	public String index() {
@@ -183,5 +188,24 @@ public class AsistenciaController {
 		
 		atributos.addFlashAttribute("success", "Reingreso transitorio registrado!");
 		return "redirect:/views/asistencia/personal-ingresado";
+	}
+	
+	
+	@GetMapping("/proveedor")
+	public String asistenciaProveedor(Model model) {
+		
+		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
+		model.addAttribute("listaProveedor", listaProveedor);
+		
+		return "/views/asistencia/ingresoProveedor";
+	}
+	
+	@GetMapping("/proveedor/egreso")
+	public String proveedoresIngresados(Model model) {
+		
+		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
+		model.addAttribute("listaProveedor", listaProveedor);
+		
+		return "/views/asistencia/egresoProveedor";
 	}
 }
