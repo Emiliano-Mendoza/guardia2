@@ -101,7 +101,8 @@ public class PersonalController {
 			}
 		}
 		
-		try {		
+		try {
+			personal.setEnabled(true);
 			personalServ.crearPersonal(personal);
 			
 		}catch(Exception e) {
@@ -117,6 +118,7 @@ public class PersonalController {
 						  @RequestParam(name = "nombre") String nombre,
 						  @RequestParam(name = "apellido") String apellido,
 						  @RequestParam(name = "sector") String sector,
+						  @RequestParam(name = "enabled" , required = false) String enabled,
 						  Model model,
 						  @RequestParam(name = "file") MultipartFile imagen,
 						  RedirectAttributes atributos) {
@@ -153,8 +155,15 @@ public class PersonalController {
 				e.printStackTrace();
 			}
 		}
-		
+				
 		try {
+			
+			if(enabled == null) {
+				empleado.setEnabled(false);
+			}else if (enabled.equalsIgnoreCase("true")) {
+				empleado.setEnabled(true);
+			}
+			
 			empleado.setNombre(nombre);
 			empleado.setApellido(apellido);
 			empleado.setSector(sector);

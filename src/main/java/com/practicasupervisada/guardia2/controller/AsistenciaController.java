@@ -258,14 +258,20 @@ public class AsistenciaController {
 	@GetMapping("/personal")
 	public String listarClientes(Model model) {
 		
-		List<Personal> listaPersonal = personalServ.getAllPersonal();
+		List<Personal> listaPersonal = personalServ.getAllPersonal()
+																	.stream()
+																	.filter(p -> p.getEnabled())
+																	.collect(Collectors.toList());
 		
-		Collections.sort(listaPersonal);
+		
+		Collections.sort(listaPersonal);		
 		// Busco la lista de asistencias sin egreso actual
 		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
 		List<Asistencia> AsisSinEgreso = listaAsistencias
 										.stream()
-										.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
+										.filter(a -> a.getSalida() == null 
+													&& a.getPersonal()!=null
+													&& a.getProveedor()==null)
 										.collect(Collectors.toList());
 		
 		// Busco al personal que aun no ha egresado

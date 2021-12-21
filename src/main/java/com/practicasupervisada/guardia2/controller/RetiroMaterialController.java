@@ -61,7 +61,10 @@ public class RetiroMaterialController {
 	@GetMapping("/autorizar")
 	public String listarClientesParaRetiroMaterial(Model model) {
 		
-		List<Personal> listaPersonal = personalServ.getAllPersonal();		
+		List<Personal> listaPersonal = personalServ.getAllPersonal()
+				.stream()
+				.filter(p -> p.getEnabled())
+				.collect(Collectors.toList());	
 		Collections.sort(listaPersonal);
 		
 		List<Material> listaMateriales = materialServ.getAllMaterial();

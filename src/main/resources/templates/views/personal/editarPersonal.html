@@ -62,17 +62,20 @@
 						<td style="text-align:center;">
 							<button class="btn btn-success btn-sm" 
 							title:"Registrar Nueva Asistencia" id="asisBtn" 
-							onclick="editarEmpleado('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}')">
+							onclick="editarEmpleado('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}','${p.enabled}')">
 							Editar
 							</button>
 						</td>
 					</tr>
 					`
 				}
+				
+				
+				
 			}
 		}		
 	
-		function editarEmpleado(nroLegajo, nombre, apellido, sector, imagen){
+		function editarEmpleado(nroLegajo, nombre, apellido, sector, imagen, enabled){
 			
 			let urlA = "/views/personal/editar/" + nroLegajo;		
 			let imagenAux = imagen.replace(/\s/g, "%20");
@@ -134,10 +137,18 @@
 						</div>
 						
 						<div class="form-group col-md-6 ">
-						<label for="exampleFormControlFile1" style="display: block;">Cambiar imagen del empleado:</label> 
-						<input type="file" name="file"
-							class="form-control-file mt-2" id="file">
-					</div>
+							<label for="exampleFormControlFile1" style="display: block;">Cambiar imagen del empleado:</label> 
+							<input type="file" name="file"
+								class="form-control-file mt-2" id="file">
+							
+							
+							<div class="form-check mt-4">
+								<input class="form-check-input" type="checkbox" value="true" name="enabled" id="enabled" checked>
+								<label class="form-check-label" for="flexCheckDefault">
+							    Empleado Habilitado
+						  		</label>
+							</div>
+						</div>
 					</div>
 
 					<div
@@ -154,6 +165,13 @@
 			</div>		
 
 			`;
+			
+			const checkB = document.getElementById('enabled');
+			
+			
+			if(enabled == 'true'){
+				checkB.checked = true;
+			}else checkB.checked = false;
 			
 			selectedSector(sector);
 			window.scroll(0, 0);

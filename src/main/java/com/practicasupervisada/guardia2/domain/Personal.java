@@ -23,8 +23,11 @@ public class Personal implements Comparable<Personal> {
 	private String apellido;
 	@NotEmpty
 	private String sector;
+	
     
 	private String imagen;
+	
+	private Boolean enabled;
 	
 	public String getSector() {
 		return sector;
@@ -73,6 +76,12 @@ public class Personal implements Comparable<Personal> {
 	}
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	
