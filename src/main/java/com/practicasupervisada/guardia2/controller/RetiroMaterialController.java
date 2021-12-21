@@ -108,7 +108,7 @@ public class RetiroMaterialController {
 			System.out.println(e.getMessage());
 		}
 		
-		atributos.addFlashAttribute("success", "Autorización creada exitosamente!");
+		atributos.addFlashAttribute("success", "Autorización de retiro creada exitosamente!");
 		return "redirect:/views/retiro-material/autorizar";
 	}
 	

@@ -13,7 +13,7 @@
 	<div class="container mt-3">
 		<div class="gap-2 d-md-flex justify-content-between">
 			<h2>Listado del Personal:</h2>
-			<button class="btn btn-info btn-sm" onclick="retiroExterno()">Retiro Externo</button>
+			<button class="btn btn-info btn-sm fw-bold" onclick="retiroExterno()">Retiro Externo</button>
 		</div>
 		
 
@@ -67,7 +67,7 @@
 					<td style="text-align:center;">${p.apellido}</td>
 					<td style="text-align:center;">${p.sector}</td>
 					<td style="text-align:center;">
-						<button class="btn btn-info" 
+						<button class="btn btn-info btn-sm fw-bold" 
 						title:"Registrar Nueva Asistencia" id="asisBtn" 
 						onclick="myForm('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}')">
 						Autorizar
