@@ -44,12 +44,8 @@ public class EventoController {
 			listaEventos = listaEventos.stream()
 					.filter(e -> (e.getOcurrencia()==false && e.getCancelado()==false && e.getFechaEvento().after(beforeYesterday)))
 					.collect(Collectors.toList());				
-			
-			
-			
+								
 			model.addAttribute("listaEventos", listaEventos);
-			//model.addAttribute("listaEventos", new ArrayList<>().addAll(listaEventos));
-			
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

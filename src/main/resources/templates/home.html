@@ -7,13 +7,119 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
-		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center">
-			<img th:src="@{/images/logo-grande.jpg}"  style="width: 70%; height: 70%;">
+
+
+		<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
+			style="padding-top: 20px;">
+			<div class="col-sm-2">
+				<div>
+					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+						<a th:href="@{/views/asistencia/personal}"
+							class="btn btn-secondary"
+							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+							INGRESO DE PERSONAL</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-2">
+				<div>
+					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+						<a th:href="@{/views/asistencia/personal/egreso}"
+							class="btn btn-secondary"
+							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+							EGRESO DE PERSONAL</a>
+					</div>
+				</div>
+			</div>
+
+
+
 		</div>
+
+		<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
+			style="padding-top: 20px;">
+
+			<div class="col-sm-2">
+				<div>
+					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+						<a th:href="@{/views/asistencia/proveedor}"
+							class="btn btn-secondary"
+							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+							INGRESO DE PROVEEDOR</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-2">
+				<div>
+					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+						<a th:href="@{/views/asistencia/proveedor/egreso}"
+							class="btn btn-secondary"
+							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+							EGRESO DE PROVEEDOR</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-2">
+				<div>
+					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+						<a th:href="@{/views/acontecimiento}" class="btn btn-secondary"
+							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+							RONDA</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row " style="padding-top: 20px;">
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body"
+						style="overflow-x: hidden; overflow-y: auto; height: 14em; border: 1px solid">
+						<h5 class="card-title">Listado de Eventos:</h5>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item" th:each="ev : ${listaEventos}">
+								<span th:text="${#dates.format(ev.fechaEvento, 'dd/MM/yyyy')}"></span>
+								- <span th:text="${ev.descripcion}"></span> - Contacto:
+								[[${ev.usuarioSector.nombre}]] [[${ev.usuarioSector.apellido}]]
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body"
+						style="overflow-x: hidden; overflow-y: auto; height: 14em; border: 1px solid">
+						<h5 class="card-title">Listado de Retiros de Material:</h5>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item" th:each="ret : ${listaRetiros}">
+								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"></span>
+								- RETIRA: [[${ret.personal.nombre}]]
+								[[${ret.personal.apellido}]] - MATERIALES: <span
+								th:each="mat, stat :${ret.materiales}"
+								th:text="${stat.size-1 > stat.index} ? ${mat.material} + ', ' :  ${mat.material}"></span>
+								- AUTORIZA: [[${ret.usuarioSector.nombre}]]
+								[[${ret.usuarioSector.apellido}]]
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
-
+	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+		function hola() {
+			console.log("hola");
+		}
+	</script>
 </body>
 </html>

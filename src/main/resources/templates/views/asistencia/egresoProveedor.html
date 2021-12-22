@@ -56,42 +56,42 @@
 										    					   					    
 					resultado.innerHTML += `
 						<div class="col-sm-6 mt-3">
-						<div class="card text-dark  mb-3" >
-						<div class="card-header bg-dark text-white">Registro de Egreso
-						de la Planta</div>
-						<div class="row g-0 ">
-							<div class="col-md-4" >
-								<img src='/images/proveedor.jpg'
-									width="215" height="230"
-									onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
-							</div>
-							<div class="card-body col-md-8">
-								<h5 class="card-title">Proveedor ingresado:</h5>
+							<div class="card text-dark  mb-3" >
+								<div class="card-header bg-dark text-white">Registro de Egreso
+								de la Planta</div>
+									<div class="row g-0 ">
+										<div class="col-md-4" >
+											<img src='/images/proveedor.jpg'
+												width="215" height="230"
+												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+										</div>
+										<div class="card-body col-md-8">
+											<h5 class="card-title">Proveedor ingresado:</h5>
+											
+											<ul class="list-group list-group-flush">
+											  <li class="list-group-item">Proveedor: ${aut.proveedor.razonSocial}</li>
+											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+											</ul>																			
+																						
+										</div>
+									</div>
 								
-								<ul class="list-group list-group-flush">
-								  <li class="list-group-item">Proveedor: ${aut.proveedor.razonSocial}</li>
-								  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
-								</ul>																			
-																			
-							</div>
+								<div
+								class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+								
+									<form 
+									action=${urlEgreso}
+									method="post"  
+										onsubmit="return confirm('Confirmar egreso del proveedor ${aut.proveedor.razonSocial}?');">
+									
+										<input type="submit" class="btn btn-primary btn-sm"
+											value="Registrar Egreso" />
+									
+									</form>
+								
+								</div>
+								
 						</div>
-						
-						<div
-						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
-						
-						<form 
-						action=${urlEgreso}
-						method="post"  
-							onsubmit="return confirm('Confirmar egreso del proveedor ${aut.proveedor.razonSocial}?');">
-						
-							<input type="submit" class="btn btn-primary btn-sm"
-								value="Registrar Egreso" />
-						
-						</form>
-						
-						</div>
-						
-					</div>
 					</div>
 					`;
 					    
