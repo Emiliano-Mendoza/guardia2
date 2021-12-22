@@ -74,7 +74,7 @@
 		filtrar();
 		
 		function AsistenciaCard (idProveedor, razonSocial){
-			let urlA = "/views/asistencia/proveedor/ingreso/" + idProveedor;
+			let urlA = "/views/asistencia-proveedor/ingreso/" + idProveedor;
 			
 			cardAsis.innerHTML = `
 				<div class="col-md-8" >
@@ -82,7 +82,7 @@
 					a la Planta</div>
 				<div class="row g-0 ">
 					<div class="col-md-4" id="imagen">
-						<img src='/images/proveedor.jpg' width="270" height="270"
+						<img src='/images/proveedor.jpg' width="270" height="280"
 						
 						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 					</div>
@@ -91,10 +91,18 @@
 							<h5 class="card-title">Registrar ingreso de proveedor:</h5>
 							
 							
-							<ul class="list-group list-group-flush mt-4">
+							<ul class="list-group list-group-flush mt-2">
 							  <li class="list-group-item">Razón social: ${razonSocial}</li>
 							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
 								id='date-time'></span></small></li>
+							  <li class="list-group-item">
+							  		<label>Nomber del chofer: </label>
+							  		<input type="text" class="form-control" name="nombreChofer" form="myform">
+							  </li>
+							  <li class="list-group-item">
+						  		<label>Patente del vehiculo: </label>
+						  		<input type="text" class="form-control" name="patenteVehiculo" form="myform">
+						 	 </li>
 							</ul>
 							
 						</div>
@@ -103,7 +111,8 @@
 				<form 	
 						action=${urlA}
 						method="post"
-						onsubmit="return confirm('Confirmar ingreso del proveedor ${razonSocial}?');">
+						onsubmit="return confirm('Confirmar ingreso del proveedor ${razonSocial}?');"
+						id="myform">
 					<div
 						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
 						<button type="button" class="btn btn-secondary" onclick="CloseCard()"

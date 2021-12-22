@@ -43,7 +43,9 @@
 				
 				if(razonSocial.indexOf(texto) !== -1){
 					
-					let urlEgreso= '/views/asistencia/proveedor/egreso/' + aut.idAsistencia;
+					let urlEgreso= '/views/asistencia-proveedor/egreso/' + aut.idAsistencia;
+					let idChofer = 'chofer' + aut.idAsistencia;
+					let idPatente = 'patente' + aut.idAsistencia;
 					
 					//le doy el formato correcto a la fecha
 					let d = new Date(aut.entrada);
@@ -71,6 +73,8 @@
 											<ul class="list-group list-group-flush">
 											  <li class="list-group-item">Proveedor: ${aut.proveedor.razonSocial}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+											  <li class="list-group-item" id=${idChofer}>Chofer: ${aut.nombreChofer}</li>
+											  <li class="list-group-item" id=${idPatente}>Patente del Vehiculo: ${aut.patenteVehiculo}</li>
 											</ul>																			
 																						
 										</div>
@@ -94,8 +98,13 @@
 						</div>
 					</div>
 					`;
-					    
 					
+					if(aut.nombreChofer == null || aut.nombreChofer == ''){
+						document.getElementById(idChofer).hidden = true;
+					}
+					if(aut.patenteVehiculo == null || aut.patenteVehiculo == ''){
+						document.getElementById(idPatente).hidden = true;
+					}
 					   
 				}
 				

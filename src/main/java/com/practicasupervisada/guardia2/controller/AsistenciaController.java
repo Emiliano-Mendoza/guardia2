@@ -20,12 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
-import com.practicasupervisada.guardia2.domain.Proveedor;
 import com.practicasupervisada.guardia2.domain.Transito;
 import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
-import com.practicasupervisada.guardia2.service.ProveedorService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 import com.practicasupervisada.guardia2.service.VehiculoService;
 
@@ -45,8 +43,6 @@ public class AsistenciaController {
 	@Autowired
 	private VehiculoService vehiculoServ;
 	
-	@Autowired
-	private ProveedorService proveedorServ;
 	
 	@GetMapping
 	public String index() {
@@ -172,7 +168,7 @@ public class AsistenciaController {
 		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
-	
+/*	
 	@GetMapping("/proveedor")
 	public String asistenciaProveedor(Model model) {
 		
@@ -253,7 +249,7 @@ public class AsistenciaController {
 		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
 		return "redirect:/views/asistencia/proveedor/egreso";
 	}
-	
+*/	
 	
 	@GetMapping("/personal")
 	public String listarClientes(Model model) {
@@ -270,8 +266,7 @@ public class AsistenciaController {
 		List<Asistencia> AsisSinEgreso = listaAsistencias
 										.stream()
 										.filter(a -> a.getSalida() == null 
-													&& a.getPersonal()!=null
-													&& a.getProveedor()==null)
+													&& a.getPersonal()!=null)
 										.collect(Collectors.toList());
 		
 		// Busco al personal que aun no ha egresado
@@ -294,7 +289,7 @@ public class AsistenciaController {
 			List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
 			List<Asistencia> AsisSinEgreso = listaAsistencias
 											.stream()
-											.filter(a -> a.getSalida() == null && a.getPersonal()!=null && a.getProveedor()==null)
+											.filter(a -> a.getSalida() == null && a.getPersonal()!=null)
 											.collect(Collectors.toList());
 			
 			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();

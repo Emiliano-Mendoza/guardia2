@@ -41,11 +41,7 @@ public class Asistencia {
 	@ManyToOne
 	@JoinColumn(name = "id_Personal")
 	private Personal personal;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_Proveedor")
-	private Proveedor proveedor;
-	
+		
     @OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Transito> transito = new ArrayList<>();
@@ -69,12 +65,6 @@ public class Asistencia {
 	}
 	public void setPersonal(Personal personal) {
 		this.personal = personal;
-	}
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
 	}
 	
 	public int getIdAsistencia() {
@@ -105,7 +95,7 @@ public class Asistencia {
 	public String toString() {
 		return "Asistencia [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
 				+ ", enTransito=" + enTransito + ", usuarioIngreso=" + usuarioIngreso + ", usuarioEgreso="
-				+ usuarioEgreso + ", personal=" + personal + ", proveedor=" + proveedor + "]";
+				+ usuarioEgreso + ", personal=" + personal + "]";
 	}
 	public List<Transito> getTransito() {
 		return transito;
