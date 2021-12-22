@@ -17,8 +17,8 @@ public class Proveedor{
 	private int idProveedor;
 	@NotEmpty
 	private String razonSocial;
-	
-	
+
+		
 	public int getIdProveedor() {
 		return idProveedor;
 	}

@@ -13,4 +13,6 @@ public interface RetiroMaterialService {
 	public void eliminarRetiroMaterial(int idRetiroMaterial);
 	public Optional<RetiroMaterial> findById(int idRetiroMaterial);
 	
+	public List<RetiroMaterial> findAllByOrderByFechaLimiteAsc();
+	
 }

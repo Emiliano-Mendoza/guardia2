@@ -25,7 +25,7 @@ public class HomeController {
 	@GetMapping({"/home", "/index","/"})
 	public String index(Model model) {
 		
-		List<RetiroMaterial> listaRetiros = retiroServ.getAllRetiroMaterial();
+		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
 		
 		//traigo solo aquellos retiros que no hayas sucedido y que la autorizacion aun este vigente
 		listaRetiros = listaRetiros.stream()
@@ -33,7 +33,7 @@ public class HomeController {
 				.collect(Collectors.toList());
 		
 		model.addAttribute("listaRetiros", listaRetiros);
-		
+				
 		//
 		
 		List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc();

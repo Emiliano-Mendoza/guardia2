@@ -48,4 +48,9 @@ public class RetiroMaterialServiceImp implements RetiroMaterialService {
 		return retiroRepo.save(retiro);
 	}
 
+	@Override
+	public List<RetiroMaterial> findAllByOrderByFechaLimiteAsc() {
+		return retiroRepo.findAllByOrderByFechaLimiteAsc();
+	}
+
 }

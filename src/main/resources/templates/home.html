@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
 <body>
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div class="container">
+	<div class="container" sec:authorize="isAuthenticated()">
 
 
 		<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
@@ -73,7 +74,7 @@
 			</div>
 		</div>
 
-		<div class="row " style="padding-top: 20px;">
+		<div class="row " style="padding-top: 25px;">
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body"
