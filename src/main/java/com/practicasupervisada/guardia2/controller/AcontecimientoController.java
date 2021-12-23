@@ -15,13 +15,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.practicasupervisada.guardia2.domain.Acontecimiento;
+import com.practicasupervisada.guardia2.domain.Roles;
+import com.practicasupervisada.guardia2.domain.Usuario;
 import com.practicasupervisada.guardia2.service.AcontecimientoService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 
@@ -54,8 +59,30 @@ public class AcontecimientoController {
 		model.addAttribute("listaAcontecimientos", listaAcontecimientos);
 		model.addAttribute("acont", acont);
 		
+		//----------------------------
+		
+		List<Usuario> listaUsuarios = usuarioServ.getAllUsuario()
+				.stream()
+				.filter(u -> {
+						Iterator<Roles> iterator = u.getRoles().iterator();
+						Roles rol = new Roles();
+						
+						while(iterator.hasNext()){
+							 rol = iterator.next();
+							 if(rol.getRol().equals("GUARDIA")) return true;
+							
+						}
+						return false;
+					} 					
+				)
+				.collect(Collectors.toList());;	
+				
+		model.addAttribute("listaUsuarios", listaUsuarios);		
+				
 		return "/views/acontecimiento/registrarAcontecimiento";
 	}
+	
+
 	
 	@PostMapping("/guardar")
 	public String guardar(@Valid @ModelAttribute("acont") Acontecimiento acont,
@@ -106,7 +133,8 @@ public class AcontecimientoController {
 	
 	@GetMapping("/previos")
 	public String listarAcontecimientosAnteriores(Model model,
-												  @RequestParam(name = "fechaAcontecimiento") String fechaAcontecimiento) throws ParseException {
+												  @RequestParam(name = "fechaAcontecimiento") String fechaAcontecimiento,
+												  @RequestParam(name = "idUsuario", required = false) int idUsuario) throws ParseException {
 		
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -114,12 +142,25 @@ public class AcontecimientoController {
 		Date fechaAuxTomorrow = new Date(fechaAux.getTime() + (1000 * 60 * 60 * 24));
 		
 		
+		
 		List<Acontecimiento> listaAcontecimientos = acontecimientoServ.getAllAcontecimientos();
 		
-		listaAcontecimientos = listaAcontecimientos
-				.stream()
-				.filter(ac -> ac.getFecha().after(fechaAux) && ac.getFecha().before(fechaAuxTomorrow))
-				.collect(Collectors.toList());
+		if(idUsuario == -1) {
+			listaAcontecimientos = listaAcontecimientos
+					.stream()
+					.filter(ac -> ac.getFecha().after(fechaAux) && ac.getFecha().before(fechaAuxTomorrow))
+					.collect(Collectors.toList());
+		}else {
+			listaAcontecimientos = listaAcontecimientos
+					.stream()
+					.filter(ac -> ac.getFecha().after(fechaAux) 
+							      && ac.getFecha().before(fechaAuxTomorrow)
+							      && ac.getUsuario().getIdUsuario() == idUsuario)
+					.collect(Collectors.toList());
+					
+		}
+		
+		
 				
 		model.addAttribute("listaAcontecimientos", listaAcontecimientos);
 		model.addAttribute("diaSeleccionado", fechaAux);

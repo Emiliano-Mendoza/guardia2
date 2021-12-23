@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
 <body>
@@ -27,7 +27,8 @@
 					<th class="sortable" style="width: 20%; text-align: center;">Sector</th>
 					<th scope="col" style="width: 15%; text-align: center;">Editar
 						Empleado</th>
-					<th scope="col" style="width: 15%; text-align: center;">Asistencias</th>
+					<th scope="col" style="width: 15%; text-align: center;" sec:authorize="hasRole('ROLE_ADMIN')">
+					Asistencias</th>
 				</tr>
 			</thead>
 			<tbody id="fila">
