@@ -238,13 +238,16 @@ public class AsistenciaController {
 			Date fechaInicioAux = formatter.parse(fechaInicio);
 			Date fechaFinalAux = formatter.parse(fechaFinal);
 			
-			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
-					.stream()
-					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
-								&& a.getEntrada().after(fechaInicioAux) && a.getEntrada().before(fechaFinalAux)
-								&& a.getSalida() != null
-								&& a.getUsuarioEgreso() != null)
-					.collect(Collectors.toList());
+			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
+			
+			listaAsistencias = listaAsistencias.stream()
+												.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+														&& a.getSalida() != null
+														&& a.getUsuarioEgreso() != null
+														&& a.getEntrada().after(fechaInicioAux)
+														&& a.getEntrada().before(fechaFinalAux))
+												.collect(Collectors.toList()); 
+
 		}else if(fechaInicio != null && fechaInicio.length()>0) {
 			
 			Date fechaInicioAux = formatter.parse(fechaInicio);
@@ -256,7 +259,18 @@ public class AsistenciaController {
 								&& a.getUsuarioEgreso() != null)
 					.collect(Collectors.toList());
 						
-		}else {
+		}else if(fechaFinal != null && fechaFinal.length()>0) {
+			Date fechaFinalAux = formatter.parse(fechaFinal);
+			
+			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
+					.stream()
+					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+								&& a.getEntrada().before(fechaFinalAux)
+								&& a.getSalida() != null
+								&& a.getUsuarioEgreso() != null)
+					.collect(Collectors.toList());
+		}
+		else {
 			
 			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
 					.stream()

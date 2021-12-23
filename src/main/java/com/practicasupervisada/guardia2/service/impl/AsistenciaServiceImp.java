@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +42,10 @@ public class AsistenciaServiceImp implements AsistenciaService {
 		return asistenciaRepo.findAllByOrderByEntradaAsc();
 	}
 
-/*
 	@Override
-	public Optional<Asistencia> findByPersonal(Proveedor proveedor) {
-		return asistenciaRepo.findByProveedor(proveedor);
+	public List<Asistencia> findAllByEntradaLessThanEqualAndEntradaGreaterThanEqual(Date endDate, Date startDate) {
+		
+		return asistenciaRepo.findAllByEntradaLessThanEqualAndEntradaGreaterThanEqualOrderByEntradaAsc(endDate, startDate);
 	}
-*/
+
 }

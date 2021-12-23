@@ -101,7 +101,7 @@
 						</td>
 						<td style="text-align:center;">
 							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-							onclick="hola('${p.nroLegajo}','${p.nombre}','${p.apellido}')"
+							onclick="mostrarModal('${p.nroLegajo}','${p.nombre}','${p.apellido}')"
 								data-bs-target="#exampleModal">Ver</button>
 						</td>
 					</tr>
@@ -246,7 +246,7 @@
 		} 
 		
 		
-		function hola(nroLegajo,nombre,apellido){
+		function mostrarModal(nroLegajo,nombre,apellido){
 
 			const modal = document.getElementById("modalbody");
 			
@@ -258,7 +258,7 @@
 				  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
 				  <li class="list-group-item">
 				  		<label>Fecha inicial: </label>
-				  		<input type="date" name="fechaInicio">
+				  		<input type="date" name="fechaInicio"> 
 				  </li>
 				  <li class="list-group-item">
 			  		<label>Fecha final: </label>
