@@ -1,5 +1,7 @@
 package com.practicasupervisada.guardia2.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -167,90 +169,7 @@ public class AsistenciaController {
 		atributos.addFlashAttribute("success", "Reingreso transitorio registrado!");
 		return "redirect:/views/asistencia/personal/egreso";
 	}
-	
-/*	
-	@GetMapping("/proveedor")
-	public String asistenciaProveedor(Model model) {
-		
-		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
-		
-		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
-		List<Asistencia> AsisSinEgreso = listaAsistencias
-				.stream()
-				.filter(a -> a.getSalida() == null && a.getProveedor()!=null && a.getPersonal()==null)
-				.collect(Collectors.toList());
-		
-		List<Proveedor> proveedorSinEgresar = new ArrayList <Proveedor> ();
-		AsisSinEgreso.stream().forEach(a -> proveedorSinEgresar.add(a.getProveedor()));
-		
-		proveedorSinEgresar.stream().forEach(p -> {listaProveedor.remove(p);});
-		
-		model.addAttribute("listaProveedor", listaProveedor);		
-		return "/views/asistencia/ingresoProveedor";
-	}
-	
-	@GetMapping("/proveedor/egreso")
-	public String proveedoresIngresados(Model model) {
-		
-		List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
-		List<Asistencia> AsisSinEgreso = listaAsistencias
-										.stream()
-										.filter(a -> a.getSalida() == null && a.getPersonal()==null && a.getProveedor()!=null)
-										.collect(Collectors.toList());		
-		
-		model.addAttribute("asistencias", AsisSinEgreso);
-		
-		return "/views/asistencia/egresoProveedor";
-	}
-	
-	
-	@PostMapping("/proveedor/ingreso/{idProveedor}")
-	public String nuevaAsistenciaProveedor(@PathVariable("idProveedor") int idProveedor,
-										  RedirectAttributes atributos) {
-			
-		try {
-			Proveedor proveedor = proveedorServ.findById(idProveedor).orElseThrow();
-			
-			Asistencia asis = new Asistencia();
-			asis.setProveedor(proveedor);
-			asis.setEntrada(new Date());
-			asis.setEnTransito(false);
-			
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			asis.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
-			asistenciaServ.crearAsistencia(asis);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		atributos.addFlashAttribute("success", "Ingreso registrado exitosamente!");
-		return "redirect:/views/asistencia/proveedor";
-	}
-	
-	
-	@PostMapping("/proveedor/egreso/{idAsistencia}")
-	public String egresoProveedor(@PathVariable("idAsistencia") int idAsistencia,
-										  RedirectAttributes atributos) {
-			
-		try {
-			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
-			
-			asis.setSalida(new Date());
-			
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
-			
-			asistenciaServ.crearAsistencia(asis);
-			
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
-		return "redirect:/views/asistencia/proveedor/egreso";
-	}
-*/	
-	
+
 	@GetMapping("/personal")
 	public String listarClientes(Model model) {
 		
@@ -303,4 +222,55 @@ public class AsistenciaController {
 		
 		return "/views/asistencia/egresoPersonal";
 	}
+	
+	
+	@GetMapping("/asistencias-empleado/{nroLegajo}")
+	public String asistenciasEmpleado(@PathVariable("nroLegajo") int nroLegajo,
+						@RequestParam(name = "fechaInicio", required = false) String fechaInicio,
+						@RequestParam(name = "fechaFinal", required = false) String fechaFinal,
+						Model model) throws ParseException {
+		
+		List <Asistencia> listaAsistencias = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(fechaInicio != null && fechaInicio.length()>0 && fechaFinal != null && fechaFinal.length()>0) {
+			
+			Date fechaInicioAux = formatter.parse(fechaInicio);
+			Date fechaFinalAux = formatter.parse(fechaFinal);
+			
+			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
+					.stream()
+					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+								&& a.getEntrada().after(fechaInicioAux) && a.getEntrada().before(fechaFinalAux)
+								&& a.getSalida() != null
+								&& a.getUsuarioEgreso() != null)
+					.collect(Collectors.toList());
+		}else if(fechaInicio != null && fechaInicio.length()>0) {
+			
+			Date fechaInicioAux = formatter.parse(fechaInicio);
+			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
+					.stream()
+					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+								&& a.getEntrada().after(fechaInicioAux)
+								&& a.getSalida() != null
+								&& a.getUsuarioEgreso() != null)
+					.collect(Collectors.toList());
+						
+		}else {
+			
+			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
+					.stream()
+					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+								&& a.getSalida() != null
+								&& a.getUsuarioEgreso() != null)
+					.collect(Collectors.toList());
+						
+		}
+				
+		
+		model.addAttribute("listaAsistencias", listaAsistencias);
+		
+		return "/views/asistencia/verAsistencias";
+	}
+	
 }

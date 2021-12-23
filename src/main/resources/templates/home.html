@@ -9,7 +9,6 @@
 
 	<div class="container" sec:authorize="isAuthenticated()">
 
-
 		<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
 			style="padding-top: 20px;">
 			<div class="col-sm-2">
@@ -99,9 +98,9 @@
 							<li class="list-group-item" th:each="ret : ${listaRetiros}">
 								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"></span>
 								- RETIRA: [[${ret.personal.nombre}]]
-								[[${ret.personal.apellido}]] - MATERIALES: 
-								<span th:id="mat + ${ret.idRetiro}"></span>
-								- AUTORIZA: [[${ret.usuarioSector.nombre}]]
+								[[${ret.personal.apellido}]] - MATERIALES: <span
+								th:id="mat + ${ret.idRetiro}"></span> - AUTORIZA:
+								[[${ret.usuarioSector.nombre}]]
 								[[${ret.usuarioSector.apellido}]]
 							</li>
 						</ul>
@@ -127,7 +126,6 @@
 				let materialSpan =  document.getElementById(aux);
 								
 				let matOrdenados = ret.materiales.sort(compare);
-				console.log(matOrdenados);
 				
 				let index = 1;
 				for(let mat of matOrdenados){
@@ -155,6 +153,7 @@
 			  }
 			  return 0;
 		}
+				
 		
 	</script>
 </body>

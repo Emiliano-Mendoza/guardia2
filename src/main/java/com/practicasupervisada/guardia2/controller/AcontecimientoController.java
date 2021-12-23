@@ -104,7 +104,7 @@ public class AcontecimientoController {
 	}
 	
 	
-	@PostMapping("/previos")
+	@GetMapping("/previos")
 	public String listarAcontecimientosAnteriores(Model model,
 												  @RequestParam(name = "fechaAcontecimiento") String fechaAcontecimiento) throws ParseException {
 		
