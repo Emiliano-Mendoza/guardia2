@@ -238,8 +238,6 @@ public class AsistenciaController {
 		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 		listaAsistencias = listaAsistencias.stream()
 				.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
-						&& a.getSalida() != null
-						&& a.getUsuarioEgreso() != null
 						&& a.getEntrada().after(fechaInicioAux)
 						&& a.getEntrada().before(fechaFinalAux))
 				.collect(Collectors.toList());	
@@ -249,4 +247,24 @@ public class AsistenciaController {
 		return "/views/asistencia/verAsistencias";
 	}
 	
+	@GetMapping("/previas")
+	public String asistenciasPrevias(Model model,
+						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
+		
+		String[] parts = date_range.split("-");
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date fechaInicioAux = formatter.parse(parts[0]);
+		Date fechaFinalAux = formatter.parse(parts[1]);
+		
+		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
+		listaAsistencias = listaAsistencias.stream()
+				.filter(a -> a.getEntrada().after(fechaInicioAux)
+						&& a.getEntrada().before(fechaFinalAux))
+				.collect(Collectors.toList());	
+		
+		model.addAttribute("listaAsistencias", listaAsistencias);
+		
+		return "/views/asistencia/verAsistencias";
+	}
 }

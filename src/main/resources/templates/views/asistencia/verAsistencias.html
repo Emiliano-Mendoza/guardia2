@@ -28,25 +28,7 @@
 
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:each="asis:${listaAsistencias}">
-
-					<td scope="row" th:text="${asis.personal.nroLegajo}" style="text-align: center;"></td>
-					<td style="text-align: center;">
-						[[${asis.personal.nombre}]] [[${asis.personal.apellido}]]
-					</td>
-					<td th:text="${#dates.format(asis.entrada, 'dd-MM-yyyy HH:mm')}"
-						style="text-align: center;"></td>
-					<td th:text="${#dates.format(asis.salida, 'dd-MM-yyyy HH:mm')}"
-						style="text-align: center;"></td>
-					<td style="text-align: center;">
-						[[${asis.usuarioIngreso.nombre}]] [[${asis.usuarioIngreso.apellido}]]
-					</td>
-					<td style="text-align: center;">
-						[[${asis.usuarioEgreso.nombre}]] [[${asis.usuarioEgreso.apellido}]]
-					</td>
-
-				</tr>
+			<tbody id="fila">
 
 			</tbody>
 		</table>
@@ -59,6 +41,58 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 	
 	<script th:inline="javascript">
+			
+		const listaAsistencias =  /*[[${listaAsistencias}]]*/ 'default';
+		const resultado = document.querySelector('#fila');
+		
+		for(let asis of listaAsistencias){
+			
+			var d1 = new Date(asis.entrada);
+			dformat1 = `${
+			    d1.getDate().toString().padStart(2, '0')}/${
+			    (d1.getMonth()+1).toString().padStart(2, '0')}/${
+			    d1.getFullYear().toString().padStart(4, '0')} ${
+			    d1.getHours().toString().padStart(2, '0')}:${
+			    d1.getMinutes().toString().padStart(2, '0')}`;
+			
+			
+			
+			if(asis.usuarioEgreso != null && asis.salida != null){
+				
+				var d2 = new Date(asis.salida);
+				dformat2 = `${
+					    d2.getDate().toString().padStart(2, '0')}/${
+					    (d2.getMonth()+1).toString().padStart(2, '0')}/${
+					    d2.getFullYear().toString().padStart(4, '0')} ${
+					    d2.getHours().toString().padStart(2, '0')}:${
+					    d2.getMinutes().toString().padStart(2, '0')}`;
+				
+				resultado.innerHTML += `
+					<tr >
+						<td scope="row" style="text-align:center;">${asis.personal.nroLegajo}</td>
+						<td style="text-align:center;">${asis.personal.nombre} ${asis.personal.apellido}</td>
+						<td style="text-align:center;">${dformat1}</td>						
+						<td style="text-align:center;">${dformat2}</td>
+						<td style="text-align:center;">${asis.usuarioIngreso.nombre} ${asis.usuarioIngreso.apellido}</td>
+						<td style="text-align:center;">${asis.usuarioEgreso.nombre} ${asis.usuarioEgreso.apellido}</td>
+					</tr>
+				`;
+			}else{
+				
+				resultado.innerHTML += `
+					<tr >
+						<td scope="row" style="text-align:center;">${asis.personal.nroLegajo}</td>
+						<td style="text-align:center;">${asis.personal.nombre} ${asis.personal.apellido}</td>
+						<td style="text-align:center;">${dformat1}</td>						
+						<td style="text-align:center;">-</td>
+						<td style="text-align:center;">${asis.usuarioIngreso.nombre} ${asis.usuarioIngreso.apellido}</td>
+						<td style="text-align:center;">-</td>
+					</tr>
+				`;
+			}
+			
+	
+		}
 	
 		function goBack(){
 			window.history.back();

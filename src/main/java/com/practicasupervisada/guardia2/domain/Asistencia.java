@@ -30,12 +30,12 @@ public class Asistencia {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Ingreso")
-	@JsonIgnore
+	
 	private Usuario usuarioIngreso;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Egreso")
-	@JsonIgnore
+	
 	private Usuario usuarioEgreso;
 	
 	@ManyToOne
@@ -46,14 +46,14 @@ public class Asistencia {
     @JsonManagedReference
     private List<Transito> transito = new ArrayList<>();
 	
-	@JsonIgnore
+	
 	public Usuario getUsuarioIngreso() {
 		return usuarioIngreso;
 	}
 	public void setUsuarioIngreso(Usuario usuarioIngreso) {
 		this.usuarioIngreso = usuarioIngreso;
 	}
-	@JsonIgnore
+	
 	public Usuario getUsuarioEgreso() {
 		return usuarioEgreso;
 	}

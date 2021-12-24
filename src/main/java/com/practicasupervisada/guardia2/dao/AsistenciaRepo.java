@@ -13,5 +13,6 @@ public interface AsistenciaRepo extends JpaRepository<Asistencia, Integer> {
 	
 	public List<Asistencia> findAllByOrderByEntradaAsc();
 	
+	
 	public List<Asistencia> findAllByEntradaLessThanEqualAndEntradaGreaterThanEqualOrderByEntradaAsc(Date endDate, Date startDate);
 }
