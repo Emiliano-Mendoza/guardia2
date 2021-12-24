@@ -11,5 +11,5 @@ public interface AsistenciaProveedorService {
 	public List<AsistenciaProveedor> getAllAsistencias();
 	public void eliminarAsistencia(int idAsistencia);
 	public Optional<AsistenciaProveedor> findById(int idAsistencia);
-	
+	public List<AsistenciaProveedor> findAllByOrderByEntradaAsc();
 }

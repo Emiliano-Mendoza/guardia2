@@ -26,12 +26,12 @@ public class AsistenciaProveedor {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Ingreso")
-	@JsonIgnore
+	
 	private Usuario usuarioIngreso;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Egreso")
-	@JsonIgnore
+	
 	private Usuario usuarioEgreso;
 	
 	@ManyToOne
@@ -77,7 +77,7 @@ public class AsistenciaProveedor {
 	public void setPatenteVehiculo(String patenteVehiculo) {
 		this.patenteVehiculo = patenteVehiculo;
 	}
-	@JsonIgnore
+	
 	public Usuario getUsuarioIngreso() {
 		return usuarioIngreso;
 	}
@@ -85,7 +85,7 @@ public class AsistenciaProveedor {
 	public void setUsuarioIngreso(Usuario usuarioIngreso) {
 		this.usuarioIngreso = usuarioIngreso;
 	}
-	@JsonIgnore
+	
 	public Usuario getUsuarioEgreso() {
 		return usuarioEgreso;
 	}

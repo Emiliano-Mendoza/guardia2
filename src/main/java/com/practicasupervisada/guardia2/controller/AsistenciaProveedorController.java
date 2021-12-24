@@ -1,5 +1,7 @@
 package com.practicasupervisada.guardia2.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.AsistenciaProveedor;
 import com.practicasupervisada.guardia2.domain.Proveedor;
 import com.practicasupervisada.guardia2.service.AsistenciaProveedorService;
@@ -83,8 +86,8 @@ public class AsistenciaProveedorController {
 			asis.setProveedor(proveedor);
 			asis.setEntrada(new Date());
 			
-			if(nombreChofer!=null && nombreChofer.length()>0) asis.setNombreChofer(nombreChofer);
-			if(patenteVehiculo!=null && patenteVehiculo.length()>0) asis.setPatenteVehiculo(patenteVehiculo);
+			asis.setNombreChofer(nombreChofer);
+			asis.setPatenteVehiculo(patenteVehiculo);
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			asis.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
@@ -117,5 +120,26 @@ public class AsistenciaProveedorController {
 		
 		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
 		return "redirect:/views/asistencia-proveedor/egreso";
+	}
+	
+	@GetMapping("/previas")
+	public String asistenciasPrevias(Model model,
+						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
+		
+		String[] parts = date_range.split("-");
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date fechaInicioAux = formatter.parse(parts[0]);
+		Date fechaFinalAux = formatter.parse(parts[1]);
+		
+		List <AsistenciaProveedor> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
+		listaAsistencias = listaAsistencias.stream()
+				.filter(a -> a.getEntrada().after(fechaInicioAux)
+						&& a.getEntrada().before(fechaFinalAux))
+				.collect(Collectors.toList());	
+		
+		model.addAttribute("listaAsistencias", listaAsistencias);
+		
+		return "/views/asistencia-proveedor/verAsistenciaProveedores";
 	}
 }

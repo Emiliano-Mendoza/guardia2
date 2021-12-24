@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+		<div class="gap-2 d-md-flex justify-content-between">
+			<h3 class="mt-3">
+				Asistencias:
+			</h3>
+			<button class="btn btn-success btn-sm mt-3" onclick="goBack()" >Regresar</button>
+		</div>
+		<table class="table mt-3" id="myTable">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 15%; text-align: center;">Proveedor</th>
+					<th scope="col" style="width: 15%; text-align: center;">Entrada</th>
+					<th scope="col" style="width: 15%; text-align: center;">Salida
+					</th>
+					<th scope="col" style="width: 15%; text-align: center;">Nombre Chofer
+					</th>
+					<th scope="col" style="width: 10%; text-align: center;">Patente Vehiculo</th>
+					<th scope="col" style="width: 15%; text-align: center;">Guardia Ingreso</th>
+					<th scope="col" style="width: 25%; text-align: center;">Guardia Egreso</th>
+
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+
+
+	</div>
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+			
+		const listaAsistencias =  /*[[${listaAsistencias}]]*/ 'default';
+		const resultado = document.querySelector('#fila');
+		
+		for(let asis of listaAsistencias){
+			
+			var d1 = new Date(asis.entrada);
+			dformat1 = `${
+			    d1.getDate().toString().padStart(2, '0')}/${
+			    (d1.getMonth()+1).toString().padStart(2, '0')}/${
+			    d1.getFullYear().toString().padStart(4, '0')} ${
+			    d1.getHours().toString().padStart(2, '0')}:${
+			    d1.getMinutes().toString().padStart(2, '0')}`;
+			
+			if(asis.usuarioEgreso != null && asis.salida != null){
+				
+					var d2 = new Date(asis.salida);
+					dformat2 = `${
+						    d2.getDate().toString().padStart(2, '0')}/${
+						    (d2.getMonth()+1).toString().padStart(2, '0')}/${
+						    d2.getFullYear().toString().padStart(4, '0')} ${
+						    d2.getHours().toString().padStart(2, '0')}:${
+						    d2.getMinutes().toString().padStart(2, '0')}`;
+					
+					resultado.innerHTML += `
+						<tr >
+							<td scope="row" style="text-align:center;">${asis.proveedor.razonSocial}</td>
+							<td style="text-align:center;">${dformat1}</td>						
+							<td style="text-align:center;">${dformat2}</td>
+							<td style="text-align:center;">${asis.nombreChofer}</td>
+							<td style="text-align:center;">${asis.patenteVehiculo}</td>
+							<td style="text-align:center;">${asis.usuarioIngreso.nombre} ${asis.usuarioIngreso.apellido}</td>
+							<td style="text-align:center;">${asis.usuarioEgreso.nombre} ${asis.usuarioEgreso.apellido}</td>
+						</tr>
+					`;
+			}else{
+				resultado.innerHTML += `
+					<tr >
+						<td scope="row" style="text-align:center;">${asis.proveedor.razonSocial}</td>
+						<td style="text-align:center;">${dformat1}</td>						
+						<td style="text-align:center;">-</td>
+						<td style="text-align:center;">${asis.nombreChofer}</td>
+						<td style="text-align:center;">${asis.patenteVehiculo}</td>
+						<td style="text-align:center;">${asis.usuarioIngreso.nombre} ${asis.usuarioIngreso.apellido}</td>
+						<td style="text-align:center;">-</td>
+					</tr>
+				`;
+			}
+
+		}
+	
+		function goBack(){
+			window.history.back();
+		}
+	
+	</script>
+	
+	
+</body>
+</html>	

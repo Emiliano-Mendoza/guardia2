@@ -39,4 +39,9 @@ public class AsistenciaProveedorServiceImp implements AsistenciaProveedorService
 		return asisRepo.findById(idAsistencia);
 	}
 
+	@Override
+	public List<AsistenciaProveedor> findAllByOrderByEntradaAsc() {
+		return asisRepo.findAllByOrderByEntradaAsc();
+	}
+
 }
