@@ -245,8 +245,7 @@
 			}
 			
 		} 
-		
-		
+				
 		function mostrarModal(nroLegajo,nombre,apellido){
 
 			const modal = document.getElementById("modalbody");
@@ -257,25 +256,65 @@
 				<ul class="list-group list-group-flush">
 				  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
 				  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
-				  <li class="list-group-item">
-				  		<label>Fecha inicial: </label>
-				  		<input type="date" name="fechaInicio"> 
-				  </li>
-				  <li class="list-group-item">
-			  		<label>Fecha final: </label>
-			  		<input type="date" name="fechaFinal">
+			      <li class="list-group-item">
+			      	<label>Rango de fechas: </label>
+			      	<input type="text" id="date_range" name="date_range" class="form-control">
 			      </li>
+			      
 				</ul>
 			`;
 			
+			$('#date_range').daterangepicker();
+			const today = new Date()
+			let tomorrow = new Date(today)
+			tomorrow.setDate(tomorrow.getDate() + 1)
+			$(function () {
+			    $('#date_range').daterangepicker({
+			        "locale": {
+			            "format": "DD/MM/YYYY",
+			            "separator": "-",
+			            "applyLabel": "Guardar",
+			            "cancelLabel": "Cancelar",
+			            "fromLabel": "Desde",
+			            "toLabel": "Hasta",
+			            "customRangeLabel": "Personalizar",
+			            "daysOfWeek": [
+			                "Do",
+			                "Lu",
+			                "Ma",
+			                "Mi",
+			                "Ju",
+			                "Vi",
+			                "Sa"
+			            ],
+			            "monthNames": [
+			                "Enero",
+			                "Febrero",
+			                "Marzo",
+			                "Abril",
+			                "Mayo",
+			                "Junio",
+			                "Julio",
+			                "Agosto",
+			                "Setiembre",
+			                "Octubre",
+			                "Noviembre",
+			                "Diciembre"
+			            ],
+			            "firstDay": 1
+			        },
+			        "startDate": today,
+			        "endDate" : tomorrow,
+			        "opens": "center"
+			    });
+			});
+					
 			document.getElementById("myform").action = "/views/asistencia/asistencias-empleado/" + nroLegajo;
 			
 		}
-		
-		
+				
 		formulario.addEventListener('keyup', filtrar);
 		filtrar();
-		
 		
 	</script>
 </body>

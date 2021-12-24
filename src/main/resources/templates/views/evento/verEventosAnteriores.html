@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+		
+		<div class="gap-2 d-md-flex justify-content-between">
+			<h3 class="mt-3">Registros de la fecha: 
+			<span th:text="${#dates.format(diaSeleccionado, 'dd-MM-yyyy')}"></span></h3>
+			<button class="btn btn-success btn-sm mt-3" onclick="goBack()" >Regresar</button>
+		</div>
+		<table class="table mt-3" id="myTable">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 17%; text-align: center;">Fecha Evento</th>
+					<th scope="col" style="width: 17%; text-align: center;">Descripción</th>
+					<th scope="col" style="width: 17%; text-align: center;">Responsable</th>
+					<th scope="col" style="width: 17%; text-align: center;">Guardia</th>
+					<th scope="col" style="width: 17%; text-align: center;">Observación</th>
+					<th scope="col" style="width: 15%; text-align: center;">Motivo Cancelación</th>
+					
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+
+			</tbody>
+		</table>
+		
+	</div>
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+		const listaEventos =  /*[[${listaEventos}]]*/ 'default';
+		const resultado = document.querySelector('#fila');
+		
+		for(let e of listaEventos){
+			
+			console.log(e);
+			
+			var d = new Date(e.fechaEvento);
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			
+			if(e.usurioGuardia != null && e.observacionDeGuardia != null){
+				resultado.innerHTML += `
+					<tr style="background-color: #32CD32;">
+						<td scope="row" style="text-align:center;">${dformat}</td>
+						<td >${e.descripcion}</td>
+						<td style="text-align:center;">${e.usuarioSector.nombre} ${e.usuarioSector.apellido}</td>						
+						<td style="text-align:center;">${e.usurioGuardia.nombre} ${e.usurioGuardia.apellido}</td>
+						<td style="text-align:center;">${e.observacionDeGuardia}</td>
+						<td style="text-align:center;"><b>-</b></td>
+					</tr>
+				`;
+			}else if(e.usurioGuardia == null && e.observacionDeGuardia == null && !e.cancelado){
+				resultado.innerHTML += `
+					<tr style="background-color: #fefbd8;">
+						<td scope="row" style="text-align:center;">${dformat}</td>
+						<td >${e.descripcion}</td>
+						<td style="text-align:center;">${e.usuarioSector.nombre} ${e.usuarioSector.apellido}</td>
+						<td style="text-align:center;"><b>-</b></td>
+						<td style="text-align:center;"><b>-</b></td>
+						<td style="text-align:center;"><b>-</b></td>
+					</tr>
+				`;
+			}else if(e.cancelado){
+				resultado.innerHTML += `
+					<tr style="background-color: #FA8072;">
+						<td scope="row" style="text-align:center;">${dformat}</td>
+						<td >${e.descripcion}</td>
+						<td style="text-align:center;">${e.usuarioSector.nombre} ${e.usuarioSector.apellido}</td>
+						<td style="text-align:center;"><b>-</b></td>
+						<td style="text-align:center;"><b>-</b></td>
+						<td style="text-align:center;">${e.descripcionCancelacion}</td>
+					</tr>
+				`;
+			}
+			
+				
+			//
+		}
+			
+		function goBack(){
+			window.history.back();
+		}
+	</script>
+</body>
+</html>

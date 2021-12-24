@@ -226,61 +226,23 @@ public class AsistenciaController {
 	
 	@GetMapping("/asistencias-empleado/{nroLegajo}")
 	public String asistenciasEmpleado(@PathVariable("nroLegajo") int nroLegajo,
-						@RequestParam(name = "fechaInicio", required = false) String fechaInicio,
-						@RequestParam(name = "fechaFinal", required = false) String fechaFinal,
+						@RequestParam(name = "date_range", required = false) String date_range,
 						Model model) throws ParseException {
 		
-		List <Asistencia> listaAsistencias = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String[] parts = date_range.split("-");
 		
-		if(fechaInicio != null && fechaInicio.length()>0 && fechaFinal != null && fechaFinal.length()>0) {
-			
-			Date fechaInicioAux = formatter.parse(fechaInicio);
-			Date fechaFinalAux = formatter.parse(fechaFinal);
-			
-			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
-			
-			listaAsistencias = listaAsistencias.stream()
-												.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
-														&& a.getSalida() != null
-														&& a.getUsuarioEgreso() != null
-														&& a.getEntrada().after(fechaInicioAux)
-														&& a.getEntrada().before(fechaFinalAux))
-												.collect(Collectors.toList()); 
-
-		}else if(fechaInicio != null && fechaInicio.length()>0) {
-			
-			Date fechaInicioAux = formatter.parse(fechaInicio);
-			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
-					.stream()
-					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
-								&& a.getEntrada().after(fechaInicioAux)
-								&& a.getSalida() != null
-								&& a.getUsuarioEgreso() != null)
-					.collect(Collectors.toList());
-						
-		}else if(fechaFinal != null && fechaFinal.length()>0) {
-			Date fechaFinalAux = formatter.parse(fechaFinal);
-			
-			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
-					.stream()
-					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
-								&& a.getEntrada().before(fechaFinalAux)
-								&& a.getSalida() != null
-								&& a.getUsuarioEgreso() != null)
-					.collect(Collectors.toList());
-		}
-		else {
-			
-			listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc()
-					.stream()
-					.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
-								&& a.getSalida() != null
-								&& a.getUsuarioEgreso() != null)
-					.collect(Collectors.toList());
-						
-		}
-				
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date fechaInicioAux = formatter.parse(parts[0]);
+		Date fechaFinalAux = formatter.parse(parts[1]);
+		
+		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
+		listaAsistencias = listaAsistencias.stream()
+				.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+						&& a.getSalida() != null
+						&& a.getUsuarioEgreso() != null
+						&& a.getEntrada().after(fechaInicioAux)
+						&& a.getEntrada().before(fechaFinalAux))
+				.collect(Collectors.toList());	
 		
 		model.addAttribute("listaAsistencias", listaAsistencias);
 		

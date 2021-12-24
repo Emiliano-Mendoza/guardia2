@@ -7,42 +7,48 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h4 class=" mt-3">Listado de Eventos:</h4>
 
-		<h4 class=" mt-3">Listado de Eventos:</h4>
-
+			<button type="button" class="btn btn-primary btn-sm"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+				eventos previos</button>
+		</div>
 		<div class="row">
 			<div class="col-sm-6 mt-3" th:each="ev:${listaEventos}">
 				<div class="card text-dark bg-light  mb-3">
-					
+
 					<h5 class="card-header">Evento Próximo:</h5>
 					<div class="card-body">
-						
+
 						<ul class="list-group list-group-flush ">
-						  <li class="list-group-item bg-light">Descripción: <span th:text="${ev.descripcion}"></span></li>
-						  <li class="list-group-item bg-light">
-						  	Fecha evento: <span
+							<li class="list-group-item bg-light">Descripción: <span
+								th:text="${ev.descripcion}"></span></li>
+							<li class="list-group-item bg-light">Fecha evento: <span
 								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
-						  </li>
-						  <li class="list-group-item bg-light">
-						  	Encargado: <span >[[${ev.usuarioSector.nombre}]] [[${ev.usuarioSector.apellido}]]</span>
-						  </li>
-						  <li class="list-group-item bg-light">
-						  	<label for="observacionGuardia">Observación:</label> <input
-									type="text" class="form-control" id="observacionGuardia"
-									name="observacionGuardia" th:form="myform + ${ev.idEvento}">
-						  </li>
+							</li>
+							<li class="list-group-item bg-light">Encargado: <span>[[${ev.usuarioSector.nombre}]]
+									[[${ev.usuarioSector.apellido}]]</span>
+							</li>
+							<li class="list-group-item bg-light"><label
+								for="observacionGuardia">Observación:</label> <input type="text"
+								class="form-control" id="observacionGuardia"
+								name="observacionGuardia" th:form="myform + ${ev.idEvento}">
+							</li>
 						</ul>
-										
-						
+
+
 					</div>
 					<form method="post"
-							th:action="@{/views/evento/ocurrencia/} + ${ev.idEvento}"
-							onsubmit="return confirm('Confirmar ocurrencia del evento?');" th:id="myform + ${ev.idEvento}">
+						th:action="@{/views/evento/ocurrencia/} + ${ev.idEvento}"
+						onsubmit="return confirm('Confirmar ocurrencia del evento?');"
+						th:id="myform + ${ev.idEvento}">
 
-							<div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-								<input type="submit" class="btn btn-primary btn-sm "
-									value="Confirmar Evento" />
-							</div>
+						<div
+							class="card-footer d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+							<input type="submit" class="btn btn-primary btn-sm "
+								value="Confirmar Evento" />
+						</div>
 
 					</form>
 				</div>
@@ -51,13 +57,67 @@
 	</div>
 
 
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Evento previos:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get" th:action="@{/views/evento/previos}">
+					<div class="modal-body" id="modalbody">
+						<label>Fecha: </label>
+						<input type="date" name="fechaEvento" id="fechaEvento">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Ver
+							Eventos</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script th:inline="javascript">
 		
+	function SetDate() {
 
+		const today = new Date();
+		const yesterday = new Date(today);
+		yesterday.setDate(yesterday.getDate()); //-1
+
+		let aux = '';
+
+		let dd = yesterday.getDate();
+		let mm = yesterday.getMonth() + 1; //January is 0!
+		let yyyy = yesterday.getFullYear();
+
+		if (dd < 10) {
+			dd = '0' + dd;
+		}
+		if (mm < 10) {
+			mm = '0' + mm;
+		}
+
+		aux = yyyy + '-' + mm + '-' + dd;
+
+		document.getElementById('fechaEvento').setAttribute("max",
+				aux);
+		document.getElementById('fechaEvento').setAttribute(
+				"value", aux);
+
+	}
+	SetDate()
 	
 	</script>
 </body>

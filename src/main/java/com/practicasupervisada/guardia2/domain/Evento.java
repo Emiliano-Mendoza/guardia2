@@ -28,12 +28,13 @@ public class Evento {
 	private String descripcionCancelacion;
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_UsuarioSector")	
+	@JoinColumn(name = "ID_UsuarioSector")
+	
 	private Usuario usuarioSector;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
-	@JsonIgnore
+	
 	private Usuario usurioGuardia;
 	
 	public int getIdEvento() {
@@ -73,7 +74,7 @@ public class Evento {
 	public void setUsuarioSector(Usuario usuarioResponsableSector) {
 		this.usuarioSector = usuarioResponsableSector;
 	}
-	@JsonIgnore
+	
 	public Usuario getUsurioGuardia() {
 		return usurioGuardia;
 	}

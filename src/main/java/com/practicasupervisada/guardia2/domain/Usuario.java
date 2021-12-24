@@ -32,7 +32,7 @@ public class Usuario {
 	@Column(unique=true)
 	private String usuario;
 	@NotEmpty
-
+	@JsonIgnore
 	private String contraseña;
 	
 	private Boolean enabled;
@@ -66,7 +66,7 @@ public class Usuario {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-	
+	@JsonIgnore
 	public String getContraseña() {
 		return contraseña;
 	}

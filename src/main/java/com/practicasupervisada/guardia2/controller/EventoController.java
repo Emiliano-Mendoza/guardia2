@@ -207,4 +207,27 @@ public class EventoController {
 		return "redirect:/views/evento/nuevo";
 	}
 	
+	@GetMapping("/previos")
+	public String listarEventosAnteriores(Model model,
+							@RequestParam(name = "fechaEvento") String fechaEvento) throws ParseException {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date fechaAux =new Date (formatter.parse(fechaEvento).getTime() - 60); 
+		Date fechaAuxTomorrow = new Date(fechaAux.getTime() + (1000 * 60 * 60 * 24));
+		
+		
+		
+		List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc()
+				.stream()
+				.filter(e -> 
+						e.getFechaEvento().after(fechaAux)
+						&& e.getFechaEvento().before(fechaAuxTomorrow))
+				.collect(Collectors.toList());
+		
+		model.addAttribute("listaEventos", listaEventos);
+		model.addAttribute("diaSeleccionado", formatter.parse(fechaEvento));
+		
+		return "/views/evento/verEventosAnteriores";
+	}
+	
 }
