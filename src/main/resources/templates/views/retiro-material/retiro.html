@@ -55,7 +55,14 @@
 										[[${p.nombre}]]</option>
 
 							</select></li>
+							<li class="list-group-item"><label>Autorizante: </label> <select
+								class="form-select" id="sector" name="idUsuario">
+									<option value=-1 selected>Todos</option>
+									<option th:each="us:${listaUsuarios}"
+										th:value='${us.idUsuario}'>
+										[[${us.nombre}]] [[${us.apellido}]]</option>
 
+							</select></li>
 						</ul>
 
 
@@ -79,6 +86,7 @@
 	<script th:inline="javascript">
 		
 	let autorizaciones = /*[[${listaRetiros}]]*/ 'default';
+	
 	
 	const formulario = document.querySelector('#formulario');
 	const resultado = document.querySelector('#cardRetiro');

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,8 @@ import com.practicasupervisada.guardia2.domain.AsistenciaProveedor;
 import com.practicasupervisada.guardia2.domain.Material;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.RetiroMaterial;
+import com.practicasupervisada.guardia2.domain.Roles;
+import com.practicasupervisada.guardia2.domain.Usuario;
 import com.practicasupervisada.guardia2.service.MaterialService;
 import com.practicasupervisada.guardia2.service.PersonalService;
 import com.practicasupervisada.guardia2.service.RetiroMaterialService;
@@ -55,6 +58,27 @@ public class RetiroMaterialController {
 			
 			model.addAttribute("listaRetiros", listaRetiros);
 			model.addAttribute("listaPersonal", listaPersonal);
+			
+			//----------------------------
+			
+			List<Usuario> listaUsuarios = usuarioServ.getAllUsuario()
+					.stream()
+					.filter(u -> {
+							Iterator<Roles> iterator = u.getRoles().iterator();
+							Roles rol = new Roles();
+							
+							while(iterator.hasNext()){
+								 rol = iterator.next();
+								 if(rol.getRol().equals("AUTORIZANTE") || rol.getRol().equals("ADMIN")) return true;
+								
+							}
+							return false;
+						} 					
+					)
+					.collect(Collectors.toList());;	
+					
+			model.addAttribute("listaUsuarios", listaUsuarios);
+			
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -152,6 +176,7 @@ public class RetiroMaterialController {
 	@GetMapping("/previos")
 	public String retirosPrevios(Model model,
 						@RequestParam(name = "nroLegajo", required = false) int nroLegajo,
+						@RequestParam(name = "idUsuario", required = false) int idUsuario,
 						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
 				
 		String[] parts = date_range.split("-");
@@ -162,31 +187,64 @@ public class RetiroMaterialController {
 		
 		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
 		
-		if(nroLegajo == -1) {		
-			listaRetiros = listaRetiros.stream()
-					.filter(a -> a.getFechaRetiro() != null
-							&& a.getObservacionGuardia() != null
-							&& a.getFechaRetiro().after(fechaInicioAux)
-							&& a.getFechaRetiro().before(fechaFinalAux))
-					.collect(Collectors.toList());
-		}else if(nroLegajo == -2) {
-			listaRetiros = listaRetiros.stream()
-					.filter(a -> a.getFechaRetiro() != null
-							&& a.getObservacionGuardia() != null
-							&& a.getPersonal() == null
-							&& a.getFechaRetiro().after(fechaInicioAux)
-							&& a.getFechaRetiro().before(fechaFinalAux))
-					.collect(Collectors.toList());
+		if(idUsuario == -1) {
+			if(nroLegajo == -1) {		
+				listaRetiros = listaRetiros.stream()
+						.filter(a -> a.getFechaRetiro() != null
+								&& a.getObservacionGuardia() != null
+								&& a.getFechaRetiro().after(fechaInicioAux)
+								&& a.getFechaRetiro().before(fechaFinalAux))
+						.collect(Collectors.toList());
+			}else if(nroLegajo == -2) {
+				listaRetiros = listaRetiros.stream()
+						.filter(a -> a.getFechaRetiro() != null
+								&& a.getObservacionGuardia() != null
+								&& a.getPersonal() == null
+								&& a.getFechaRetiro().after(fechaInicioAux)
+								&& a.getFechaRetiro().before(fechaFinalAux))
+						.collect(Collectors.toList());
+			}else {
+				listaRetiros = listaRetiros.stream()
+						.filter(a -> a.getFechaRetiro() != null
+								&& a.getObservacionGuardia() != null
+								&& a.getPersonal() != null
+								&& a.getPersonal().getNroLegajo() == nroLegajo
+								&& a.getFechaRetiro().after(fechaInicioAux)
+								&& a.getFechaRetiro().before(fechaFinalAux))
+						.collect(Collectors.toList());
+			}
 		}else {
-			listaRetiros = listaRetiros.stream()
-					.filter(a -> a.getFechaRetiro() != null
-							&& a.getObservacionGuardia() != null
-							&& a.getPersonal() != null
-							&& a.getPersonal().getNroLegajo() == nroLegajo
-							&& a.getFechaRetiro().after(fechaInicioAux)
-							&& a.getFechaRetiro().before(fechaFinalAux))
-					.collect(Collectors.toList());
+			if(nroLegajo == -1) {		
+				listaRetiros = listaRetiros.stream()
+						.filter(a -> a.getFechaRetiro() != null
+								&& a.getObservacionGuardia() != null
+								&& a.getFechaRetiro().after(fechaInicioAux)
+								&& a.getFechaRetiro().before(fechaFinalAux)
+								&& a.getUsuarioSector().getIdUsuario() == idUsuario)
+						.collect(Collectors.toList());
+			}else if(nroLegajo == -2) {
+				listaRetiros = listaRetiros.stream()
+						.filter(a -> a.getFechaRetiro() != null
+								&& a.getObservacionGuardia() != null
+								&& a.getPersonal() == null
+								&& a.getFechaRetiro().after(fechaInicioAux)
+								&& a.getFechaRetiro().before(fechaFinalAux)
+								&& a.getUsuarioSector().getIdUsuario() == idUsuario)
+						.collect(Collectors.toList());
+			}else {
+				listaRetiros = listaRetiros.stream()
+						.filter(a -> a.getFechaRetiro() != null
+								&& a.getObservacionGuardia() != null
+								&& a.getPersonal() != null
+								&& a.getPersonal().getNroLegajo() == nroLegajo
+								&& a.getFechaRetiro().after(fechaInicioAux)
+								&& a.getFechaRetiro().before(fechaFinalAux)
+								&& a.getUsuarioSector().getIdUsuario() == idUsuario)
+						.collect(Collectors.toList());
+			}
 		}
+		
+		
 		
 			
 		

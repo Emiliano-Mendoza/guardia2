@@ -17,12 +17,13 @@
 		<table class="table mt-3" id="myTable">
 			<thead>
 				<tr>
-					<th scope="col" style="width: 20%; text-align: center;">Empleado</th>
+					<th scope="col" style="width: 15%; text-align: center;">Empleado</th>
 					<th scope="col" style="width: 20%; text-align: center;">Materiales
 					</th>
-					<th scope="col" style="width: 20%; text-align: center;">Fecha Retiro
+					<th scope="col" style="width: 15%; text-align: center;">Fecha Retiro
 					</th>					
 					<th scope="col" style="width: 15%; text-align: center;">Guardia</th>
+					<th scope="col" style="width: 15%; text-align: center;">Autorizante</th>
 					<th scope="col" style="width: 15%; text-align: center;">Descripción</th>
 					<th scope="col" style="width: 15%; text-align: center;">Observación</th>
 				</tr>
@@ -63,6 +64,7 @@
 						<td style="text-align:center;" id=${idMat}></td>
 						<td style="text-align:center;">${dformat1}</td>
 						<td style="text-align:center;">${ret.usuarioGuardia.nombre} ${ret.usuarioGuardia.apellido}</td>
+						<td style="text-align:center;">${ret.usuarioSector.nombre} ${ret.usuarioSector.apellido}</td>
 						<td >${ret.descripcion}</td>					
 						<td >${ret.observacionGuardia}</td>
 					</tr>
@@ -74,6 +76,7 @@
 						<td style="text-align:center;" id=${idMat}></td>
 						<td style="text-align:center;">${dformat1}</td>
 						<td style="text-align:center;">${ret.usuarioGuardia.nombre} ${ret.usuarioGuardia.apellido}</td>
+						<td style="text-align:center;">${ret.usuarioSector.nombre} ${ret.usuarioSector.apellido}</td>
 						<td >${ret.descripcion}</td>					
 						<td >${ret.observacionGuardia}</td>
 					</tr>
