@@ -36,4 +36,9 @@ public class PersonalServiceImp implements PersonalService {
 		return personalRepo.findById(idPersonal);
 	}
 
+	@Override
+	public List<Personal> findAllByOrderByApellidoAsc() {
+		return personalRepo.findAllByOrderByApellidoAsc();
+	}
+
 }

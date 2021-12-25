@@ -41,7 +41,6 @@ public class RetiroMaterial {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioGuardia")
-	@JsonIgnore
 	private Usuario usuarioGuardia;
 	@ManyToOne
 	@JoinColumn(name = "ID_UsuarioSector")
@@ -50,7 +49,7 @@ public class RetiroMaterial {
 	@JoinColumn(name = "ID_Personal")
 	private Personal personal;
 	
-	@JsonIgnore
+	
 	public Usuario getUsuarioGuardia() {
 		return usuarioGuardia;
 	}

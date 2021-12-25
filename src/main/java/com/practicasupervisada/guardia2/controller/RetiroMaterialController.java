@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.practicasupervisada.guardia2.domain.AsistenciaProveedor;
 import com.practicasupervisada.guardia2.domain.Material;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.RetiroMaterial;
@@ -44,12 +46,15 @@ public class RetiroMaterialController {
 		try {
 			List<RetiroMaterial> listaRetiros = retiroServ.getAllRetiroMaterial();
 			
-			//traigo solo aquellos retiros que no hayas sucedido y que la autorizacion aun este vigente
+			//traigo solo aquellos retiros que no hayas sucedido y que la autorizacion aun esté vigente
 			listaRetiros = listaRetiros.stream()
 					.filter(ret -> (ret.getFechaRetiro()==null && ret.getFechaLimite().after(new Date())))
 					.collect(Collectors.toList());
 			
+			List<Personal> listaPersonal = personalServ.findAllByOrderByApellidoAsc();
+			
 			model.addAttribute("listaRetiros", listaRetiros);
+			model.addAttribute("listaPersonal", listaPersonal);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -143,4 +148,51 @@ public class RetiroMaterialController {
 		atributos.addFlashAttribute("success", "Retiro de material registrado con éxito!");
 		return "redirect:/views/retiro-material";
 	}
+	
+	@GetMapping("/previos")
+	public String retirosPrevios(Model model,
+						@RequestParam(name = "nroLegajo", required = false) int nroLegajo,
+						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
+				
+		String[] parts = date_range.split("-");
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date fechaInicioAux = formatter.parse(parts[0]);
+		Date fechaFinalAux = formatter.parse(parts[1]);
+		
+		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
+		
+		if(nroLegajo == -1) {		
+			listaRetiros = listaRetiros.stream()
+					.filter(a -> a.getFechaRetiro() != null
+							&& a.getObservacionGuardia() != null
+							&& a.getFechaRetiro().after(fechaInicioAux)
+							&& a.getFechaRetiro().before(fechaFinalAux))
+					.collect(Collectors.toList());
+		}else if(nroLegajo == -2) {
+			listaRetiros = listaRetiros.stream()
+					.filter(a -> a.getFechaRetiro() != null
+							&& a.getObservacionGuardia() != null
+							&& a.getPersonal() == null
+							&& a.getFechaRetiro().after(fechaInicioAux)
+							&& a.getFechaRetiro().before(fechaFinalAux))
+					.collect(Collectors.toList());
+		}else {
+			listaRetiros = listaRetiros.stream()
+					.filter(a -> a.getFechaRetiro() != null
+							&& a.getObservacionGuardia() != null
+							&& a.getPersonal() != null
+							&& a.getPersonal().getNroLegajo() == nroLegajo
+							&& a.getFechaRetiro().after(fechaInicioAux)
+							&& a.getFechaRetiro().before(fechaFinalAux))
+					.collect(Collectors.toList());
+		}
+		
+			
+		
+		model.addAttribute("listaRetiros", listaRetiros);
+		
+		return "/views/retiro-material/verRetirosAnteriores";
+	}
+	
 }

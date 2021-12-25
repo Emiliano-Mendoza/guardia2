@@ -11,4 +11,5 @@ public interface PersonalService {
 	public List<Personal> getAllPersonal();
 	public void eliminarPersonal(int idPersonal);
 	public Optional<Personal> findById(int idPersonal);
+	public List<Personal> findAllByOrderByApellidoAsc();
 }

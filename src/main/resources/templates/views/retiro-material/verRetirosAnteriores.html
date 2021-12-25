@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+		<div class="gap-2 d-md-flex justify-content-between">
+			<h3 class="mt-3">
+				Retiros de Material:
+			</h3>
+			<button class="btn btn-success btn-sm mt-3" onclick="goBack()" >Regresar</button>
+		</div>
+		<table class="table mt-3" id="myTable">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 20%; text-align: center;">Empleado</th>
+					<th scope="col" style="width: 20%; text-align: center;">Materiales
+					</th>
+					<th scope="col" style="width: 20%; text-align: center;">Fecha Retiro
+					</th>					
+					<th scope="col" style="width: 15%; text-align: center;">Guardia</th>
+					<th scope="col" style="width: 15%; text-align: center;">Descripción</th>
+					<th scope="col" style="width: 15%; text-align: center;">Observación</th>
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+
+
+	</div>
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+			
+		const listaRetiros =  /*[[${listaRetiros}]]*/ 'default';
+		const resultado = document.querySelector('#fila');
+		
+		for(let ret of listaRetiros){
+			
+			let idMat = 'mat' + ret.idRetiro;
+			
+			var d1 = new Date(ret.fechaRetiro);
+			dformat1 = `${
+			    d1.getDate().toString().padStart(2, '0')}/${
+			    (d1.getMonth()+1).toString().padStart(2, '0')}/${
+			    d1.getFullYear().toString().padStart(4, '0')} ${
+			    d1.getHours().toString().padStart(2, '0')}:${
+			    d1.getMinutes().toString().padStart(2, '0')}`;
+			
+			if(ret.personal != null){
+				resultado.innerHTML += `
+					<tr >
+						<td scope="row" style="text-align:center;">${ret.personal.nombre} ${ret.personal.apellido}</td>
+						<td style="text-align:center;" id=${idMat}></td>
+						<td style="text-align:center;">${dformat1}</td>
+						<td style="text-align:center;">${ret.usuarioGuardia.nombre} ${ret.usuarioGuardia.apellido}</td>
+						<td >${ret.descripcion}</td>					
+						<td >${ret.observacionGuardia}</td>
+					</tr>
+				`;
+			}else{
+				resultado.innerHTML += `
+					<tr >
+						<td scope="row" style="text-align:center;">Retiro Externo</td>
+						<td style="text-align:center;" id=${idMat}></td>
+						<td style="text-align:center;">${dformat1}</td>
+						<td style="text-align:center;">${ret.usuarioGuardia.nombre} ${ret.usuarioGuardia.apellido}</td>
+						<td >${ret.descripcion}</td>					
+						<td >${ret.observacionGuardia}</td>
+					</tr>
+				`;
+			}	
+			
+			const tdMat = document.getElementById(idMat);
+			
+			let matOrdenados = ret.materiales.sort(compare);
+			
+			let index = 1;
+			for(let mat of matOrdenados){
+				
+				if(index == matOrdenados.length){
+					tdMat.innerHTML += mat.material + '.';
+				}else{
+					tdMat.innerHTML += mat.material + ', ';
+				}
+									
+				index++;
+			}
+				
+		}
+	
+		function goBack(){
+			window.history.back();
+		}
+		
+		
+		function compare( a, b ) {
+			  if ( a.id_material < b.id_material ){
+			    return -1;
+			  }
+			  if ( a.id_material > b.id_material ){
+			    return 1;
+			  }
+			  return 0;
+		}
+	</script>
+	
+	
+</body>
+</html>	
