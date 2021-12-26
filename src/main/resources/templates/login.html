@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+
+
+	<div class="container theme-showcase mt-5" role="main">
+
+		<img th:src="@{/images/login.png}" width="136" height="136"
+			class="center">
+		<form class="form-signin" th:action="@{/login}" method="post">
+			<h3 class="form-signin-heading text-center">Iniciar Sesión</h3>
+			<input type="text" id="username" name="username" class="form-control"
+				placeholder="Usuario" required autofocus> <input
+				type="password" id="password" name="password" class="form-control"
+				placeholder="Password" required>
+
+			<div class="d-grid gap-2">
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+			</div>
+			
+		</form>
+
+	</div>
+
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+		
+	</script>
+</body>
+</html>
