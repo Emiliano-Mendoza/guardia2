@@ -20,9 +20,9 @@
 			th:action="@{/views/acontecimiento/guardar}" method="post"
 			class="mt-3">
 			<div class="mb-3">
-				<label class="ronda"> Ronda: </label> <input type="text"
-					class="form-control" id="ronda" placeholder="00:00"
-					th:field="*{ronda}"> <small class="form-text text-danger"
+				<label class="ronda"> Ronda: </label><div></div>
+				 <input id="ronda" type="time" value="00:00" th:field="*{ronda}" class="form-control">
+				 <small class="form-text text-danger"
 					th:if="${#fields.hasErrors('ronda')}" th:errors="*{ronda}"></small>
 			</div>
 

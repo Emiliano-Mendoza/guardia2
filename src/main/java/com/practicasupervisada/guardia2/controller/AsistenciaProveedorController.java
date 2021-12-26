@@ -43,7 +43,7 @@ public class AsistenciaProveedorController {
 	public String asistenciaProveedor(Model model) {
 		
 		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
-		
+	
 		List<AsistenciaProveedor> listaAsistencias = asistenciaServ.getAllAsistencias();
 		List<AsistenciaProveedor> AsisSinEgreso = listaAsistencias
 				.stream()
@@ -55,7 +55,11 @@ public class AsistenciaProveedorController {
 		
 		proveedorSinEgresar.stream().forEach(p -> {listaProveedor.remove(p);});
 		
-		model.addAttribute("listaProveedor", listaProveedor);		
+		model.addAttribute("listaProveedor", listaProveedor);
+		model.addAttribute("todoProveedor", proveedorServ.getAllProveedor());
+		
+		
+		
 		return "/views/asistencia-proveedor/ingresoProveedor";
 	}
 	
@@ -124,6 +128,7 @@ public class AsistenciaProveedorController {
 	
 	@GetMapping("/previas")
 	public String asistenciasPrevias(Model model,
+						@RequestParam(name = "idProveedor") int idProveedor,
 						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
 		
 		String[] parts = date_range.split("-");
@@ -133,10 +138,21 @@ public class AsistenciaProveedorController {
 		Date fechaFinalAux = formatter.parse(parts[1]);
 		
 		List <AsistenciaProveedor> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
-		listaAsistencias = listaAsistencias.stream()
-				.filter(a -> a.getEntrada().after(fechaInicioAux)
-						&& a.getEntrada().before(fechaFinalAux))
-				.collect(Collectors.toList());	
+		
+		if(idProveedor > 0) {
+			listaAsistencias = listaAsistencias.stream()
+					.filter(a -> a.getEntrada().after(fechaInicioAux)
+							&& a.getEntrada().before(fechaFinalAux)
+							&& a.getProveedor().getIdProveedor() == idProveedor)
+					.collect(Collectors.toList());	
+		}
+		else {
+			listaAsistencias = listaAsistencias.stream()
+					.filter(a -> a.getEntrada().after(fechaInicioAux)
+							&& a.getEntrada().before(fechaFinalAux))
+					.collect(Collectors.toList());	
+		}
+		
 		
 		model.addAttribute("listaAsistencias", listaAsistencias);
 		

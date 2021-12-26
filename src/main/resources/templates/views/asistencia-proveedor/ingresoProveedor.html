@@ -46,14 +46,28 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ingresos de proveedores:</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Ingresos de
+						proveedores:</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<form id="myform" method="get" th:action="@{/views/asistencia-proveedor/previas}">
+				<form id="myform" method="get"
+					th:action="@{/views/asistencia-proveedor/previas}">
 					<div class="modal-body" id="modalbody">
-						<label>Rango de fechas: </label>
-			      		<input type="text" id="date_range" name="date_range" class="form-control">
+					
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas:
+							</label> <input type="text" id="date_range" name="date_range"
+								class="form-control"></li>
+							<li class="list-group-item"><label>Proveedor: </label> <select
+								class="form-select" id="sector" name="idProveedor">
+									<option value=-1 selected>Todos</option>
+									<option th:each="p:${todoProveedor}" th:value='${p.idProveedor}'>
+									[[${p.razonSocial}]]</option>
+
+							</select></li>
+						</ul>
+
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"

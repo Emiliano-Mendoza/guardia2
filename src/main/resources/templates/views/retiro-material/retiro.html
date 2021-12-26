@@ -49,7 +49,7 @@
 							<li class="list-group-item"><label>Entidad: </label> <select
 								class="form-select" id="sector" name="nroLegajo">
 									<option value=-1 selected>Todos</option>
-									<option value=-2 selected>Retiros Externos</option>
+									<option value=-2 >Retiros Externos</option>
 									<option th:each="p:${listaPersonal}"
 										th:value='${p.nroLegajo}'>[[${p.apellido}]]
 										[[${p.nombre}]]</option>

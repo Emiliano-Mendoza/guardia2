@@ -198,6 +198,10 @@ public class AsistenciaController {
 		
 		model.addAttribute("personal", listaPersonal);
 		
+		List<Personal> todoPersonal = personalServ.findAllByOrderByApellidoAsc();
+		
+		model.addAttribute("todoPersonal", todoPersonal);
+		
 		return "/views/asistencia/ingresoPersonal";
 	}
 	
@@ -249,6 +253,7 @@ public class AsistenciaController {
 	
 	@GetMapping("/previas")
 	public String asistenciasPrevias(Model model,
+						@RequestParam(name = "nroLegajo") int nroLegajo,
 						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
 		
 		String[] parts = date_range.split("-");
@@ -258,11 +263,20 @@ public class AsistenciaController {
 		Date fechaFinalAux = formatter.parse(parts[1]);
 		
 		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
-		listaAsistencias = listaAsistencias.stream()
-				.filter(a -> a.getEntrada().after(fechaInicioAux)
-						&& a.getEntrada().before(fechaFinalAux))
-				.collect(Collectors.toList());	
 		
+		if(nroLegajo < 0) {			
+			listaAsistencias = listaAsistencias.stream()
+					.filter(a -> a.getEntrada().after(fechaInicioAux)
+							&& a.getEntrada().before(fechaFinalAux))
+					.collect(Collectors.toList());
+		}else {
+			listaAsistencias = listaAsistencias.stream()
+					.filter(a -> a.getEntrada().after(fechaInicioAux)
+							&& a.getEntrada().before(fechaFinalAux)
+							&& a.getPersonal().getNroLegajo() == nroLegajo)
+					.collect(Collectors.toList());
+		}
+				
 		model.addAttribute("listaAsistencias", listaAsistencias);
 		
 		return "/views/asistencia/verAsistencias";
