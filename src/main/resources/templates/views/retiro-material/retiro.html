@@ -126,10 +126,10 @@
 							
 							
 							<ul class="list-group list-group-flush">
-							  <li class="list-group-item bg-light">Empleado autorizado: ${aut.personal.nombre}
-								${aut.personal.apellido}</li>
-							  <li class="list-group-item bg-light">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</li>
-							  <li class="list-group-item bg-light">Descripción: ${aut.descripcion}</li>
+							  <li class="list-group-item bg-light">Empleado autorizado: ${aut?.personal?.nombre}
+								${aut?.personal?.apellido}</li>
+							  <li class="list-group-item bg-light">Autorizante: ${aut?.usuarioSector?.nombre} ${aut?.usuarioSector?.apellido}</li>
+							  <li class="list-group-item bg-light">Descripción: ${aut?.descripcion}</li>
 							  <li class="list-group-item bg-light">
 							  	<label for="exampleInput1" class="form-label">Materiales:</label>
 								<select class="form-select"
@@ -176,8 +176,8 @@
 						<div class="card-body">							
 							<ul class="list-group list-group-flush">
 							  <li class="list-group-item bg-light">Retiro externo</li>
-							  <li class="list-group-item bg-light">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</li>
-							  <li class="list-group-item bg-light">Descripción: ${aut.descripcion}</li>
+							  <li class="list-group-item bg-light">Autorizante: ${aut?.usuarioSector?.nombre} ${aut?.usuarioSector?.apellido}</li>
+							  <li class="list-group-item bg-light">Descripción: ${aut?.descripcion}</li>
 							  <li class="list-group-item bg-light">
 							  	<label for="exampleInput1" class="form-label">Materiales:</label>
 								<select class="form-select"

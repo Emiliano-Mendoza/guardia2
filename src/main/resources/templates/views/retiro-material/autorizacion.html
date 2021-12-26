@@ -12,19 +12,35 @@
 
 	<div class="container mt-3">
 		<div class="gap-2 d-md-flex justify-content-between">
-			<h2>Listado del Personal:</h2>
-			<button class="btn btn-info btn-sm fw-bold" onclick="retiroExterno()">Retiro Externo</button>
+			<h4>Listado del Personal:</h4>
+			
+			<div class="gap-2 d-md-flex justify-content-end">
+				<button class="btn btn-info btn-sm fw-bold"
+					onclick="retiroExterno()">Retiro Externo</button>
+
+				<form method="get" th:action="@{/views/retiro-material/autorizaciones-usuario}">
+					<button type="submit" class="btn btn-primary">Ver tus
+						autorizaciones</button>
+				</form>
+			</div>
+
+
+
 		</div>
-		
+
 
 		<input type="text" id="formulario" class="form-control mt-2">
 		<table class="table" style="width: 100%">
 			<thead>
 				<tr>
-					<th class="sortable" scope="col" style="width: 15%; text-align: center;">Legajo</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Nombre</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Apellido</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Sector</th>
+					<th class="sortable" scope="col"
+						style="width: 15%; text-align: center;">Legajo</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Apellido</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Sector</th>
 					<th scope="col" style="width: 25%; text-align: center;">Autorizar
 						Retiro</th>
 				</tr>
@@ -37,7 +53,7 @@
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
-	
+
 	<script th:inline="javascript">
 	
 	var personal = /*[[${personal}]]*/ 'default';
@@ -239,6 +255,6 @@
 	</script>
 
 
-	
+
 </body>
 </html>

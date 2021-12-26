@@ -23,12 +23,12 @@
 
 						<ul class="list-group list-group-flush ">
 							<li class="list-group-item bg-light">Descripción: <span
-								th:text="${ev.descripcion}"></span></li>
+								th:text="${ev?.descripcion}"></span></li>
 							<li class="list-group-item bg-light">Fecha evento: <span
-								th:text="${#dates.format(ev.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
+								th:text="${#dates.format(ev?.fechaEvento, 'dd-MM-yyyy HH:mm')}"></span>
 							</li>
-							<li class="list-group-item bg-light">Encargado: <span>[[${ev.usuarioSector.nombre}]]
-									[[${ev.usuarioSector.apellido}]]</span>
+							<li class="list-group-item bg-light">Encargado: <span>[[${ev?.usuarioSector?.nombre}]]
+									[[${ev?.usuarioSector?.apellido}]]</span>
 							</li>
 							<li class="list-group-item bg-light"><label
 								for="observacionGuardia">Observación:</label> <input type="text"

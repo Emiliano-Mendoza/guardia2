@@ -230,4 +230,19 @@ public class EventoController {
 		return "/views/evento/verEventosAnteriores";
 	}
 	
+	@GetMapping("/eventos-usuario")
+	public String listarEventosAnterioresUsuario(Model model){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc()
+				.stream()
+				.filter(e -> e.getUsuarioSector().getUsuario().equals(auth.getName()))
+				.collect(Collectors.toList());
+		
+		model.addAttribute("listaEventos", listaEventos);
+	
+		return "/views/evento/verEventosAnteriores";
+	}
+	
 }

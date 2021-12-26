@@ -7,9 +7,16 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container mt-3">
-
-		<h5>Notificar Nuevo Evento:</h5>
-
+	
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h5>Notificar Nuevo Evento:</h5>
+			
+			<form method="get" th:action="@{/views/evento/eventos-usuario}">
+				<button type="submit" class="btn btn-primary">Ver
+					tus eventos</button>
+			</form>
+		</div>
+		
 		<!-- onsubmit="return confirm('Desea crear la nueva notificación de evento?');" -->
 		
 		<form id="formEvento" method="post"

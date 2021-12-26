@@ -8,71 +8,71 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container" sec:authorize="isAuthenticated()">
+		<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
+			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
+				style="padding-top: 20px;">
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia/personal}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								INGRESO DE PERSONAL</a>
+						</div>
+					</div>
+				</div>
 
-		<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
-			style="padding-top: 20px;">
-			<div class="col-sm-2">
-				<div>
-					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
-						<a th:href="@{/views/asistencia/personal}"
-							class="btn btn-secondary"
-							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
-							INGRESO DE PERSONAL</a>
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia/personal/egreso}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								EGRESO DE PERSONAL</a>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
+				style="padding-top: 20px;">
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia-proveedor}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								INGRESO DE PROVEEDOR</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia-proveedor/egreso}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								EGRESO DE PROVEEDOR</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/acontecimiento}" class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								RONDA</a>
+						</div>
 					</div>
 				</div>
 			</div>
-
-			<div class="col-sm-2">
-				<div>
-					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
-						<a th:href="@{/views/asistencia/personal/egreso}"
-							class="btn btn-secondary"
-							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
-							EGRESO DE PERSONAL</a>
-					</div>
-				</div>
-			</div>
-
-
-
 		</div>
-
-		<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
-			style="padding-top: 20px;">
-
-			<div class="col-sm-2">
-				<div>
-					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
-						<a th:href="@{/views/asistencia-proveedor}"
-							class="btn btn-secondary"
-							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
-							INGRESO DE PROVEEDOR</a>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-sm-2">
-				<div>
-					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
-						<a th:href="@{/views/asistencia-proveedor/egreso}"
-							class="btn btn-secondary"
-							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
-							EGRESO DE PROVEEDOR</a>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-sm-2">
-				<div>
-					<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
-						<a th:href="@{/views/acontecimiento}" class="btn btn-secondary"
-							style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
-							RONDA</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<div class="row " style="padding-top: 25px;">
 			<div class="col-sm-6">
 				<div class="card">

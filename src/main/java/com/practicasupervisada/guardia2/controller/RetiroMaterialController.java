@@ -175,9 +175,9 @@ public class RetiroMaterialController {
 	
 	@GetMapping("/previos")
 	public String retirosPrevios(Model model,
-						@RequestParam(name = "nroLegajo", required = false) int nroLegajo,
-						@RequestParam(name = "idUsuario", required = false) int idUsuario,
-						@RequestParam(name = "date_range", required = false) String date_range) throws ParseException {
+						@RequestParam(name = "nroLegajo", required = false) Integer nroLegajo,
+						@RequestParam(name = "idUsuario", required = false) Integer idUsuario,
+						@RequestParam(name = "date_range") String date_range) throws ParseException {
 				
 		String[] parts = date_range.split("-");
 		
@@ -226,4 +226,22 @@ public class RetiroMaterialController {
 		return "/views/retiro-material/verRetirosAnteriores";
 	}
 	
+	@GetMapping("/autorizaciones-usuario")
+	public String retirosPreviosUsuario(Model model) {
+					
+		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		listaRetiros = listaRetiros.stream()
+				.filter(a -> a.getFechaRetiro() != null
+						&& a.getObservacionGuardia() != null
+						&& a.getUsuarioSector().getUsuario().equals(auth.getName()))
+				.collect(Collectors.toList());
+			
+	
+		model.addAttribute("listaRetiros", listaRetiros);
+		
+		return "/views/retiro-material/verRetirosAnteriores";
+	}
 }
