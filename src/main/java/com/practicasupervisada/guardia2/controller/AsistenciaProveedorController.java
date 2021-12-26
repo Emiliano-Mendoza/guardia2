@@ -135,7 +135,7 @@ public class AsistenciaProveedorController {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaInicioAux = formatter.parse(parts[0]);
-		Date fechaFinalAux = formatter.parse(parts[1]);
+		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		
 		List <AsistenciaProveedor> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 		

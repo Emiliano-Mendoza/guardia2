@@ -245,7 +245,7 @@ public class AsistenciaController {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaInicioAux = formatter.parse(parts[0]);
-		Date fechaFinalAux = formatter.parse(parts[1]);
+		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		
 		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 		listaAsistencias = listaAsistencias.stream()
@@ -268,7 +268,7 @@ public class AsistenciaController {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaInicioAux = formatter.parse(parts[0]);
-		Date fechaFinalAux = formatter.parse(parts[1]);
+		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		
 		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 		
@@ -299,7 +299,7 @@ public class AsistenciaController {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaInicioAux = formatter.parse(parts[0]);
-		Date fechaFinalAux = formatter.parse(parts[1]);
+		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		List <Transito> listaTransito = transitoServ.findAllByOrderByFechaSalidaTransitoriaAsc();
 		
 		if(nroLegajo>0) {

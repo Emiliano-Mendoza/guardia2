@@ -9,8 +9,9 @@
 	<div class="container">
 		
 		<div class="gap-2 d-md-flex justify-content-between">
-			<h3 class="mt-3">Registros de la fecha: 
-			<span th:text="${#dates.format(diaSeleccionado, 'dd-MM-yyyy')}"></span></h3>
+			<h4 class="mt-3">Registros entre las fechas: 
+			<span th:text="${#dates.format(diaInicial, 'dd-MM-yyyy')}"></span> - 
+			<span th:text="${#dates.format(diaFinal, 'dd-MM-yyyy')}"></span></h4>
 			<button class="btn btn-success btn-sm mt-3" onclick="goBack()" >Regresar</button>
 		</div>
 		<table class="table mt-3" id="myTable">
