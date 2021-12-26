@@ -38,12 +38,12 @@ public class Transito {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Ingreso")
-	@JsonIgnore
+
 	private Usuario usuarioIngreso;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Egreso")
-	@JsonIgnore
+
 	private Usuario usuarioEgreso;
 
 	public int getIdTransito() {
@@ -84,7 +84,7 @@ public class Transito {
 				+ ", fechaReingreso=" + fechaReingreso + ", personal=" + personal + "]";
 	}
 	
-	@JsonIgnore
+
 	public Usuario getUsuarioIngreso() {
 		return usuarioIngreso;
 	}
@@ -93,7 +93,7 @@ public class Transito {
 		this.usuarioIngreso = usuarioIngreso;
 	}
 	
-	@JsonIgnore
+
 	public Usuario getUsuarioEgreso() {
 		return usuarioEgreso;
 	}

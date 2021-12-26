@@ -26,6 +26,7 @@ import com.practicasupervisada.guardia2.domain.Transito;
 import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
+import com.practicasupervisada.guardia2.service.TransitoService;
 import com.practicasupervisada.guardia2.service.UsuarioService;
 import com.practicasupervisada.guardia2.service.VehiculoService;
 
@@ -44,6 +45,9 @@ public class AsistenciaController {
 	
 	@Autowired
 	private VehiculoService vehiculoServ;
+	
+	@Autowired
+	private TransitoService transitoServ;
 	
 	
 	@GetMapping
@@ -220,6 +224,10 @@ public class AsistenciaController {
 			model.addAttribute("asistencias", AsisSinEgreso);
 			model.addAttribute("listaVehiculos", listaVehiculos);
 			
+			List<Personal> todoPersonal = personalServ.findAllByOrderByApellidoAsc();
+			
+			model.addAttribute("todoPersonal", todoPersonal);
+			
 		}catch(Exception e) {
 			return "home";
 		}
@@ -281,4 +289,36 @@ public class AsistenciaController {
 		
 		return "/views/asistencia/verAsistencias";
 	}
+	
+	@GetMapping("/salidas-transitorias")
+	public String verSalidasTransitorias(Model model,
+						@RequestParam(name = "nroLegajo") Integer nroLegajo,
+						@RequestParam(name = "date_range") String date_range) throws ParseException {
+		
+		String[] parts = date_range.split("-");
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date fechaInicioAux = formatter.parse(parts[0]);
+		Date fechaFinalAux = formatter.parse(parts[1]);
+		List <Transito> listaTransito = transitoServ.findAllByOrderByFechaSalidaTransitoriaAsc();
+		
+		if(nroLegajo>0) {
+			listaTransito = listaTransito.stream()
+					.filter(t -> t.getFechaSalidaTransitoria().after(fechaInicioAux)
+							     && t.getFechaSalidaTransitoria().before(fechaFinalAux)
+							     && t.getPersonal() != null
+							     && t.getPersonal().getNroLegajo() == nroLegajo)
+					.collect(Collectors.toList());
+		}else {
+			listaTransito = listaTransito.stream()
+					.filter(t -> t.getFechaSalidaTransitoria().after(fechaInicioAux)
+							     && t.getFechaSalidaTransitoria().before(fechaFinalAux))
+					.collect(Collectors.toList());
+		}
+				
+		model.addAttribute("listaTransito", listaTransito);
+		
+		return "/views/asistencia/verTransitos";
+	}
+	
 }

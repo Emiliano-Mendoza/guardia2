@@ -5,23 +5,73 @@
 <body>
 
 	<header th:replace="plantilla/template :: header"></header>
-	
+
 	<div class="container mt-3">
-		
-		<h5>Buscar Empleado:</h5>
-		<div class="row mt-2">
+
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h5>Buscar Empleado:</h5>
+
+			<button type="button" class="btn btn-primary btn-sm"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+				salidas transitorias</button>
+		</div>
+
+
+		<div class="row mt-3">
 			<div class="col-md-11">
 				<input type="text" id="formulario" class="form-control">
 			</div>
 			<div class="col-md-1 ">
 				<button class="btn btn-primary" onclick="filtrar()">Buscar</button>
 			</div>
-				
+
 		</div>
 		<div class="row mt-3" id="cardEgreso"></div>
 
-		 
+
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Salidas Transitorias:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get"
+					th:action="@{/views/asistencia/salidas-transitorias}">
+					<div class="modal-body" id="modalbody">
+
+
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas:
+							</label> <input type="text" id="date_range" name="date_range"
+								class="form-control"></li>
+							<li class="list-group-item"><label>Empleado: </label> <select
+								class="form-select" id="sector" name="nroLegajo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="p:${todoPersonal}" th:value='${p.nroLegajo}'>[[${p.apellido}]]
+										[[${p.nombre}]]</option>
+
+							</select></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="mt-5"></div>
 
@@ -240,6 +290,52 @@
 		
 		
 		filtrar();
+		
+		
+		$('#date_range').daterangepicker();
+		const today = new Date()
+		let tomorrow = new Date(today)
+		tomorrow.setDate(tomorrow.getDate() + 1)
+		$(function () {
+		    $('#date_range').daterangepicker({
+		        "locale": {
+		            "format": "DD/MM/YYYY",
+		            "separator": "-",
+		            "applyLabel": "Guardar",
+		            "cancelLabel": "Cancelar",
+		            "fromLabel": "Desde",
+		            "toLabel": "Hasta",
+		            "customRangeLabel": "Personalizar",
+		            "daysOfWeek": [
+		                "Do",
+		                "Lu",
+		                "Ma",
+		                "Mi",
+		                "Ju",
+		                "Vi",
+		                "Sa"
+		            ],
+		            "monthNames": [
+		                "Enero",
+		                "Febrero",
+		                "Marzo",
+		                "Abril",
+		                "Mayo",
+		                "Junio",
+		                "Julio",
+		                "Agosto",
+		                "Setiembre",
+		                "Octubre",
+		                "Noviembre",
+		                "Diciembre"
+		            ],
+		            "firstDay": 1
+		        },
+		        "startDate": today,
+		        "endDate" : tomorrow,
+		        "opens": "center"
+		    });
+		});
 		
 	</script>
 
