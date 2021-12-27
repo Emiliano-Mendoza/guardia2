@@ -42,7 +42,11 @@ public class EventoController {
 			Date beforeYesterday = new Date(today.getTime() - 2*(1000 * 60 * 60 * 24));	
 			
 			listaEventos = listaEventos.stream()
-					.filter(e -> (e.getOcurrencia()==false && e.getCancelado()==false && e.getFechaEvento().after(beforeYesterday)))
+					.filter(e -> (e.getOcurrencia()==false 
+								&& e.getCancelado()==false 
+								&& e.getFechaEvento() != null
+								&& e.getFechaEvento().after(beforeYesterday)
+								&& e.getDescripcion() != null))
 					.collect(Collectors.toList());				
 								
 			model.addAttribute("listaEventos", listaEventos);
@@ -70,7 +74,11 @@ public class EventoController {
 			
 			//Los eventos proximos a mostrar deben depender del usuario que los hizo
 			listaEventos = listaEventos.stream()
-					.filter(e -> (e.getOcurrencia()==false && e.getFechaEvento().after(beforeYesterday)
+					.filter(e -> (e.getOcurrencia()==false
+							&& e.getFechaEvento() != null
+							&& e.getDescripcion() != null
+							&& e.getUsuarioSector() != null
+					        && e.getFechaEvento().after(beforeYesterday)
 							&& e.getUsuarioSector().getUsuario().equals(auth.getName())))
 					.collect(Collectors.toList());
 			
@@ -220,8 +228,9 @@ public class EventoController {
 		
 		List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc()
 				.stream()
-				.filter(e -> 
-						e.getFechaEvento().after(fechaInicioAux)
+				.filter(e ->  e.getFechaEvento() != null
+					    && e.getDescripcion() != null
+						&& e.getFechaEvento().after(fechaInicioAux)
 						&& e.getFechaEvento().before(fechaFinalAux))
 				.collect(Collectors.toList());
 		
@@ -239,7 +248,9 @@ public class EventoController {
 		
 		List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc()
 				.stream()
-				.filter(e -> e.getUsuarioSector().getUsuario().equals(auth.getName()))
+				.filter(e -> e.getUsuarioSector().getUsuario().equals(auth.getName())
+						     && e.getFechaEvento() != null
+						     && e.getDescripcion() != null)
 				.collect(Collectors.toList());
 		
 		model.addAttribute("listaEventos", listaEventos);

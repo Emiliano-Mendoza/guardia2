@@ -96,9 +96,12 @@
 						<h5 class="card-title">Listado de Retiros de Material:</h5>
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item" th:each="ret : ${listaRetiros}">
-								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"></span>
-								- RETIRA: [[${ret.personal.nombre}]]
-								[[${ret.personal.apellido}]] - MATERIALES: <span
+								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"
+								></span> - RETIRA:  
+								<span 
+								th:text="${ret.personal != null} ? ${ret.personal.nombre} + ' ' + ${ret.personal.apellido} : 'Retiro externo'"></span>
+								 - MATERIALES:
+								<span
 								th:id="mat + ${ret.idRetiro}"></span> - AUTORIZA:
 								[[${ret.usuarioSector.nombre}]]
 								[[${ret.usuarioSector.apellido}]]

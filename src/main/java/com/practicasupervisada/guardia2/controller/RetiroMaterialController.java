@@ -51,7 +51,11 @@ public class RetiroMaterialController {
 			
 			//traigo solo aquellos retiros que no hayas sucedido y que la autorizacion aun esté vigente
 			listaRetiros = listaRetiros.stream()
-					.filter(ret -> (ret.getFechaRetiro()==null && ret.getFechaLimite().after(new Date())))
+					.filter(ret -> (ret.getFechaRetiro()==null
+									&& ret.getFechaLimite() != null
+									&& ret.getDescripcion() != null
+									&& ret.getUsuarioSector() != null
+									&& ret.getFechaLimite().after(new Date())))
 					.collect(Collectors.toList());
 			
 			List<Personal> listaPersonal = personalServ.findAllByOrderByApellidoAsc();
