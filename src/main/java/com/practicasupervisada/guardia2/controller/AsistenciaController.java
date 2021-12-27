@@ -179,7 +179,11 @@ public class AsistenciaController {
 		
 		List<Personal> listaPersonal = personalServ.getAllPersonal()
 																	.stream()
-																	.filter(p -> p.getEnabled())
+																	.filter(p -> p.getEnabled() !=null 
+																			&& p.getEnabled()
+																			&& p.getNombre() !=null
+																			&& p.getApellido() !=null
+																			&& p.getSector() !=null)
 																	.collect(Collectors.toList());
 		
 		
@@ -224,7 +228,13 @@ public class AsistenciaController {
 			model.addAttribute("asistencias", AsisSinEgreso);
 			model.addAttribute("listaVehiculos", listaVehiculos);
 			
-			List<Personal> todoPersonal = personalServ.findAllByOrderByApellidoAsc();
+			List<Personal> todoPersonal = personalServ.findAllByOrderByApellidoAsc()
+					.stream()
+					.filter(p -> p.getEnabled() !=null 
+								&& p.getNombre() !=null
+								&& p.getApellido() !=null
+								&& p.getSector() !=null)
+			.collect(Collectors.toList());;
 			
 			model.addAttribute("todoPersonal", todoPersonal);
 			
@@ -249,7 +259,10 @@ public class AsistenciaController {
 		
 		List <Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 		listaAsistencias = listaAsistencias.stream()
-				.filter(a -> a.getPersonal().getNroLegajo() == nroLegajo
+				.filter(a ->  a.getEntrada() != null
+						&& a.getPersonal() != null
+						&& a.getUsuarioIngreso() != null
+						&& a.getPersonal().getNroLegajo() == nroLegajo
 						&& a.getEntrada().after(fechaInicioAux)
 						&& a.getEntrada().before(fechaFinalAux))
 				.collect(Collectors.toList());	
@@ -274,12 +287,18 @@ public class AsistenciaController {
 		
 		if(nroLegajo < 0) {			
 			listaAsistencias = listaAsistencias.stream()
-					.filter(a -> a.getEntrada().after(fechaInicioAux)
+					.filter(a -> a.getEntrada() != null
+							&& a.getPersonal() != null
+							&& a.getUsuarioIngreso() != null
+							&& a.getEntrada().after(fechaInicioAux)
 							&& a.getEntrada().before(fechaFinalAux))
 					.collect(Collectors.toList());
 		}else {
 			listaAsistencias = listaAsistencias.stream()
-					.filter(a -> a.getEntrada().after(fechaInicioAux)
+					.filter(a -> a.getEntrada() != null
+							&& a.getPersonal() != null
+							&& a.getUsuarioIngreso() != null 
+							&& a.getEntrada().after(fechaInicioAux)
 							&& a.getEntrada().before(fechaFinalAux)
 							&& a.getPersonal().getNroLegajo() == nroLegajo)
 					.collect(Collectors.toList());
@@ -304,15 +323,21 @@ public class AsistenciaController {
 		
 		if(nroLegajo>0) {
 			listaTransito = listaTransito.stream()
-					.filter(t -> t.getFechaSalidaTransitoria().after(fechaInicioAux)
+					.filter(t -> t.getFechaSalidaTransitoria() != null
+								 && t.getUsuarioEgreso() != null
+								 && t.getAsistencia() != null
+								 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
 							     && t.getFechaSalidaTransitoria().before(fechaFinalAux)
 							     && t.getPersonal() != null
 							     && t.getPersonal().getNroLegajo() == nroLegajo)
 					.collect(Collectors.toList());
 		}else {
 			listaTransito = listaTransito.stream()
-					.filter(t -> t.getFechaSalidaTransitoria().after(fechaInicioAux)
-							     && t.getFechaSalidaTransitoria().before(fechaFinalAux))
+					.filter(t -> t.getFechaSalidaTransitoria() != null
+									 && t.getUsuarioEgreso() != null
+									 && t.getAsistencia() != null
+									 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
+									 && t.getFechaSalidaTransitoria().before(fechaFinalAux))
 					.collect(Collectors.toList());
 		}
 				

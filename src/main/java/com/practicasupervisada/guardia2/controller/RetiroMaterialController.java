@@ -55,6 +55,7 @@ public class RetiroMaterialController {
 									&& ret.getFechaLimite() != null
 									&& ret.getDescripcion() != null
 									&& ret.getUsuarioSector() != null
+									&& ret.getMateriales() != null
 									&& ret.getFechaLimite().after(new Date())))
 					.collect(Collectors.toList());
 			
@@ -195,6 +196,11 @@ public class RetiroMaterialController {
 			listaRetiros = listaRetiros.stream()
 					.filter(a -> a.getFechaRetiro() != null
 							&& a.getObservacionGuardia() != null
+							&& a.getDescripcion() != null
+							&& a.getFechaLimite() != null
+							&& a.getUsuarioGuardia() != null
+							&& a.getUsuarioSector() != null
+							&& a.getMateriales() != null
 							&& a.getFechaRetiro().after(fechaInicioAux)
 							&& a.getFechaRetiro().before(fechaFinalAux))
 					.collect(Collectors.toList());
@@ -202,6 +208,11 @@ public class RetiroMaterialController {
 			listaRetiros = listaRetiros.stream()
 					.filter(a -> a.getFechaRetiro() != null
 							&& a.getObservacionGuardia() != null
+							&& a.getDescripcion() != null
+							&& a.getFechaLimite() != null
+							&& a.getUsuarioGuardia() != null
+							&& a.getUsuarioSector() != null
+							&& a.getMateriales() != null
 							&& a.getPersonal() == null
 							&& a.getFechaRetiro().after(fechaInicioAux)
 							&& a.getFechaRetiro().before(fechaFinalAux))
@@ -210,6 +221,11 @@ public class RetiroMaterialController {
 			listaRetiros = listaRetiros.stream()
 					.filter(a -> a.getFechaRetiro() != null
 							&& a.getObservacionGuardia() != null
+							&& a.getDescripcion() != null
+							&& a.getFechaLimite() != null
+							&& a.getUsuarioGuardia() != null
+							&& a.getUsuarioSector() != null
+							&& a.getMateriales() != null
 							&& a.getPersonal() != null
 							&& a.getPersonal().getNroLegajo() == nroLegajo
 							&& a.getFechaRetiro().after(fechaInicioAux)
@@ -238,9 +254,11 @@ public class RetiroMaterialController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		listaRetiros = listaRetiros.stream()
-				.filter(a -> a.getFechaRetiro() != null
-						&& a.getObservacionGuardia() != null
-						&& a.getUsuarioSector().getUsuario().equals(auth.getName()))
+				.filter(a -> a.getUsuarioSector() != null
+						&& a.getDescripcion() != null
+						&& a.getFechaLimite() != null
+						&& a.getUsuarioSector().getUsuario().equals(auth.getName())
+						&& a.getMateriales() != null)
 				.collect(Collectors.toList());
 			
 	

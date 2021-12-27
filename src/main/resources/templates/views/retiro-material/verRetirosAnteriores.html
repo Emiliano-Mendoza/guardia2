@@ -17,7 +17,9 @@
 		<table class="table mt-3" id="myTable">
 			<thead>
 				<tr>
-					<th scope="col" style="width: 15%; text-align: center;">Fecha Retiro
+					<th scope="col" style="width: 10%; text-align: center;">Fecha Límite
+					</th>
+					<th scope="col" style="width: 10%; text-align: center;">Fecha Retiro
 					</th>
 					<th scope="col" style="width: 15%; text-align: center;">Empleado</th>
 					<th scope="col" style="width: 15%; text-align: center;">Autorizante</th>															
@@ -49,36 +51,56 @@
 			
 			let idMat = 'mat' + ret.idRetiro;
 			
-			var d1 = new Date(ret.fechaRetiro);
-			dformat1 = `${
-			    d1.getDate().toString().padStart(2, '0')}/${
-			    (d1.getMonth()+1).toString().padStart(2, '0')}/${
-			    d1.getFullYear().toString().padStart(4, '0')} ${
-			    d1.getHours().toString().padStart(2, '0')}:${
-			    d1.getMinutes().toString().padStart(2, '0')}`;
+			var d0 = new Date(ret.fechaLimite);
+			dformat0 = `${
+			    d0.getDate().toString().padStart(2, '0')}/${
+			    (d0.getMonth()+1).toString().padStart(2, '0')}/${
+			    d0.getFullYear().toString().padStart(4, '0')}`;
+			
+			let dformat1 = '-';   
+			if(ret.fechaRetiro != null){
+				var d1 = new Date(ret.fechaRetiro);
+				dformat1 = `${
+				    d1.getDate().toString().padStart(2, '0')}/${
+				    (d1.getMonth()+1).toString().padStart(2, '0')}/${
+				    d1.getFullYear().toString().padStart(4, '0')} ${
+				    d1.getHours().toString().padStart(2, '0')}:${
+				    d1.getMinutes().toString().padStart(2, '0')}`;
+			}    
+			
+			let usuarioG = '-';
+			let observacion = '-';
+			if(ret.usuarioGuardia != null ){
+				usuarioG = ret.usuarioGuardia.nombre + ' ' + ret.usuarioGuardia.apellido;
+			}
+			if(ret.observacionGuardia != null){
+				observacion = ret.observacionGuardia
+			}
 			
 			if(ret.personal != null){
 				resultado.innerHTML += `
 					<tr >
+						<td style="text-align:center;">${dformat0}</td>
 						<td style="text-align:center;">${dformat1}</td>
 						<td scope="row" style="text-align:center;">${ret.personal.nombre} ${ret.personal.apellido}</td>
 						<td style="text-align:center;">${ret.usuarioSector.nombre} ${ret.usuarioSector.apellido}</td>
-						<td style="text-align:center;">${ret.usuarioGuardia.nombre} ${ret.usuarioGuardia.apellido}</td>						
+						<td style="text-align:center;">${usuarioG}</td>						
 						<td  id=${idMat}></td>
 						<td >${ret.descripcion}</td>					
-						<td >${ret.observacionGuardia}</td>
+						<td >${observacion}</td>
 					</tr>
 				`;
 			}else{
 				resultado.innerHTML += `
 					<tr >
+						<td style="text-align:center;">${dformat0}</td>
 						<td style="text-align:center;">${dformat1}</td>
 						<td scope="row" style="text-align:center;">Retiro Externo</td>
 						<td style="text-align:center;">${ret.usuarioSector.nombre} ${ret.usuarioSector.apellido}</td>
-						<td style="text-align:center;">${ret.usuarioGuardia.nombre} ${ret.usuarioGuardia.apellido}</td>
+						<td style="text-align:center;">${usuarioG}</td>
 						<td  id=${idMat}></td>
 						<td >${ret.descripcion}</td>					
-						<td >${ret.observacionGuardia}</td>
+						<td >${observacion}</td>
 					</tr>
 				`;
 			}	

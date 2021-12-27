@@ -29,7 +29,12 @@ public class HomeController {
 		
 		//traigo solo aquellos retiros que no hayas sucedido y que la autorizacion aun este vigente
 		listaRetiros = listaRetiros.stream()
-				.filter(ret -> (ret.getFechaRetiro()==null && ret.getFechaLimite().after(new Date())))
+				.filter(ret ->  (ret.getFechaRetiro()==null
+						&& ret.getFechaLimite() != null
+						&& ret.getDescripcion() != null
+						&& ret.getUsuarioSector() != null
+						&& ret.getMateriales() != null
+						&& ret.getFechaLimite().after(new Date())))
 				.collect(Collectors.toList());
 		
 		model.addAttribute("listaRetiros", listaRetiros);
@@ -42,7 +47,12 @@ public class HomeController {
 		Date beforeYesterday = new Date(today.getTime() - 2*(1000 * 60 * 60 * 24));	
 		
 		listaEventos = listaEventos.stream()
-				.filter(e -> (e.getOcurrencia()==false && e.getCancelado()==false && e.getFechaEvento().after(beforeYesterday)))
+				.filter(e -> (e.getOcurrencia()==false 
+						&& e.getCancelado()==false  
+						&& e.getCancelado()==false 
+						&& e.getFechaEvento() != null
+						&& e.getDescripcion() != null
+						&& e.getFechaEvento().after(beforeYesterday)))
 				.collect(Collectors.toList());				
 							
 		model.addAttribute("listaEventos", listaEventos);

@@ -2,7 +2,7 @@ package com.practicasupervisada.guardia2.controller;
 
 import java.util.Collections;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -40,7 +40,12 @@ public class PersonalController {
 	@GetMapping("/editar")
 	public String listarPersonal(Model model) {
 		
-		List<Personal> listaPersonal = personalServ.getAllPersonal();	
+		List<Personal> listaPersonal = personalServ.getAllPersonal()
+				.stream()
+				.filter(p -> p.getNombre() !=null
+						&& p.getApellido() !=null
+						&& p.getSector() !=null)
+				.collect(Collectors.toList());
 		Collections.sort(listaPersonal);
 		
 		model.addAttribute("listaPersonal", listaPersonal);
