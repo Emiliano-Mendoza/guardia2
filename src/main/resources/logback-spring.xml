@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<property name="LOGS" value="C:\\Guardia\\logs" />
+	
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+	<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/guardia.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOGS}/archived/guardia-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+			<maxFileSize>50MB</maxFileSize>
+			<maxHistory>60</maxHistory>
+			<totalSizeCap>20GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d %p %C{1.} [%t] %m%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<root level="info">
+		<appender-ref ref="ROLLING" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</configuration>
