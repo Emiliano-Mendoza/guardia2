@@ -101,7 +101,10 @@ public class RetiroMaterialController {
 				.collect(Collectors.toList());	
 		Collections.sort(listaPersonal);
 		
-		List<Material> listaMateriales = materialServ.getAllMaterial();
+		List<Material> listaMateriales = materialServ.getAllMaterial()
+				.stream()
+				.filter(m -> m.getMaterial() != null)
+				.collect(Collectors.toList());;
 				
 		model.addAttribute("personal", listaPersonal);
 		model.addAttribute("listaMateriales", listaMateriales);

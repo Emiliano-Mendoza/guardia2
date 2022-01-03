@@ -1,0 +1,58 @@
+2022-01-03 10:00:42.883  INFO 4388 --- [restartedMain] c.p.guardia2.Guardia2Application         : Starting Guardia2Application using Java 15.0.1 on DESKTOP-KTL7JPA with PID 4388 (C:\Users\Usuario\Desktop\Sistemas\5to Anio\Práctica Supervisada\guardia2\guardia2\target\classes started by Usuario in C:\Users\Usuario\Desktop\Sistemas\5to Anio\Práctica Supervisada\guardia2\guardia2)
+2022-01-03 10:00:42.883  INFO 4388 --- [restartedMain] c.p.guardia2.Guardia2Application         : No active profile set, falling back to default profiles: default
+2022-01-03 10:00:43.117  INFO 4388 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-03 10:00:43.175  INFO 4388 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 12 JPA repository interfaces.
+2022-01-03 10:00:43.333  INFO 4388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-03 10:00:43.334  INFO 4388 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-03 10:00:43.334  INFO 4388 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.54]
+2022-01-03 10:00:44.743  INFO 4388 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-01-03 10:00:44.743  INFO 4388 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1857 ms
+2022-01-03 10:00:44.799  INFO 4388 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-03 10:00:44.806  INFO 4388 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Starting...
+2022-01-03 10:00:44.877  INFO 4388 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Start completed.
+2022-01-03 10:00:44.878  INFO 4388 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-03 10:00:45.317  INFO 4388 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-03 10:00:45.318  INFO 4388 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-03 10:00:45.344  WARN 4388 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-03 10:00:45.817  INFO 4388 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@162d500c, org.springframework.security.web.context.SecurityContextPersistenceFilter@e274476, org.springframework.security.web.header.HeaderWriterFilter@47a52aa7, org.springframework.security.web.authentication.logout.LogoutFilter@9bc1780, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@22ca2bd6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@335d546b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5d43b0b5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@49514de3, org.springframework.security.web.session.SessionManagementFilter@298934ca, org.springframework.security.web.access.ExceptionTranslationFilter@24332e8f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@73ca31c6]
+2022-01-03 10:00:45.953  INFO 4388 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-03 10:00:45.968  INFO 4388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-03 10:00:45.972  INFO 4388 --- [restartedMain] c.p.guardia2.Guardia2Application         : Started Guardia2Application in 3.125 seconds (JVM running for 1303.472)
+2022-01-03 10:00:45.973  INFO 4388 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-03 10:01:05.204  INFO 4388 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-03 10:01:05.205  INFO 4388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-01-03 10:01:05.206  INFO 4388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-01-03 10:01:07.007  INFO 4388 --- [http-nio-8080-exec-2] c.p.guardia2.logs.LogAspect              : A continuacion se ejecutara el metodo: crearAsistencia
+2022-01-03 10:01:07.008  INFO 4388 --- [http-nio-8080-exec-2] c.p.guardia2.logs.LogAspect              : Argumentos: [Asistencia [idAsistencia=0, entrada=Mon Jan 03 10:01:06 ART 2022, salida=null, enTransito=false, usuarioIngreso=Usuario [idUsuario=1, usuario=emi123, enabled=true, nombre=Emiliano, apellido=Mendoza], usuarioEgreso=null, personal=Personal [nroLegajo=50, nombre=RUBEN DARIO, apellido=CAPOBLE, sector=Almacenes]]]
+2022-01-03 10:01:07.030  INFO 4388 --- [http-nio-8080-exec-2] c.p.guardia2.logs.LogAspect              : Se ha ejecutado el metodo: crearAsistencia
+2022-01-03 10:01:52.610  INFO 4388 --- [Thread-31] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-03 10:01:52.611  INFO 4388 --- [Thread-31] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown initiated...
+2022-01-03 10:01:52.618  INFO 4388 --- [Thread-31] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown completed.
+2022-01-03 10:06:07.105  INFO 4388 --- [restartedMain] c.p.guardia2.Guardia2Application         : Starting Guardia2Application using Java 15.0.1 on DESKTOP-KTL7JPA with PID 4388 (C:\Users\Usuario\Desktop\Sistemas\5to Anio\Práctica Supervisada\guardia2\guardia2\target\classes started by Usuario in C:\Users\Usuario\Desktop\Sistemas\5to Anio\Práctica Supervisada\guardia2\guardia2)
+2022-01-03 10:06:07.105  INFO 4388 --- [restartedMain] c.p.guardia2.Guardia2Application         : No active profile set, falling back to default profiles: default
+2022-01-03 10:06:07.344  INFO 4388 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-03 10:06:07.395  INFO 4388 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 12 JPA repository interfaces.
+2022-01-03 10:06:07.541  INFO 4388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-03 10:06:07.542  INFO 4388 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-03 10:06:07.542  INFO 4388 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.54]
+2022-01-03 10:06:07.584  INFO 4388 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-01-03 10:06:07.584  INFO 4388 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 476 ms
+2022-01-03 10:06:07.642  INFO 4388 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-03 10:06:07.649  INFO 4388 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-14 - Starting...
+2022-01-03 10:06:07.743  INFO 4388 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-14 - Start completed.
+2022-01-03 10:06:07.744  INFO 4388 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-03 10:06:08.173  INFO 4388 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-03 10:06:08.174  INFO 4388 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-03 10:06:08.208  WARN 4388 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-03 10:06:08.717  INFO 4388 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a90777a, org.springframework.security.web.context.SecurityContextPersistenceFilter@134a6eb2, org.springframework.security.web.header.HeaderWriterFilter@2480976d, org.springframework.security.web.authentication.logout.LogoutFilter@31057e40, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@f061942, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e702c8b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2e6be9d7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3a5d89c9, org.springframework.security.web.session.SessionManagementFilter@45d343ba, org.springframework.security.web.access.ExceptionTranslationFilter@4bdacfa7, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@b496281]
+2022-01-03 10:06:08.861  INFO 4388 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-03 10:06:08.876  INFO 4388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-03 10:06:08.881  INFO 4388 --- [restartedMain] c.p.guardia2.Guardia2Application         : Started Guardia2Application in 1.812 seconds (JVM running for 1626.38)
+2022-01-03 10:06:08.882  INFO 4388 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-03 10:06:14.202  INFO 4388 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-03 10:06:14.202  INFO 4388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-01-03 10:06:14.203  INFO 4388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-01-03 10:06:52.990  INFO 4388 --- [RMI TCP Connection(32)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2022-01-03 10:06:53.015  INFO 4388 --- [RMI TCP Connection(32)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-03 10:06:53.016  INFO 4388 --- [RMI TCP Connection(32)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-14 - Shutdown initiated...
+2022-01-03 10:06:53.018  INFO 4388 --- [RMI TCP Connection(32)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-14 - Shutdown completed.
