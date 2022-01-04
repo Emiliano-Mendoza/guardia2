@@ -12,7 +12,7 @@ public class imgConfig implements WebMvcConfigurer {
 		WebMvcConfigurer.super.addResourceHandlers(registry);
 		
 		//aqui se configura la ruta de los recursos
-		registry.addResourceHandler("/recursos/**").addResourceLocations("file:/C:/Personal/recursos/");
+		registry.addResourceHandler("/recursos/**").addResourceLocations("file:/C:/Guardia/Personal/recursos/");
 	}
 
 	

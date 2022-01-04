@@ -93,7 +93,7 @@ public class PersonalController {
 		if(!imagen.isEmpty()) {
 			// Path directorioImagenes = Paths.get("src//main//resources//static/images");
 			// String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-			String rutaAbsoluta = "C://Personal//recursos";
+			String rutaAbsoluta = "C://Guardia//Personal//recursos";
 			
 			try {
 				byte[] bytesImg = imagen.getBytes();
@@ -145,7 +145,7 @@ public class PersonalController {
 				
 		if(!imagen.isEmpty()) {
 
-			String rutaAbsoluta = "C://Personal//recursos";
+			String rutaAbsoluta = "C://Guardia//Personal//recursos";
 			
 			try {
 
