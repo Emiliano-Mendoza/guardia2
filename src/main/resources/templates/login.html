@@ -13,17 +13,24 @@
 
 		<img th:src="@{/images/login.png}" width="136" height="136"
 			class="center">
-		<form class="form-signin" th:action="@{/login}" method="post">
+		<form class="form-signin" th:action="@{/login}" method="post" >
 			<h3 class="form-signin-heading text-center">Iniciar Sesión</h3>
 			<input type="text" id="username" name="username" class="form-control"
 				placeholder="Usuario" required autofocus> <input
 				type="password" id="password" name="password" class="form-control"
 				placeholder="Password" required>
 
-			<div class="d-grid gap-2">
+			<div class="mt-2">
+				<input class="form-check-input" type="checkbox"
+					onclick="mostrarContraseña()" > <label
+					class="form-check-label" for="flexCheckDefault"> Mostrar Contraseña</label>
+			</div>
+
+
+			<div class="d-grid gap-2 mt-2">
 				<button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
 			</div>
-			
+
 		</form>
 
 	</div>
@@ -34,7 +41,14 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 
 	<script th:inline="javascript">
-		
+		function mostrarContraseña() {
+			var x = document.getElementById("password");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
 	</script>
 </body>
 </html>

@@ -80,6 +80,14 @@
 									class="form-control" id="contraseña" placeholder="Nueva contraseña del usuario"									
 									title="La contraseña debe tener al menos un número, una letra en minúscula y como mínimo 6 caracteres"											
 									name="contraseña" >
+								
+								<div class="mt-2">
+								<input class="form-check-input" type="checkbox"
+									onclick="mostrarContraseña()"> <label
+									class="form-check-label" for="flexCheckDefault">
+									Mostrar Contraseña</label>
+								</div>
+								
 							</div>
 						</div>
 					</div>	
@@ -188,7 +196,16 @@
 			}		
 			
 		}
-	
+		
+		function mostrarContraseña() {
+			var x = document.getElementById("contraseña");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+		
 	</script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="plantilla/template :: head">
+
+
 </head>
 <body>
 
@@ -14,14 +16,14 @@
 			<div class="card-body row">
 				<div class="col-md-6">
 
-					<form th:action="@{/views/usuario/guardar}" method="post" >
+					<form th:action="@{/views/usuario/guardar}" method="post">
 
 						<div class="card-body row">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="usuario">Nombre de usuario:</label> <input
 										type="text" class="form-control" id="usuario"
-										placeholder="Nombre del usuario" name="usuario" required >
+										placeholder="Nombre del usuario" name="usuario" required>
 								</div>
 							</div>
 
@@ -30,9 +32,16 @@
 									<label for="contraseña">Contraseña:</label> <input
 										type="password" class="form-control" id="contraseña"
 										name="contraseña" placeholder="Contraseña del usuario"
-										pattern="(?=.*\d)(?=.*[a-z]).{6,}" 
+										pattern="(?=.*\d)(?=.*[a-z]).{6,}"
 										title="La contraseña debe tener al menos un número, una letra en minúscula y como mínimo 6 caracteres"
 										required>
+
+									<div class="mt-2">
+										<input class="form-check-input" type="checkbox"
+											onclick="mostrarContraseña()"> <label
+											class="form-check-label" for="flexCheckDefault">
+											Mostrar Contraseña</label>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -57,12 +66,10 @@
 
 						<div class="card-body row">
 							<div class="form-group">
-								<label for="rol">Rol del usuario: </label> 
-								<small class="text-muted"><span> (Ctrl + click para selección múltiple)</span></small>
-								
-								<select class="form-select mt-2"
-									multiple aria-label="multiple select example" name="rol"
-									id="rol">
+								<label for="rol">Rol del usuario: </label> <small
+									class="text-muted"><span> (Ctrl + click para
+										selección múltiple)</span></small> <select class="form-select mt-2" multiple
+									aria-label="multiple select example" name="rol" id="rol">
 									<option value="GUARDIA" selected>Guardia</option>
 									<option value="AUTORIZADOR">Autorizador</option>
 									<option value="NOTIFICADOR">Notificador</option>
@@ -94,9 +101,18 @@
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+		
+	function mostrarContraseña() {
+		var x = document.getElementById("contraseña");
+		if (x.type === "password") {
+			x.type = "text";
+		} else {
+			x.type = "password";
+		}
+	}
 	
-	<script  th:inline="javascript">
-				
 	</script>
 </body>
 </html>

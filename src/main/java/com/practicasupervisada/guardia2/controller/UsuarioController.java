@@ -123,13 +123,11 @@ public class UsuarioController {
 			if(contraseña.equals("") || contraseña == null) {
 				
 				usuarioServ.editarUsuario(user, roles);
-				System.out.println("Se editó el usuario sin modificar la contraseña");
 				
 			}else {
 				
 				user.setContraseña(contraseña);
 				usuarioServ.crearUsuario(user, roles);
-				System.out.println("Se editó la contraseña del usuario");
 			}
 								
 			
