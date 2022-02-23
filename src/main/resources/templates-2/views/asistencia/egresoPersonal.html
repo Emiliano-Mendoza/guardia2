@@ -6,24 +6,72 @@
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div> <?php echo "Hello World" ?> </div>
-	
 	<div class="container mt-3">
-		
-		<h5>Buscar Empleado:</h5>
-		<div class="row mt-2">
+
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h5>Buscar Empleado:</h5>
+
+			<button type="button" class="btn btn-primary btn-sm"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+				salidas transitorias</button>
+		</div>
+
+
+		<div class="row mt-3">
 			<div class="col-md-11">
 				<input type="text" id="formulario" class="form-control">
 			</div>
 			<div class="col-md-1 ">
 				<button class="btn btn-primary" onclick="filtrar()">Buscar</button>
 			</div>
-				
+
 		</div>
 		<div class="row mt-3" id="cardEgreso"></div>
 
-		 
+
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Salidas Transitorias:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get"
+					th:action="@{/views/asistencia/salidas-transitorias}">
+					<div class="modal-body" id="modalbody">
+
+
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas:
+							</label> <input type="text" id="date_range" name="date_range"
+								class="form-control"></li>
+							<li class="list-group-item"><label>Empleado: </label> <select
+								class="form-select" id="sector" name="nroLegajo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="p:${todoPersonal}" th:value='${p.nroLegajo}'>[[${p.apellido}]]
+										[[${p.nombre}]]</option>
+
+							</select></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="mt-5"></div>
 
@@ -49,17 +97,21 @@
 						let apellido = aut.personal.apellido.toLowerCase();
 						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
-														
-							let imagenEmpleado= `/recursos/${aut.personal.imagen}` ;
+																					
+							//reemplazo el espacion en blanco por %20 para tener el path correcto
+							let imagenAux = aut.personal.imagen.replace(/\s/g, "%20");
+							let imagenEmpleado= `/recursos/${imagenAux}` ;
+							
 							let idFoo= `foo${aut.personal.nroLegajo}`;							
 						
 							//le doy el formato correcto a la fecha
 							let d = new Date(aut.entrada);
-							dformat = [d.getDate(),
-				  				d.getMonth()+1,
-				               d.getFullYear()].join('/')+' '+
-				              [d.getHours(),
-				               d.getMinutes()].join(':');
+							dformat = `${
+							    d.getDate().toString().padStart(2, '0')}/${
+							    (d.getMonth()+1).toString().padStart(2, '0')}/${
+							    d.getFullYear().toString().padStart(4, '0')} ${
+							    d.getHours().toString().padStart(2, '0')}:${
+							    d.getMinutes().toString().padStart(2, '0')}`;
 							
 							if(!aut.enTransito){
 								
@@ -82,7 +134,7 @@
 										<div class="col-md-4" >
 											<img src=${imagenEmpleado}
 												id=${idFoo}
-												style="max-width: 100%; height: auto"
+												width="215" height="230"
 												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 										</div>
 										<div class="card-body col-md-8">
@@ -107,7 +159,7 @@
 										action=${urlEgresoTransitorio}
 										object=${aut}
 										method="post"  
-										onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
+										
 										id=${idForm}>									
 											
 											<button type="button" class="btn btn-secondary btn-sm"
@@ -129,7 +181,7 @@
 									action=${urlEgreso}
 									object=${aut}
 									method="post"  
-										onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+										>
 									
 										<input type="submit" class="btn btn-primary btn-sm"
 											id=${idButtonEgreso}
@@ -143,7 +195,8 @@
 								</div>
 								`;
 								
-								//------------------	
+								//onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
+								//onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
 							}else{
 								
 								let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idAsistencia;								
@@ -158,7 +211,7 @@
 										<div class="col-md-4">
 											<img src=${imagenEmpleado}
 												id=${idFoo}
-												style="max-width: 100%; height: auto;"
+												width="215" height="230"
 												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 										</div>
 										<div class="card-body col-md-8">
@@ -170,6 +223,7 @@
 											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
 											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+											  <li class="list-group-item" hidden></li>
 											</ul>
 											
 										</div>
@@ -182,7 +236,7 @@
 										action=${urlReingresoTransitorio}
 										object=${aut}
 										method="post"  
-											onsubmit="return confirm('Confirmar reingreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+											>
 										
 											<input type="submit" class="btn btn-secondary btn-sm"
 												value="Reingreso" />
@@ -194,6 +248,8 @@
 								</div>
 								</div>
 								`;
+								
+								//onsubmit="return confirm('Confirmar reingreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
 							}
 							
 							

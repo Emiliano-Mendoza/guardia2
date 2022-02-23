@@ -1,17 +1,163 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
 <body>
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div class="container">
-		<h1>*Página de Inicio*</h1>
+	<div class="container" sec:authorize="isAuthenticated()">
+		<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
+			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
+				style="padding-top: 20px;">
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia/personal}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								INGRESO DE PERSONAL</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia/personal/egreso}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								EGRESO DE PERSONAL</a>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
+				style="padding-top: 20px;">
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia-proveedor}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								INGRESO DE PROVEEDOR</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/asistencia-proveedor/egreso}"
+								class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								EGRESO DE PROVEEDOR</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div>
+						<div style="overflow-x: hidden; overflow-y: hidden; height: 8em;">
+							<a th:href="@{/views/acontecimiento}" class="btn btn-secondary"
+								style="display: flex; height: 100%; text-align: center; justify-content: center; align-items: center;">
+								RONDA</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row " style="padding-top: 25px;">
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body"
+						style="overflow-x: hidden; overflow-y: auto; height: 14em; border: 1px solid">
+						<h5 class="card-title">Listado de Eventos:</h5>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item" th:each="ev : ${listaEventos}">
+								<span th:text="${#dates.format(ev.fechaEvento, 'dd/MM/yyyy')}"></span>
+								- <span th:text="${ev.descripcion}"></span> - Contacto:
+								[[${ev.usuarioSector.nombre}]] [[${ev.usuarioSector.apellido}]]
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body"
+						style="overflow-x: hidden; overflow-y: auto; height: 14em; border: 1px solid">
+						<h5 class="card-title">Listado de Retiros de Material:</h5>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item" th:each="ret : ${listaRetiros}">
+								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"
+								></span> - RETIRA:  
+								<span 
+								th:text="${ret.personal != null} ? ${ret.personal.nombre} + ' ' + ${ret.personal.apellido} : 'Retiro externo'"></span>
+								 - MATERIALES:
+								<span
+								th:id="mat + ${ret.idRetiro}"></span> - AUTORIZA:
+								[[${ret.usuarioSector.nombre}]]
+								[[${ret.usuarioSector.apellido}]]
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
-
+	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+		
+		var listaRetiros = /*[[${listaRetiros}]]*/ 'default';
+		
+		function listarMateriales() {
+			
+			for(let ret of listaRetiros){
+				let aux = 'mat' + ret.idRetiro;
+				let materialSpan =  document.getElementById(aux);
+								
+				let matOrdenados = ret.materiales.sort(compare);
+				
+				let index = 1;
+				for(let mat of matOrdenados){
+					
+					if(index == matOrdenados.length){
+						materialSpan.innerHTML += mat.material;
+					}else{
+						materialSpan.innerHTML += mat.material + ', ';
+					}
+										
+					index++;
+				}
+			}
+			
+		}
+		
+		listarMateriales();
+		
+		function compare( a, b ) {
+			  if ( a.id_material < b.id_material ){
+			    return -1;
+			  }
+			  if ( a.id_material > b.id_material ){
+			    return 1;
+			  }
+			  return 0;
+		}
+				
+		
+	</script>
 </body>
 </html>

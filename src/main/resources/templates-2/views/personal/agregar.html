@@ -9,7 +9,7 @@
 
 	<div class="container">
 
-		<div class="card bg-light mt-3">
+		<div class="card mt-3">
 			<div class="card-header bg-dark text-white">Agregar nuevo
 				empleado:</div>
 			<div class="card-body row">
@@ -17,14 +17,16 @@
 
 					<form th:object="${personal}"
 						th:action="@{/views/personal/guardar}" method="post"
-						enctype="multipart/form-data">
+						enctype="multipart/form-data"
+						>
 
 						<div class="card-body row">
 							<div class="col-md-6">
 								<div class="form-group ">
 									<label for="nroLegajo">Número de Legajo:</label> <input
 										type="number" class="form-control" id="nroLegajo"
-										placeholder="Número de legajo" th:field="*{nroLegajo}">
+										placeholder="Número de legajo" th:field="*{nroLegajo}" required>
+										
 								</div>
 								<small class="form-text text-danger"
 									th:if="${#fields.hasErrors('nroLegajo')}"
@@ -51,7 +53,7 @@
 										<option value="Oficina Tecnica">Oficina Tecnica</option>
 										<option value="Pegadora">Pegadora</option>
 										<option value="Preprensa">Preprensa</option>
-										<option value="Produccion">Produccion</option>
+										<option value="Producción">Producción</option>
 										<option value="Tintas">Tintas</option>
 										<option value="Troquelado">Troquelado</option>
 										<option value="Otro">Otro</option>
@@ -67,7 +69,7 @@
 									<label for="nombre">Nombre:</label> <input type="text"
 										class="form-control" id="nombre"
 										placeholder="Nombre del empleado" name="nombre"
-										th:field="*{nombre}">
+										th:field="*{nombre}" required>
 								</div>
 								<small class="form-text text-danger"
 									th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
@@ -78,7 +80,7 @@
 									<label for="apellido">Apellido:</label> <input type="text"
 										class="form-control" id="apellido"
 										placeholder="Apellido del empleado" name="apellido"
-										th:field="*{apellido}">
+										th:field="*{apellido}" required>
 								</div>
 								<small class="form-text text-danger"
 									th:if="${#fields.hasErrors('apellido')}"
@@ -92,6 +94,7 @@
 									foto del empleado:</label> <input type="file" name="file"
 									class="form-control-file mt-2" id="file">
 							</div>
+							
 						</div>
 
 
@@ -107,7 +110,7 @@
 				</div>
 				<div class="col-md-6">
 					<img src="/images/nueva-entidad.jpg" class=""
-						style="display: block; margin: 0 auto; width: 300px">
+						style="display: block; margin: 0 auto; width: 320px">
 				</div>
 			</div>
 		</div>
@@ -117,8 +120,12 @@
 
 	<div class="mt-5"></div>
 
-
-
 	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script>
+		const nroLeg = document.getElementById("nroLegajo");
+		nroLeg.value = "";
+	
+	</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
 <body>
@@ -7,21 +7,28 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
-	
-		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardEditar"></div>
-	
-		<h3 class="mt-3">Buscar Empleado: </h3>
-		
+
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center"
+			id="cardEditar"></div>
+
+		<h3 class="mt-3">Buscar Empleado:</h3>
+
 		<input type="text" id="formulario" class="form-control">
 		<table class="table" style="width: 100%">
 			<thead>
 				<tr>
-					
-					<th class="sortable" scope="col" style="width: 15%; text-align: center;">Legajo</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Nombre</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Apellido</th>
+
+					<th class="sortable" scope="col"
+						style="width: 15%; text-align: center;">Legajo</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Apellido</th>
 					<th class="sortable" style="width: 20%; text-align: center;">Sector</th>
-					<th scope="col" style="width: 25%; text-align: center;">Editar Empleado</th>
+					<th scope="col" style="width: 15%; text-align: center;">Editar
+						Empleado</th>
+					<th scope="col" style="width: 15%; text-align: center;" sec:authorize="hasRole('ROLE_ADMIN')">
+					Asistencias</th>
 				</tr>
 			</thead>
 			<tbody id="fila">
@@ -30,10 +37,37 @@
 		</table>
 	</div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Asistencias del
+						empleado:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get">
+					<div class="modal-body" id="modalbody">...</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Ver
+							Asistencias</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
-	
+
 	<script th:inline="javascript"> 
 	
 		var personal = /*[[${listaPersonal}]]*/ 'default';
@@ -62,88 +96,37 @@
 						<td style="text-align:center;">
 							<button class="btn btn-success btn-sm" 
 							title:"Registrar Nueva Asistencia" id="asisBtn" 
-							onclick="editarEmpleado('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}')">
+							onclick="editarEmpleado('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}','${p.enabled}')">
 							Editar
 							</button>
+						</td>
+						<td style="text-align:center;">
+							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+							onclick="mostrarModal('${p.nroLegajo}','${p.nombre}','${p.apellido}')"
+								data-bs-target="#exampleModal">Ver</button>
 						</td>
 					</tr>
 					`
 				}
+				
+				
+				
 			}
-		}
-		
-		
-		//
-		function sortTable(selector, compFunc) {
-		      var mySelector = '.sortable';
-		      var myCompFunc = function($td1, $td2, isAsc) {
-		        var v1 = $.trim($td1.text()).replace(/,|\s+|%/g, '');
-		        var v2 = $.trim($td2.text()).replace(/,|\s+|%/g, '');
-		        var pattern = /^\d+(\.\d*)?$/;
-		        if (pattern.test(v1) && pattern.test(v2)) {
-		          v1 = parseFloat(v1);
-		          v2 = parseFloat(v2);
-		        }
-		
-		        return isAsc ? v1 > v2 : v1 < v2;
-		      };
-		
-		      var doSort = function($tbody, index, compFunc, isAsc)
-		      {
-		        var $trList = $tbody.find("tr");
-		        var len = $trList.length;
-		        for(var i=0; i<len-1; i++) {
-		          for(var j=0; j<len-i-1; j++) {
-		            var $td1 = $trList.eq(j).find("td").eq(index);
-		            var $td2 = $trList.eq(j+1).find("td").eq(index);
-		
-		            if (compFunc($td1, $td2, isAsc)) {
-		              var t = $trList.eq(j+1);
-		              $trList.eq(j).insertAfter(t);
-		              $trList = $tbody.find("tr");
-		            }
-		          }
-		        }
-	      	}
+		}		
 	
-		      var init = function() {
-		        var $th = $("th" + selector);
-		        this.$table = $th.closest("table");
-		        var that = this;
-		        $th.click(function(){
-		          var index = $(this).index();
-		          var asc = $(this).attr('data-asc');
-		          isAsc = asc === undefined ? true : (asc > 0 ? true : false);
-		
-		          doSort(that.$table.find("tbody"), index, compFunc, isAsc);
-		
-		          $(this).attr('data-asc', 1 - (isAsc ? 1 : 0));
-		        });
-		
-		        $th.css({'cursor': 'pointer'})
-		           .attr('title', 'Haga clic para ordenar')
-		           .append('&nbsp;<i class="fa fa-long-arrow-down" style="color:#2196F3" aria-hidden="true"></i><i class="fa fa-long-arrow-up" style="color:#2196F3" aria-hidden="true"></i>');
-		      };
-	
-	
-	      selector = selector || mySelector;
-	      compFunc = compFunc || myCompFunc;
-	
-	      init();
-	    }
-		//
-	
-		function editarEmpleado(nroLegajo, nombre, apellido, sector, imagen){
+		function editarEmpleado(nroLegajo, nombre, apellido, sector, imagen, enabled){
 			
-			let urlA = "/views/personal/editar/" + nroLegajo;
-			let imagenEmpleado= `/recursos/${imagen}` ;
+			let urlA = "/views/personal/editar/" + nroLegajo;		
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
 			
 			cardEditar.innerHTML = `
 				<div class="col-md-8">
 				
 				<div class="card-header bg-dark text-white">Editar Empleado:</div>
 			
-				<form action=${urlA} method="post" autocomplete="off" enctype="multipart/form-data">
+				<form action=${urlA} method="post" autocomplete="off" enctype="multipart/form-data"
+					>
 					
 					
 					<div class="card-body row">
@@ -171,7 +154,7 @@
 							<div class="form-group">
 								<label for="nombre">Nombre:</label> <input type="text"
 									class="form-control" id="nombre" placeholder="Nombre"
-									name="nombre" required value=${nombre}>
+									name="nombre" required value="${nombre}">
 							</div>
 						</div>
 
@@ -179,7 +162,7 @@
 							<div class="form-group">
 								<label for="apellido">Apellido:</label> <input type="text"
 									class="form-control" id="apellido" placeholder="Apellido"
-									name="apellido" required value=${apellido}>
+									name="apellido" required value="${apellido}">
 							</div>
 						</div>
 					</div>
@@ -188,15 +171,23 @@
 						<div class="form-group col-md-3 ">
 							<label for="nombre">Imagen del empleado:</label>
 							<img class="mt-2" src=${imagenEmpleado}
-								style="max-width: 100%; height: auto;"
+								width="160" height="160"
 								onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 						</div>
 						
 						<div class="form-group col-md-6 ">
-						<label for="exampleFormControlFile1" style="display: block;">Cambiar imagen del empleado:</label> 
-						<input type="file" name="file"
-							class="form-control-file mt-2" id="file">
-					</div>
+							<label for="exampleFormControlFile1" style="display: block;">Cambiar imagen del empleado:</label> 
+							<input type="file" name="file"
+								class="form-control-file mt-2" id="file">
+							
+							
+							<div class="form-check mt-4">
+								<input class="form-check-input" type="checkbox" value="true" name="enabled" id="enabled" checked>
+								<label class="form-check-label" for="flexCheckDefault">
+							    Empleado Habilitado
+						  		</label>
+							</div>
+						</div>
 					</div>
 
 					<div
@@ -214,6 +205,13 @@
 
 			`;
 			
+			const checkB = document.getElementById('enabled');
+			
+			
+			if(enabled == 'true'){
+				checkB.checked = true;
+			}else checkB.checked = false;
+			
 			selectedSector(sector);
 			window.scroll(0, 0);
 			
@@ -229,7 +227,7 @@
 							"Descartonado","Enfardado","Impresión","Informática",
 							"Mantenimiento","Mantenimiento Electrico","Mantenimiento Mec",
 							"Movimientos Internos","Oficina Tecnica","Pegadora",
-							"Preprensa","Produccion","Tintas","Troquelado","Otro"];
+							"Preprensa","Producción","Tintas","Troquelado","Otro"];
 			
 			const selector = document.getElementById("sector");
 			
@@ -247,12 +245,76 @@
 			}
 			
 		} 
-		
-		
+				
+		function mostrarModal(nroLegajo,nombre,apellido){
+
+			const modal = document.getElementById("modalbody");
+			
+			modal.innerHTML = `
+				<h5 class="card-title"></h5>				
+				
+				<ul class="list-group list-group-flush">
+				  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
+				  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
+			      <li class="list-group-item">
+			      	<label>Rango de fechas: </label>
+			      	<input type="text" id="date_range" name="date_range" class="form-control">
+			      </li>
+			      
+				</ul>
+			`;
+			
+			$('#date_range').daterangepicker();
+			const today = new Date()
+			let tomorrow = new Date(today)
+			tomorrow.setDate(tomorrow.getDate() + 1)
+			$(function () {
+			    $('#date_range').daterangepicker({
+			        "locale": {
+			            "format": "DD/MM/YYYY",
+			            "separator": "-",
+			            "applyLabel": "Guardar",
+			            "cancelLabel": "Cancelar",
+			            "fromLabel": "Desde",
+			            "toLabel": "Hasta",
+			            "customRangeLabel": "Personalizar",
+			            "daysOfWeek": [
+			                "Do",
+			                "Lu",
+			                "Ma",
+			                "Mi",
+			                "Ju",
+			                "Vi",
+			                "Sa"
+			            ],
+			            "monthNames": [
+			                "Enero",
+			                "Febrero",
+			                "Marzo",
+			                "Abril",
+			                "Mayo",
+			                "Junio",
+			                "Julio",
+			                "Agosto",
+			                "Setiembre",
+			                "Octubre",
+			                "Noviembre",
+			                "Diciembre"
+			            ],
+			            "firstDay": 1
+			        },
+			        "startDate": today,
+			        "endDate" : today,
+			        "opens": "center"
+			    });
+			});
+					
+			document.getElementById("myform").action = "/views/asistencia/asistencias-empleado/" + nroLegajo;
+			
+		}
+				
 		formulario.addEventListener('keyup', filtrar);
 		filtrar();
-		sortTable();
-		
 		
 	</script>
 </body>

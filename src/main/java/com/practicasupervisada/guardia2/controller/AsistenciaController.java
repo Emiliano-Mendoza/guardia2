@@ -82,7 +82,7 @@ public class AsistenciaController {
 
 	
 	@PostMapping("/egreso-empleado/{idAsistencia}")
-	public String egreso(@PathVariable("idAsistencia") int idAsistencia,
+	public String RegistrarEgresoDeAsistencia(@PathVariable("idAsistencia") int idAsistencia,
 						RedirectAttributes atributos) {
 			
 		try {
@@ -105,7 +105,7 @@ public class AsistenciaController {
 	}
 	
 	@PostMapping("/egreso-transitorio/{idAsistencia}")
-	public String egresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
+	public String registrarSalidaTransitoria(@PathVariable("idAsistencia") int idAsistencia,
 						@RequestParam(name = "vehiculo") int idVehiculo,
 						RedirectAttributes atributos) {
 		
@@ -175,7 +175,7 @@ public class AsistenciaController {
 	}
 
 	@GetMapping("/personal")
-	public String listarClientes(Model model) {
+	public String ListarEmpleadosHabilitadosSinIngresar(Model model) {
 		
 		List<Personal> listaPersonal = personalServ.getAllPersonal()
 																	.stream()
@@ -217,7 +217,7 @@ public class AsistenciaController {
 	public String mostrarAsistenciasEmpleadosIngresados(Model model){
 		
 		try {
-			List<Asistencia> listaAsistencias = asistenciaServ.getAllAsistencias();
+			List<Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 			List<Asistencia> AsisSinEgreso = listaAsistencias
 											.stream()
 											.filter(a -> a.getSalida() == null && a.getPersonal()!=null)

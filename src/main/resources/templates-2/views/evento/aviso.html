@@ -7,10 +7,15 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container mt-3">
-
-		<h5>Notificar Nuevo Evento:</h5>
-
-		<!-- onsubmit="return confirm('Desea crear la nueva notificación de evento?');" -->
+	
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h5>Notificar Nuevo Evento:</h5>
+			
+			<form method="get" th:action="@{/views/evento/eventos-usuario}">
+				<button type="submit" class="btn btn-primary">Ver
+					tus eventos</button>
+			</form>
+		</div>
 		
 		<form id="formEvento" method="post"
 			th:action="@{/views/evento/crear}" 
@@ -97,12 +102,12 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 				
-				<form action=${action} method="post" onsubmit="return confirm('Confimar el editado de evento?');">
+				<form action=${action} method="post" >
 					<div class="card-body" >
 					<div class="card-text">
 						<label for="exampleInput" class="form-label">Descripción:</label>
 						<textarea class="form-control" rows="3" id="descripcion" name="descripcion"
-							required placeholder="${descripcion}"></textarea>
+							required >${descripcion}</textarea>
 					</div>
 					<div class="card-text mt-3">
 						<label for="exampleInputDate" class="form-label">Fecha
@@ -124,7 +129,8 @@
 				</form>
 				
 			`;
-					
+			//onsubmit="return confirm('Confimar el editado de evento?');"
+			
 			let fechaAuxiliar = fechaEvento[6]+fechaEvento[7]+fechaEvento[8]+fechaEvento[9]+
 								'-'+fechaEvento[3]+fechaEvento[4] + 
 								'-' + fechaEvento[0]+fechaEvento[1]+ 
@@ -141,16 +147,13 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 				<div class="card-body">
-					<p class="card-text">
-						Descripción: <span>${descripcion}</span>
-					</p>
-					<p class="card-text">
-						Fecha evento: <span>${fechaEvento}</span>
-					</p>
-
-					<p class="card-text">
-						Encargado: <span>${nombre} ${apellido}</span>
-					</p>
+					
+					<ul class="list-group list-group-flush">
+					  <li class="list-group-item">Descripción: <span>${descripcion}</span></li>
+					  <li class="list-group-item">Fecha Evento: <span>${fechaEvento}</span></li>
+					  <li class="list-group-item">Encargado: <span>${nombre} ${apellido}</span></li>
+					</ul>	
+					
 					
 				</div>
 
@@ -174,24 +177,19 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 			
-				<form action=${action} method="post" onsubmit="return confirm('Confimar la cancelación del evento?');">
+				<form action=${action} method="post">
 					<div class="card-body">
-						<p class="card-text">
-							Descripción: <span>${descripcion}</span>
-						</p>
-						<p class="card-text">
-							Fecha evento: <span>${fechaEvento}</span>
-						</p>
-	
-						<p class="card-text">
-							Encargado: <span>${nombre} ${apellido}</span>
-						</p>
 						
-						<div class="card-text">
-						<label for="exampleInput" class="form-label">Motivo de la cancelación:</label>
+						<ul class="list-group list-group-flush">
+						  <li class="list-group-item">Descripción: <span>${descripcion}</span></li>
+						  <li class="list-group-item">Fecha Evento: <span>${fechaEvento}</span></li>
+						  <li class="list-group-item">Encargado: <span>${nombre} ${apellido}</span></li>
+						  <li class="list-group-item">
+						 	 <label for="exampleInput" class="form-label">Motivo de la cancelación:</label>
 							<textarea class="form-control" rows="3" id="descripcionCancelacion" name="descripcionCancelacion"
 								required ></textarea>
-						</div>
+						  </li>
+						</ul>						
 						
 					</div>
 	
@@ -238,23 +236,19 @@
 	
 	<script>
 		
-		
+		/*
 		$("#formEvento").on('submit', function(event){
 		    event.preventDefault();
 		    
 		    if(result = window.confirm("Desea crear la nueva notificación de evento?")){
-		    	send();
+		    	//send();
 		    	this.submit();
 		    }
 		    
 		    
 		});
-		
+		*/
 	
-		function send() {			
-			webSocket.send('Se ha añadido un nuevo evento próximo!');
-			return false;
-		}
 		
 	</script>
 

@@ -33,7 +33,7 @@ public class EventoController {
 	private UsuarioService usuarioServ;
 	
 	@GetMapping
-	public String obtenerListaEventos(Model model) {
+	public String obtenerListaNotificacionesEventos(Model model) {
 		
 		try {
 			List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc();
@@ -104,7 +104,7 @@ public class EventoController {
 	}
 	
 	@PostMapping("/crear")
-	public String crearNuevoEvento(@RequestParam(name = "desc") String desc,
+	public String crearNuevaNotificacionDeEvento(@RequestParam(name = "desc") String desc,
 								   @RequestParam(name = "fechaEvento") String fechaEvento,
 								   RedirectAttributes atributos){
 		
@@ -133,20 +133,26 @@ public class EventoController {
 	}
 	
 	@PostMapping("/ocurrencia/{idEvento}")
-	public String ocurrencia(@PathVariable("idEvento") int idEvento, 
+	public String registrarOcurrenciaDeEvento(@PathVariable("idEvento") int idEvento, 
 						 @RequestParam(name = "observacionGuardia") String observacionGuardia,
 						 RedirectAttributes atributos) {
 				
 		try {
 			Evento evento = eventoServ.findById(idEvento).orElseThrow();
 			
-			evento.setOcurrencia(true);
-			evento.setObservacionDeGuardia(observacionGuardia);
+			if(eventoServ.validarOcurrenciaEvento(evento)) {
+				evento.setOcurrencia(true);
+				evento.setObservacionDeGuardia(observacionGuardia);
+				
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				evento.setUsurioGuardia(usuarioServ.findByUsuario(auth.getName()));
+				
+				eventoServ.crearEvento(evento);
+			}
+			else {
+				new Exception("Evento Invalido");
+			}
 			
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			evento.setUsurioGuardia(usuarioServ.findByUsuario(auth.getName()));
-			
-			eventoServ.crearEvento(evento);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -157,7 +163,7 @@ public class EventoController {
 	}
 	
 	@PostMapping("/editar/{idEvento}")
-	public String editarEvento(@PathVariable("idEvento") int idEvento,
+	public String editarNotificacionDeEvento(@PathVariable("idEvento") int idEvento,
 							   @RequestParam(name = "descripcion") String descripcion,
 							   @RequestParam(name = "fechaEvento") String fechaEvento,
 							   RedirectAttributes atributos) {
@@ -188,7 +194,7 @@ public class EventoController {
 	}
 	
 	@PostMapping("/cancelar/{idEvento}")
-	public String editarEvento(@PathVariable("idEvento") int idEvento,
+	public String cancelarNotificacion(@PathVariable("idEvento") int idEvento,
 							   @RequestParam(name = "descripcionCancelacion") String descripcionCancelacion,
 							   RedirectAttributes atributos) {		
 		
@@ -217,26 +223,29 @@ public class EventoController {
 	
 	@GetMapping("/previos")
 	public String listarEventosAnteriores(Model model,
-							@RequestParam(name = "date_range") String date_range) throws ParseException {
+							@RequestParam(name = "date_range") String date_range){
 			
 		String[] parts = date_range.split("-");
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date fechaInicioAux = formatter.parse(parts[0]);
-		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
-	
+		Date fechaInicioAux;
+		Date fechaFinalAux;
 		
-		List<Evento> listaEventos = eventoServ.findAllByOrderByFechaEventoAsc()
-				.stream()
-				.filter(e ->  e.getFechaEvento() != null
-					    && e.getDescripcion() != null
-						&& e.getFechaEvento().after(fechaInicioAux)
-						&& e.getFechaEvento().before(fechaFinalAux))
-				.collect(Collectors.toList());
-		
-		model.addAttribute("listaEventos", listaEventos);
-		model.addAttribute("diaInicial", fechaInicioAux);
-		model.addAttribute("diaFinal", fechaFinalAux);
+		try {
+			fechaInicioAux = formatter.parse(parts[0]);
+			fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
+			
+			List<Evento> listaEventos = eventoServ.buscarEventosProximosRangoFechas(fechaInicioAux, fechaFinalAux);
+			
+			model.addAttribute("listaEventos", listaEventos);
+			model.addAttribute("diaInicial", fechaInicioAux);
+			model.addAttribute("diaFinal", fechaFinalAux);
+		} catch (ParseException e) {
+			
+			//si el formato de fecha no es correcto se muestra este error
+			e.printStackTrace();
+		}
+					
 		
 		return "/views/evento/verEventosAnteriores";
 	}

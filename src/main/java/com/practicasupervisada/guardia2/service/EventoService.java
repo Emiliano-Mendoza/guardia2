@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +14,7 @@ public interface EventoService {
 	public Optional<Evento> findById(int idEvento);
 	public List<Evento> findAllByOrderByFechaEventoAsc();
 	public Boolean existeEvento(int idEvento);
+	public List<Evento> buscarEventosProximosRangoFechas(Date date1,Date date2);
+	public Boolean validarOcurrenciaEvento(Evento evento);
+	
 }

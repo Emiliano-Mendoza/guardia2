@@ -102,7 +102,7 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 				
-				<form action=${action} method="post" onsubmit="return confirm('Confimar el editado de evento?');">
+				<form action=${action} method="post" >
 					<div class="card-body" >
 					<div class="card-text">
 						<label for="exampleInput" class="form-label">Descripción:</label>
@@ -176,7 +176,7 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 			
-				<form action=${action} method="post" onsubmit="return confirm('Confimar la cancelación del evento?');">
+				<form action=${action} method="post" >
 					<div class="card-body">
 						
 						<ul class="list-group list-group-flush">
@@ -235,7 +235,7 @@
 	
 	<script>
 		
-		
+		/*
 		$("#formEvento").on('submit', function(event){
 		    event.preventDefault();
 		    
@@ -246,7 +246,7 @@
 		    
 		    
 		});
-		
+		*/
 	
 		/* function send() {			
 			webSocket.send('Se ha añadido un nuevo evento próximo!');

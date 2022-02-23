@@ -9,7 +9,15 @@
 
 	<div class="container">
 
-		<h2 class="mt-2">Autorizaciones de retiro de material:</h2>
+
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h2 class="mt-2">Autorizaciones de retiro de material:</h2>
+
+			<button type="button" class="btn btn-primary btn-sm"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+				retiros previos</button>
+
+		</div>
 
 		<h5 class="mt-3">Buscar empleado:</h5>
 
@@ -18,6 +26,59 @@
 		<div class="row mt-3" id="cardRetiro"></div>
 	</div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Registro de
+						retiros:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get"
+					th:action="@{/views/retiro-material/previos}">
+					<div class="modal-body" id="modalbody">
+
+
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas: </label>
+			      				<input type="text" id="date_range" name="date_range" class="form-control">
+			      			</li>
+							<li class="list-group-item"><label>Entidad: </label> <select
+								class="form-select" id="sector" name="nroLegajo">
+									<option value=-1 selected>Todos</option>
+									<option value=-2 >Retiros Externos</option>
+									<option th:each="p:${listaPersonal}"
+										th:value='${p.nroLegajo}'>[[${p.apellido}]]
+										[[${p.nombre}]]</option>
+
+							</select></li>
+							<li class="list-group-item"><label>Autorizante: </label> <select
+								class="form-select" id="sector" name="idUsuario">
+									<option value=-1 selected>Todos</option>
+									<option th:each="us:${listaUsuarios}"
+										th:value='${us.idUsuario}'>
+										[[${us.nombre}]] [[${us.apellido}]]</option>
+
+							</select></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
@@ -25,6 +86,7 @@
 	<script th:inline="javascript">
 		
 	let autorizaciones = /*[[${listaRetiros}]]*/ 'default';
+	
 	
 	const formulario = document.querySelector('#formulario');
 	const resultado = document.querySelector('#cardRetiro');
@@ -64,19 +126,19 @@
 							
 							
 							<ul class="list-group list-group-flush">
-							  <li class="list-group-item">Empleado autorizado: ${aut.personal.nombre}
-								${aut.personal.apellido}</li>
-							  <li class="list-group-item">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</li>
-							  <li class="list-group-item">Descripción: ${aut.descripcion}</li>
-							  <li class="list-group-item">
+							  <li class="list-group-item bg-light">Empleado autorizado: ${aut?.personal?.nombre}
+								${aut?.personal?.apellido}</li>
+							  <li class="list-group-item bg-light">Autorizante: ${aut?.usuarioSector?.nombre} ${aut?.usuarioSector?.apellido}</li>
+							  <li class="list-group-item bg-light">Descripción: ${aut?.descripcion}</li>
+							  <li class="list-group-item bg-light">
 							  	<label for="exampleInput1" class="form-label">Materiales:</label>
 								<select class="form-select"
 									multiple aria-label="multiple select example" name=${materialesId}
 									id=${materialesId} disabled>
 									</select>
 							  </li>
-							  <li class="list-group-item">Fecha límite: ${dformat}</li>
-							  <li class="list-group-item ">
+							  <li class="list-group-item bg-light">Fecha límite: ${dformat}</li>
+							  <li class="list-group-item bg-light">
 							  	<label for="observacionGuardia">Observación:</label> <input type="text"
 									class="form-control" id="observacionGuardia"
 									name="observacionGuardia" form=${myform}>
@@ -86,7 +148,7 @@
 						</div>
 						<div class="card-footer" > 
 							<form action=${urlRetiro} method="post"
-								onsubmit="return confirm('Confirmar retiro del empleado?');" id=${myform}>
+								 id=${myform}>
 	
 								<div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
 									<input type="submit" class="btn btn-primary btn-sm "
@@ -98,6 +160,7 @@
 					</div>
 					</div>
 					`;
+					//onsubmit="return confirm('Confirmar retiro del empleado?');"
 					
 					SetMateriales(materialesId, aut);
 				}
@@ -113,18 +176,18 @@
 						<h5 class="card-header" >Autorización de retiro:</h5>
 						<div class="card-body">							
 							<ul class="list-group list-group-flush">
-							  <li class="list-group-item">Retiro externo</li>
-							  <li class="list-group-item">Autorizante: ${aut.usuarioSector.nombre} ${aut.usuarioSector.apellido}</li>
-							  <li class="list-group-item">Descripción: ${aut.descripcion}</li>
-							  <li class="list-group-item">
+							  <li class="list-group-item bg-light">Retiro externo</li>
+							  <li class="list-group-item bg-light">Autorizante: ${aut?.usuarioSector?.nombre} ${aut?.usuarioSector?.apellido}</li>
+							  <li class="list-group-item bg-light">Descripción: ${aut?.descripcion}</li>
+							  <li class="list-group-item bg-light">
 							  	<label for="exampleInput1" class="form-label">Materiales:</label>
 								<select class="form-select"
 									multiple aria-label="multiple select example" name=${materialesId}
 									id=${materialesId} disabled>
 								</select>
 							  </li>
-							  <li class="list-group-item ">Fecha límite: ${dformat}</li>
-							  <li class="list-group-item ">
+							  <li class="list-group-item bg-light">Fecha límite: ${dformat}</li>
+							  <li class="list-group-item bg-light">
 							  	<label for="observacionGuardia">Observación:</label> <input type="text"
 									class="form-control" id="observacionGuardia"
 									name="observacionGuardia" form=${myform}>
@@ -136,7 +199,7 @@
 						<div class="card-footer" > 
 						
 						<form action=${urlRetiro} method="post"
-							onsubmit="return confirm('Confirmar retiro externo?');" id=${myform}>
+							 id=${myform}>
 							<div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
 								<input type="submit" class="btn btn-primary btn-sm "
 									value="Confirmar Retiro" />
@@ -148,6 +211,7 @@
 					
 					</div>
 					`;
+					//onsubmit="return confirm('Confirmar retiro externo?');"
 					
 					SetMateriales(materialesId, aut);
 					
@@ -170,6 +234,7 @@
 	
 	formulario.addEventListener('keyup', filtrar);
 	filtrar();
+	
 		
 	</script>
 </body>

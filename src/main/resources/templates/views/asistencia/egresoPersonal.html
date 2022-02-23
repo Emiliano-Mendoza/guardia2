@@ -85,10 +85,12 @@
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
 		
+		//console.log(asistencias);
+		
 		const filtrar = () => {
 			
 			
-				resultado.innerHTML = ''
+				resultado.innerHTML = '';
 					
 					const texto = formulario.value.toLowerCase();
 					
@@ -97,9 +99,13 @@
 						let apellido = aut.personal.apellido.toLowerCase();
 						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
-																					
+								
 							//reemplazo el espacion en blanco por %20 para tener el path correcto
-							let imagenAux = aut.personal.imagen.replace(/\s/g, "%20");
+							let imagenAux = 'sinImagen';
+							if(aut.personal.imagen != null){
+								imagenAux = aut.personal.imagen.replace(/\s/g, "%20");
+							}
+							
 							let imagenEmpleado= `/recursos/${imagenAux}` ;
 							
 							let idFoo= `foo${aut.personal.nroLegajo}`;							
@@ -107,8 +113,8 @@
 							//le doy el formato correcto a la fecha
 							let d = new Date(aut.entrada);
 							dformat = `${
-							    (d.getMonth()+1).toString().padStart(2, '0')}/${
 							    d.getDate().toString().padStart(2, '0')}/${
+							    (d.getMonth()+1).toString().padStart(2, '0')}/${
 							    d.getFullYear().toString().padStart(4, '0')} ${
 							    d.getHours().toString().padStart(2, '0')}:${
 							    d.getMinutes().toString().padStart(2, '0')}`;
@@ -159,7 +165,7 @@
 										action=${urlEgresoTransitorio}
 										object=${aut}
 										method="post"  
-										onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
+										
 										id=${idForm}>									
 											
 											<button type="button" class="btn btn-secondary btn-sm"
@@ -181,7 +187,7 @@
 									action=${urlEgreso}
 									object=${aut}
 									method="post"  
-										onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+										>
 									
 										<input type="submit" class="btn btn-primary btn-sm"
 											id=${idButtonEgreso}
@@ -235,7 +241,7 @@
 										action=${urlReingresoTransitorio}
 										object=${aut}
 										method="post"  
-											onsubmit="return confirm('Confirmar reingreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');">
+											>
 										
 											<input type="submit" class="btn btn-secondary btn-sm"
 												value="Reingreso" />

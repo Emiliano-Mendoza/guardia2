@@ -7,25 +7,38 @@
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div class="container" >
-		
-		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardAsis"></div>
-		
+	<div class="container">
+
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center"
+			id="cardAsis"></div>
+
 	</div>
 
-	<div class="container">
-		<h2>Listado del Personal:</h2>
 
-		<input type="text" id="formulario" class="form-control">
+	<div class="container">
+
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h2>Listado del Personal:</h2>
+
+			<button type="button" class="btn btn-primary btn-sm"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+				asistencias</button>
+		</div>
+
+
+		<input type="text" id="formulario" class="form-control mt-3">
 		<table class="table" style="width: 100%">
 			<thead>
 				<tr>
-					
-					<th class="sortable" scope="col" style="width: 15%; text-align: center;">Legajo</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Nombre</th>
-					<th class="sortable" scope="col" style="width: 20%; text-align: center;">Apellido</th>
+
+					<th class="sortable" scope="col"
+						style="width: 15%; text-align: center;">Legajo</th>
+					<th class="sortable" scope="col"
+						style="width: 25%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Apellido</th>
 					<th class="sortable" style="width: 20%; text-align: center;">Sector</th>
-					<th scope="col" style="width: 25%; text-align: center;">Registrar
+					<th scope="col" style="width: 20%; text-align: center;">Registrar
 						Asistencia</th>
 				</tr>
 			</thead>
@@ -34,11 +47,56 @@
 			</tbody>
 		</table>
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Asistencias:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get"
+					th:action="@{/views/asistencia/previas}">
+					<div class="modal-body" id="modalbody">
+
+
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas:
+							</label> <input type="text" id="date_range" name="date_range"
+								class="form-control"></li>
+							<li class="list-group-item"><label>Empleado: </label> <select
+								class="form-select" id="sector" name="nroLegajo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="p:${todoPersonal}" th:value='${p.nroLegajo}'>[[${p.apellido}]]
+										[[${p.nombre}]]</option>
+
+							</select></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Ver
+							Asistencias</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
-	
-	
+
+
 	<script th:inline="javascript"> 
 		
 		var personal = /*[[${personal}]]*/ 'default';
@@ -67,10 +125,10 @@
 						<td style="text-align:center;">${p.apellido}</td>
 						<td style="text-align:center;">${p.sector}</td>						
 						<td style="text-align:center;">
-							<button class="btn btn-success btn-sm" 
+							<button class="btn btn-success btn-sm d" 
 							title:"Registrar Nueva Asistencia" id="asisBtn" 
 							onclick="AsistenciaCard('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}')">
-							Asistencia
+							Ingreso
 							</button>
 						</td>
 					</tr>
@@ -115,7 +173,7 @@
 				<form 	
 						action=${urlA}
 						method="post"
-						onsubmit="return confirm('Confirmar asistencia del empleado ${nombre} ${apellido}');">
+						>
 					<div
 						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
 						<button type="button" class="btn btn-secondary" onclick="CloseCard()"
@@ -128,6 +186,8 @@
 
 			</div>
 			`;
+			
+			//onsubmit="return confirm('Confirmar asistencia del empleado ${nombre} ${apellido}');"
 			
 			//formato de la fecha
 			var d = new Date,
@@ -150,9 +210,12 @@
 			cardAsis.innerHTML = '';
 		}
 		
+		
 		formulario.addEventListener('keyup', filtrar);
 		filtrar();
-
+		
+		
+		
 	</script>
 </body>
 </html>

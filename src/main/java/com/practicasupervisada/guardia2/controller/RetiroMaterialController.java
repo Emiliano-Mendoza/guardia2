@@ -45,7 +45,7 @@ public class RetiroMaterialController {
 	private MaterialService materialServ;
 	
 	@GetMapping
-	public String obetenerRetirosDeMaterial(Model model) {
+	public String ListarAutorizacionesActivas(Model model) {
 		try {
 			List<RetiroMaterial> listaRetiros = retiroServ.getAllRetiroMaterial();
 			
@@ -93,7 +93,7 @@ public class RetiroMaterialController {
 	}
 	
 	@GetMapping("/autorizar")
-	public String listarClientesParaRetiroMaterial(Model model) {
+	public String listarPersonalParaAutorizar(Model model) {
 		
 		List<Personal> listaPersonal = personalServ.getAllPersonal()
 				.stream()
@@ -153,7 +153,7 @@ public class RetiroMaterialController {
 	}
 	
 	@PostMapping("/retiro/{idRetiro}")
-	public String egreso(@PathVariable("idRetiro") int idRetiro, 
+	public String registroDeRetiro(@PathVariable("idRetiro") int idRetiro, 
 			@RequestParam(name = "observacionGuardia") String observacionGuardia,
 			RedirectAttributes atributos) {
 				
