@@ -86,7 +86,7 @@
 									<form 
 									action=${urlEgreso}
 									method="post"  
-									>
+										>
 									
 										<input type="submit" class="btn btn-primary btn-sm"
 											value="Registrar Egreso" />
@@ -98,8 +98,6 @@
 						</div>
 					</div>
 					`;
-					//	onsubmit="return confirm('Confirmar egreso del proveedor ${aut.proveedor.razonSocial}?');"
-					
 					
 					if(aut.nombreChofer == null || aut.nombreChofer == ''){
 						document.getElementById(idChofer).hidden = true;

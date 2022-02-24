@@ -129,8 +129,7 @@
 				</form>
 				
 			`;
-			//onsubmit="return confirm('Confimar el editado de evento?');"
-			
+					
 			let fechaAuxiliar = fechaEvento[6]+fechaEvento[7]+fechaEvento[8]+fechaEvento[9]+
 								'-'+fechaEvento[3]+fechaEvento[4] + 
 								'-' + fechaEvento[0]+fechaEvento[1]+ 
@@ -177,7 +176,7 @@
 			resultado.innerHTML = `
 				<h5 class="card-header">Evento Próximo:</h5>
 			
-				<form action=${action} method="post">
+				<form action=${action} method="post" >
 					<div class="card-body">
 						
 						<ul class="list-group list-group-flush">
@@ -249,6 +248,10 @@
 		});
 		*/
 	
+		/* function send() {			
+			webSocket.send('Se ha añadido un nuevo evento próximo!');
+			return false;
+		} */
 		
 	</script>
 

@@ -85,10 +85,12 @@
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
 		
+		//console.log(asistencias);
+		
 		const filtrar = () => {
 			
 			
-				resultado.innerHTML = ''
+				resultado.innerHTML = '';
 					
 					const texto = formulario.value.toLowerCase();
 					
@@ -97,9 +99,13 @@
 						let apellido = aut.personal.apellido.toLowerCase();
 						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
-																					
+								
 							//reemplazo el espacion en blanco por %20 para tener el path correcto
-							let imagenAux = aut.personal.imagen.replace(/\s/g, "%20");
+							let imagenAux = 'sinImagen';
+							if(aut.personal.imagen != null){
+								imagenAux = aut.personal.imagen.replace(/\s/g, "%20");
+							}
+							
 							let imagenEmpleado= `/recursos/${imagenAux}` ;
 							
 							let idFoo= `foo${aut.personal.nroLegajo}`;							
@@ -195,8 +201,7 @@
 								</div>
 								`;
 								
-								//onsubmit="return confirm('Confirmar egreso transitorio del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
-								//onsubmit="return confirm('Confirmar egreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
+								//------------------	
 							}else{
 								
 								let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idAsistencia;								
@@ -248,8 +253,6 @@
 								</div>
 								</div>
 								`;
-								
-								//onsubmit="return confirm('Confirmar reingreso del empleado ${aut.personal.nombre} ${aut.personal.apellido} ?');"
 							}
 							
 							
