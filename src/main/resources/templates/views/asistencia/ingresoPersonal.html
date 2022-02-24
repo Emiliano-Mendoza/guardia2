@@ -176,10 +176,16 @@
 						>
 					<div
 						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
-						<button type="button" class="btn btn-secondary" onclick="CloseCard()"
-							>Cancelar</button>
-							<button type="submit" class="btn btn-secondary"
-								>Registrar</button> 
+							<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+								>Cancelar</button>
+							<div>
+								<button type="button" class="btn btn-secondary"
+									onclick="transitoCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
+									>Transito</button>
+								<button type="submit" class="btn btn-secondary"
+									>Registrar</button>
+							</div>
+							 
 							
 					</div>
 				</form>
@@ -203,6 +209,76 @@
 			window.scroll(0, 0);
 		}
 	
+		
+		function transitoCard(nroLegajo,nombre,apellido,sector, imagen){
+			
+			let urlA = "/views/asistencia/ingreso-empleado/" + nroLegajo;
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			
+			cardAsis.innerHTML = `
+				<div class="col-md-8" >
+				<div class="card-header text-dark" style="background-color: #9acd32	"
+					><dt>Registro de Ingreso Transitorio a Planta</dt></div>
+				<div class="row g-0 ">
+					<div class="col-md-4" id="imagen">
+						<img src=${imagenEmpleado} width="270" height="270"
+						
+						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Registrar asistencia:</h5>
+							
+							
+							<ul class="list-group list-group-flush mt-4">
+							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
+							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
+							  <li class="list-group-item">Sector de trabajo: ${sector}</li>
+							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
+								id='date-time'></span></small></li>
+							</ul>
+							
+						</div>
+					</div>
+				</div>
+				<form 	
+						action=${urlA}
+						method="post"
+						>
+					<div
+						class="card-footer d-grid gap-2 d-md-flex justify-content-between"
+							style="background-color: #9acd32">
+							<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+								>Cancelar</button>
+							<div>
+								<button type="button" class="btn btn-secondary"
+									>Registrar</button>
+							</div>
+							 
+							
+					</div>
+				</form>
+
+			</div>
+			`;
+			
+			//formato de la fecha
+			var d = new Date,
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			
+			
+			
+			document.getElementById('date-time').innerHTML = dformat;
+				
+			window.scroll(0, 0);
+		}
+		
 		
 		function CloseCard(){
 			cardAsis.innerHTML = '';

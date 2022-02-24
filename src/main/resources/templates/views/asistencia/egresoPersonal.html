@@ -118,17 +118,20 @@
 							    d.getFullYear().toString().padStart(4, '0')} ${
 							    d.getHours().toString().padStart(2, '0')}:${
 							    d.getMinutes().toString().padStart(2, '0')}`;
-							
+								
+							    
+							let idDiv = 'vehiculo' + aut.personal.nroLegajo; 
+							let idForm = 'idForm' + aut.personal.nroLegajo;
+							let idButtonEgreso = 'idButtonEgreso' + aut.personal.nroLegajo;
+							let idCancelarButton = 'idCancelarButton' + aut.personal.nroLegajo;
+							let idConfirmarButton = 'idConfirmarButton' + aut.personal.nroLegajo;
+							let idEgresoTransitorio = 'idEgresoTransitorio' + aut.personal.nroLegajo;    
+							    
 							if(!aut.enTransito){
 								
 								let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
 								let urlEgresoTransitorio= '/views/asistencia/egreso-transitorio/' + aut.idAsistencia;
-								let idDiv = 'vehiculo' + aut.personal.nroLegajo; 
-								let idForm = 'idForm' + aut.personal.nroLegajo;
-								let idButtonEgreso = 'idButtonEgreso' + aut.personal.nroLegajo;
-								let idCancelarButton = 'idCancelarButton' + aut.personal.nroLegajo;
-								let idConfirmarButton = 'idConfirmarButton' + aut.personal.nroLegajo;
-								let idEgresoTransitorio = 'idEgresoTransitorio' + aut.personal.nroLegajo;
+								
 
 								
 								resultado.innerHTML += `
@@ -211,7 +214,7 @@
 									<div class="card text-dark mb-3" >
 									<div class="card-header text-dark"
 										style="background-color:	#dcdcdc"><dt>Registro de Egreso
-									de la Planta</dt></div>
+										de la Planta</dt></div>
 									<div class="row g-0 ">
 										<div class="col-md-4">
 											<img src=${imagenEmpleado}
@@ -228,7 +231,7 @@
 											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
 											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
-											  <li class="list-group-item" hidden></li>
+											  <li id=${idDiv} class="list-group-item" hidden></li>
 											</ul>
 											
 										</div>
@@ -240,12 +243,23 @@
 									<form 
 										action=${urlReingresoTransitorio}
 										object=${aut}
-										method="post"  
+										method="post"
+										id=${idForm}
 											>
 										
-											<input type="submit" class="btn btn-secondary btn-sm"
-												value="Reingreso" />
+											<button type="button" class="btn btn-secondary btn-sm"
+												id=${idCancelarButton}
+												onclick="filtrar()"
+												hidden>Cancelar</button>
 										
+											<button type="button" class="btn btn-secondary btn-sm" 
+												onclick="mostrarListaVehiculos('${idDiv}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+												id=${idEgresoTransitorio}
+												>Reingreso</button>
+										
+											<input type="submit" class="btn btn-secondary btn-sm"
+												id=${idConfirmarButton} hidden
+												value="Confirmar" />
 									</form>
 									
 									</div>
@@ -267,7 +281,10 @@
 						
 			const divVehiculos = document.getElementById(idDiv);
 			divVehiculos.hidden = false;
-			document.getElementById(idButtonEgreso).hidden = true;
+			if(document.getElementById(idButtonEgreso)!=null){
+				document.getElementById(idButtonEgreso).hidden = true;
+			}
+			
 			document.getElementById(idCancelarButton).hidden = false;
 			document.getElementById(idEgresoTransitorio).hidden = true;
 			document.getElementById(idConfirmarButton).hidden = false;
@@ -275,9 +292,9 @@
 			idSelect = idDiv +'111';
 			
 			divVehiculos.innerHTML = `
-				<label>Vehiculo a utilizar:</label>
+				<label>Vehículo utilizado:</label>
 				<select name="vehiculo" form=${idForm} class="form-select mt-2" id=${idSelect} forEach>
-				<option value="-1">Sin vehiculo</option>
+				<option value="-1">Sin vehículo</option>
 				</select>
 			`;
 			

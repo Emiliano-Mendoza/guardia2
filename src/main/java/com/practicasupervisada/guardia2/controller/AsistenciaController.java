@@ -125,12 +125,14 @@ public class AsistenciaController {
 			transito.setAsistencia(asis);
 			transito.setPersonal(asis.getPersonal());
 			
+			//transito.setTipoTransito("Egreso Transitorio");
+			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			transito.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
 			
-			asis.getTransito().add(transito);
 			asis.setEnTransito(true);
 			
+			transitoServ.crearTransito(transito);
 			asistenciaServ.crearAsistencia(asis);
 
 			
@@ -142,25 +144,29 @@ public class AsistenciaController {
 		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
+	//Tener en cuenta que sería mejor si le pasara el idTransito
 	@PostMapping("/reingreso-transitorio/{idAsistencia}")
 	public String reIngresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
+						@RequestParam(name = "vehiculo") int idVehiculo,
 						RedirectAttributes atributos) {
 			
 		try {
 			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
-			
-			Transito transito = asis.getTransito().
-					stream().
-					filter(t -> (t.getFechaReingreso()==null && t.getUsuarioIngreso()==null)).
-					findFirst().orElseThrow();
-			
+			Transito transito = transitoServ.getAllAsistencias()
+					.stream()
+					.filter(t -> (t.getAsistencia().getIdAsistencia() == idAsistencia && t.getFechaReingreso()==null && t.getUsuarioIngreso()==null))
+					.findFirst().orElseThrow();
+
 			transito.setFechaReingreso(new Date());
-			transito.setPersonal(asis.getPersonal());
 			
+			if(idVehiculo != -1) {
+				Vehiculo vehiculo = vehiculoServ.findById(idVehiculo).orElseThrow();
+				transito.setVehiculo2(vehiculo);				
+			}
+						
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			transito.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
 			
-
 			asis.setEnTransito(false);
 			
 			asistenciaServ.crearAsistencia(asis);

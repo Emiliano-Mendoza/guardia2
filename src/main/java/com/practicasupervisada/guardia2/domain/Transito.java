@@ -22,6 +22,7 @@ public class Transito {
 	private int idTransito;
 	private Date fechaSalidaTransitoria;
 	private Date fechaReingreso;
+	private String tipoTransito;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_Personal")
@@ -32,8 +33,11 @@ public class Transito {
 	private Vehiculo vehiculo;
 	
 	@ManyToOne
+	@JoinColumn(name = "id_Vehiculo2")
+	private Vehiculo vehiculo2;
+	
+	@ManyToOne
 	@JoinColumn(name = "id_Asistencia")
-	@JsonBackReference
 	private Asistencia asistencia;
 	
 	@ManyToOne
@@ -78,12 +82,6 @@ public class Transito {
 		this.personal = personal;
 	}
 
-	@Override
-	public String toString() {
-		return "Transito [idTransito=" + idTransito + ", fechaSalidaTransitoria=" + fechaSalidaTransitoria
-				+ ", fechaReingreso=" + fechaReingreso + ", personal=" + personal + "]";
-	}
-	
 
 	public Usuario getUsuarioIngreso() {
 		return usuarioIngreso;
@@ -116,6 +114,29 @@ public class Transito {
 
 	public void setVehiculo(Vehiculo vehiculo) {
 		this.vehiculo = vehiculo;
+	}
+
+	public Vehiculo getVehiculo2() {
+		return vehiculo2;
+	}
+
+	public void setVehiculo2(Vehiculo vehiculo2) {
+		this.vehiculo2 = vehiculo2;
+	}
+
+	public String getTipoTransito() {
+		return tipoTransito;
+	}
+
+	public void setTipoTransito(String tipoTransito) {
+		this.tipoTransito = tipoTransito;
+	}
+
+	@Override
+	public String toString() {
+		return "Transito [idTransito=" + idTransito + ", fechaSalidaTransitoria=" + fechaSalidaTransitoria
+				+ ", fechaReingreso=" + fechaReingreso + ", tipoTransito=" + tipoTransito + ", personal=" + personal
+				+ ", vehiculo=" + vehiculo + ", vehiculo2=" + vehiculo2 + "]";
 	}
 	
 	

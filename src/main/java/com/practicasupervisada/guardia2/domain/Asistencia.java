@@ -41,11 +41,7 @@ public class Asistencia {
 	@ManyToOne
 	@JoinColumn(name = "id_Personal")
 	private Personal personal;
-		
-    @OneToMany(mappedBy = "asistencia", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Transito> transito = new ArrayList<>();
-	
+			
 	
 	public Usuario getUsuarioIngreso() {
 		return usuarioIngreso;
@@ -96,12 +92,6 @@ public class Asistencia {
 		return "Asistencia [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
 				+ ", enTransito=" + enTransito + ", usuarioIngreso=" + usuarioIngreso + ", usuarioEgreso="
 				+ usuarioEgreso + ", personal=" + personal + "]";
-	}
-	public List<Transito> getTransito() {
-		return transito;
-	}
-	public void setTransito(List<Transito> transito) {
-		this.transito = transito;
 	}
 
 	
