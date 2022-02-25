@@ -21,8 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import com.practicasupervisada.guardia2.service.PersonalService;
-
+import com.practicasupervisada.guardia2.service.SectorTrabajoService;
 import com.practicasupervisada.guardia2.domain.Personal;
+import com.practicasupervisada.guardia2.domain.SectorTrabajo;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +37,9 @@ public class PersonalController {
 	@Autowired
 	private PersonalService personalServ;
 	
+	@Autowired
+	private SectorTrabajoService sectorTrabajoServ;
+	
 	
 	@GetMapping("/editar")
 	public String listarPersonal(Model model) {
@@ -44,11 +48,16 @@ public class PersonalController {
 				.stream()
 				.filter(p -> p.getNombre() !=null
 						&& p.getApellido() !=null
-						&& p.getSector() !=null)
+						&& p.getSectorTrabajo() != null)
 				.collect(Collectors.toList());
 		Collections.sort(listaPersonal);
 		
 		model.addAttribute("listaPersonal", listaPersonal);
+		
+		List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo();
+		
+		model.addAttribute("listaSectores", listaSectores);
+		
 		
 		return "/views/personal/editarPersonal";
 	}
@@ -61,6 +70,10 @@ public class PersonalController {
 		
 		model.addAttribute("personal", personal);
 		
+		List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo();
+		
+		model.addAttribute("listaSectores", listaSectores);
+		
 		return "/views/personal/agregar";
 	}
 	
@@ -70,6 +83,7 @@ public class PersonalController {
 							Model model,
 							@RequestParam(name = "file") MultipartFile imagen,
 							RedirectAttributes atributos){
+		
 		
 		if(!personalServ.findById(personal.getNroLegajo()).isEmpty()) {
 			//agrego un mensaje de error para el número de legajo repetido
@@ -104,6 +118,8 @@ public class PersonalController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}else {
+			personal.setImagen("sinImagen");
 		}
 		
 		try {
@@ -122,17 +138,16 @@ public class PersonalController {
 	String editarPersonal(@PathVariable("nroLegajo") int nroLegajo,
 						  @RequestParam(name = "nombre") String nombre,
 						  @RequestParam(name = "apellido") String apellido,
-						  @RequestParam(name = "sector") String sector,
+						  @RequestParam(name = "sector") Integer sector,
 						  @RequestParam(name = "enabled" , required = false) String enabled,
 						  Model model,
 						  @RequestParam(name = "file") MultipartFile imagen,
 						  RedirectAttributes atributos) {
-		
-		
+				
 		Personal empleado = personalServ.findById(nroLegajo).get();
 		
 		if(nombre == null || apellido == null || sector == null 
-				|| nombre.length()==0 || apellido.length()==0 || sector.length()==0){			
+				|| nombre.length()==0 || apellido.length()==0 ){			
 						
 			List<Personal> listaPersonal = personalServ.getAllPersonal();	
 			Collections.sort(listaPersonal);
@@ -171,7 +186,10 @@ public class PersonalController {
 			
 			empleado.setNombre(nombre);
 			empleado.setApellido(apellido);
-			empleado.setSector(sector);
+			//empleado.setSector(sector);
+			
+			SectorTrabajo sectorTrabajo = sectorTrabajoServ.findById(sector).orElseThrow();			
+			empleado.setSectorTrabajo(sectorTrabajo);
 			
 			personalServ.crearPersonal(empleado);
 			

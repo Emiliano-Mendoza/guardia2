@@ -43,7 +43,7 @@ public class AsistenciaProveedorController {
 	public String asistenciaProveedor(Model model) {
 		
 		List<Proveedor> listaProveedor = proveedorServ.getAllProveedor();
-	
+		/*
 		List<AsistenciaProveedor> listaAsistencias = asistenciaServ.getAllAsistencias();
 		List<AsistenciaProveedor> AsisSinEgreso = listaAsistencias
 				.stream()
@@ -54,7 +54,7 @@ public class AsistenciaProveedorController {
 		AsisSinEgreso.stream().forEach(a -> proveedorSinEgresar.add(a.getProveedor()));
 		
 		proveedorSinEgresar.stream().forEach(p -> {listaProveedor.remove(p);});
-		
+		*/
 		model.addAttribute("listaProveedor", listaProveedor);
 		model.addAttribute("todoProveedor", proveedorServ.getAllProveedor());
 		

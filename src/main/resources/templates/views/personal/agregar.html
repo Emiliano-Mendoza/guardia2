@@ -8,7 +8,7 @@
 
 
 	<div class="container">
-
+		
 		<div class="card mt-3">
 			<div class="card-header bg-dark text-white">Agregar nuevo
 				empleado:</div>
@@ -32,8 +32,21 @@
 									th:if="${#fields.hasErrors('nroLegajo')}"
 									th:errors="*{nroLegajo}"></small>
 							</div>
-
+							
+							
 							<div class="col-md-6">
+								<div class="form-group">
+									<label for="sector">Sector:</label> <select class="form-select"
+										id="sectorTrabajo" name="sectorTrabajo" th:field="*{sectorTrabajo}">
+										<option th:each="sector: ${listaSectores}" th:value="${sector.idSector}">[[${sector.sector}]]</option>
+									</select>
+								</div>
+							</div>
+							
+							
+							
+							
+							<!-- <div class="col-md-6">
 								<div class="form-group">
 									<label for="sector">Sector:</label> <select class="form-select"
 										th:field="*{sector}" id="sector">
@@ -59,7 +72,7 @@
 										<option value="Otro">Otro</option>
 									</select>
 								</div>
-							</div>
+							</div> -->
 						</div>
 
 
@@ -122,10 +135,14 @@
 
 	<footer th:replace="plantilla/template ::footer"></footer>
 	
-	<script>
+	<script th:inline="javascript">
 		const nroLeg = document.getElementById("nroLegajo");
 		nroLeg.value = "";
-	
+		
+		var listaSectores = /*[[${listaSectores}]]*/ 'default';
+		
+		console.log(listaSectores);
+		
 	</script>
 </body>
 </html>

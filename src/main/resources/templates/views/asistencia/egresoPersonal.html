@@ -131,9 +131,7 @@
 								
 								let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
 								let urlEgresoTransitorio= '/views/asistencia/egreso-transitorio/' + aut.idAsistencia;
-								
-
-								
+																
 								resultado.innerHTML += `
 									<div class="col-sm-6 mt-3">
 									<div class="card text-dark  mb-3" >
@@ -153,7 +151,7 @@
 											  <li class="list-group-item">Empleado: ${aut.personal.nombre}
 												${aut.personal.apellido}</li>
 											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
-											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
+											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
 											  <li id=${idDiv} class="list-group-item" hidden></li>
 											</ul>
@@ -229,7 +227,7 @@
 											  <li class="list-group-item">Empleado: ${aut.personal.nombre}
 												${aut.personal.apellido}</li>
 											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
-											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sector}</li>
+											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
 											  <li id=${idDiv} class="list-group-item" hidden></li>
 											</ul>

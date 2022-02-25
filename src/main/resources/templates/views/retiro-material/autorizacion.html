@@ -81,11 +81,11 @@
 					<td scope="row" style="text-align:center;">${p.nroLegajo}</td>
 					<td style="text-align:center;">${p.nombre}</td>
 					<td style="text-align:center;">${p.apellido}</td>
-					<td style="text-align:center;">${p.sector}</td>
+					<td style="text-align:center;">${p.sectorTrabajo.sector}</td>
 					<td style="text-align:center;">
 						<button class="btn btn-info btn-sm fw-bold" 
 						title:"Registrar Nueva Asistencia" id="asisBtn" 
-						onclick="myForm('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}')">
+						onclick="myForm('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sectorTrabajo.sector}')">
 						Autorizar
 						</button>
 					</td>

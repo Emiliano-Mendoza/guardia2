@@ -101,7 +101,7 @@
 		
 		var personal = /*[[${personal}]]*/ 'default';
 		var urlAsis = '';
-				
+		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#fila');
 		const cardAsis = document.querySelector('#cardAsis');
@@ -123,11 +123,11 @@
 						<td scope="row" style="text-align:center;">${p.nroLegajo}</td>
 						<td style="text-align:center;">${p.nombre}</td>
 						<td style="text-align:center;">${p.apellido}</td>
-						<td style="text-align:center;">${p.sector}</td>						
+						<td style="text-align:center;">${p.sectorTrabajo.sector}</td>						
 						<td style="text-align:center;">
 							<button class="btn btn-success btn-sm d" 
 							title:"Registrar Nueva Asistencia" id="asisBtn" 
-							onclick="AsistenciaCard('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}')">
+							onclick="AsistenciaCard('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sectorTrabajo.sector}','${p.imagen}')">
 							Ingreso
 							</button>
 						</td>

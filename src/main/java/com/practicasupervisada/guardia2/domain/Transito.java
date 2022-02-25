@@ -42,7 +42,6 @@ public class Transito {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_Usuario_Ingreso")
-
 	private Usuario usuarioIngreso;
 	
 	@ManyToOne
