@@ -94,7 +94,7 @@ public class AsistenciaController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
 			
-			asistenciaServ.crearAsistencia(asis);
+			asistenciaServ.registrarEgresoAsistencia(asis);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

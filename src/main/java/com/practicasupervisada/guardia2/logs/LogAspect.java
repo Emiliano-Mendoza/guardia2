@@ -23,11 +23,11 @@ public class LogAspect {
 	private void AcontecimientoServiceMetodos() {
 	};
 
-	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaService.crearAsistencia(..))")
+	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaService.crearAsistencia(..)) || execution(* com.practicasupervisada.guardia2.service.AsistenciaService.registrarEgresoAsistencia(..))")
 	private void AsistenciaServiceMetodos() {
 	};
 
-	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaProveedorService.crearAsistencia(..))")
+	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaProveedorService.crearIngresoProveedor(..)) || execution(* com.practicasupervisada.guardia2.service.AsistenciaProveedorService.registrarEgresoProveedor(..))")
 	private void AsistenciaProveedorServiceMetodos() {
 	};
 
@@ -66,22 +66,14 @@ public class LogAspect {
 	@Before("AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() ||"
 			+ " EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||"
 			+ "PersonalServiceMetodos() || ProveedorServiceMetodos() || VehiculoServiceMetodos() || "
-			+ "TransitoServiceMetodos() || UsuarioServiceMetodos()")
+			+ "TransitoServiceMetodos() || UsuarioServiceMetodos() || SectorTrabajoServiceMetodos()")
 	public void hacerAntes(JoinPoint jp) {
 
 		// TRACE -> DEBUG -> INFO -> WARN -> ERROR -> FATAL
 		logger.info("###### A continuacion se ejecutara el metodo: " + jp.getSignature().getName());
 		logger.info("###### Argumentos: " + Arrays.toString(jp.getArgs()));
 	}
-	/*	
-	@After("AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() ||"
-			+ " EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||"
-			+ "PersonalServiceMetodos() || ProveedorServiceMetodos() || VehiculoServiceMetodos() || "
-			+ "TransitoServiceMetodos() || UsuarioServiceMetodos()")
-	public void hacerDespues(JoinPoint jp) {
-		logger.info("Se ha ejecutado el metodo: " + jp.getSignature().getName());
-	}
-	*/
+
 	@AfterReturning(pointcut = "AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() || EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||PersonalServiceMetodos() || ProveedorServiceMetodos() || VehiculoServiceMetodos() || TransitoServiceMetodos() || UsuarioServiceMetodos() || SectorTrabajoServiceMetodos() ", returning = "result")
 	public void audit(JoinPoint joinPoint, Object result) throws Throwable {
 		

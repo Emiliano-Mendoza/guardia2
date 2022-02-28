@@ -48,4 +48,9 @@ public class AsistenciaServiceImp implements AsistenciaService {
 		return asistenciaRepo.findAllByEntradaLessThanEqualAndEntradaGreaterThanEqualOrderByEntradaAsc(endDate, startDate);
 	}
 
+	@Override
+	public Asistencia registrarEgresoAsistencia(Asistencia asis) {
+		return asistenciaRepo.save(asis);
+	}
+
 }

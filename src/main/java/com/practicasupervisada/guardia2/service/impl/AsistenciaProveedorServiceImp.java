@@ -17,7 +17,7 @@ public class AsistenciaProveedorServiceImp implements AsistenciaProveedorService
 	private AsistenciaProveedorRepo asisRepo;
 	
 	@Override
-	public AsistenciaProveedor crearAsistencia(AsistenciaProveedor asis) {
+	public AsistenciaProveedor crearIngresoProveedor(AsistenciaProveedor asis) {
 		return asisRepo.save(asis);
 	}
 
@@ -42,6 +42,12 @@ public class AsistenciaProveedorServiceImp implements AsistenciaProveedorService
 	@Override
 	public List<AsistenciaProveedor> findAllByOrderByEntradaAsc() {
 		return asisRepo.findAllByOrderByEntradaAsc();
+	}
+
+	@Override
+	public AsistenciaProveedor registrarEgresoProveedor(AsistenciaProveedor asis) {
+		
+		return asisRepo.save(asis);
 	}
 
 }

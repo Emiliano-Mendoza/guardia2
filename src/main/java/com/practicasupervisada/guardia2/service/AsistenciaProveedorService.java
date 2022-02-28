@@ -7,7 +7,9 @@ import com.practicasupervisada.guardia2.domain.AsistenciaProveedor;
 
 public interface AsistenciaProveedorService {
 	
-	public AsistenciaProveedor crearAsistencia(AsistenciaProveedor asis);
+	public AsistenciaProveedor crearIngresoProveedor(AsistenciaProveedor asis);
+	public AsistenciaProveedor registrarEgresoProveedor(AsistenciaProveedor asis);
+	
 	public List<AsistenciaProveedor> getAllAsistencias();
 	public void eliminarAsistencia(int idAsistencia);
 	public Optional<AsistenciaProveedor> findById(int idAsistencia);

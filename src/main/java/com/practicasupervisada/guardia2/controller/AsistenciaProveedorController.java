@@ -95,7 +95,7 @@ public class AsistenciaProveedorController {
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			asis.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
-			asistenciaServ.crearAsistencia(asis);
+			asistenciaServ.crearIngresoProveedor(asis);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -116,7 +116,7 @@ public class AsistenciaProveedorController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
 			
-			asistenciaServ.crearAsistencia(asis);
+			asistenciaServ.registrarEgresoProveedor(asis);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

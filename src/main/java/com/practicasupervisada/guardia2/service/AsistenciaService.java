@@ -9,6 +9,7 @@ import com.practicasupervisada.guardia2.domain.Asistencia;
 public interface AsistenciaService {
 	
 	public Asistencia crearAsistencia(Asistencia asis);
+	public Asistencia registrarEgresoAsistencia(Asistencia asis);
 	public List<Asistencia> getAllAsistencias();
 	public void eliminarAsistencia(int idAsistencia);
 	public Optional<Asistencia> findById(int idAsistencia);
