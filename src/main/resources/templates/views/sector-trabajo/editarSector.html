@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+
+	<header th:replace="plantilla/template :: header"></header>
+
+	<div class="container">
+	
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardEditar"></div>
+		
+	
+		<div class="gap-2 d-md-flex justify-content-between mt-3">
+			<h4 class=" mt-3">Sectores de Trabajo:</h4>
+
+			<button type="button" class="btn btn-primary btn-sm" onclick="nuevoSector()">Nuevo
+				Sector</button>
+		</div>
+		<div class="row">
+
+			<table class="table mt-3" id="myTable">
+				<thead>
+					<tr>
+						<th class="sortable" scope="col"
+							style="width: 25%; text-align: center;">Id</th>
+						<th class="sortable" scope="col"
+							style="width: 25%; text-align: center;">Sector de Trabajo</th>
+						<th class="sortable" scope="col"
+							style="width: 25%; text-align: center;">Habilitado</th>
+						<th class="sortable" scope="col"
+							style="width: 25%; text-align: center;">Editar</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="sec:${listaSectores}">
+
+						<td th:text="${sec.idSector}" style="text-align: center;"></td>
+						<td th:text="${sec.sector}" style="text-align: center;"></td>
+						<td th:text="${sec.enabled}" style="text-align: center;"></td>
+						<td style="text-align: center;">
+							<button class="btn btn-success btn-sm"
+								th:onclick="editarSector([[${sec}]])">Editar</button>
+						</td>
+
+					</tr>
+
+				</tbody>
+			</table>
+
+
+		</div>
+	</div>
+
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+
+	<script th:inline="javascript">
+		
+		const cardEditar = document.getElementById('cardEditar');
+	
+	
+		function editarSector(sec){
+			
+			let urlA = "/views/sector_trabajo/editar/" + sec.idSector;
+			
+			
+			cardEditar.innerHTML = `
+				<div class="col-md-8">
+				
+				<div class="card-header bg-dark text-white">Editar Sector de Trabajo:</div>
+			
+				<form action=${urlA} method="post" autocomplete="off"
+					>
+					
+					<div class="card-body row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="usuario">Sector de Trabajo:</label> <input type="text"
+									class="form-control mt-2" id="sector"
+									name="sector" required value="${sec.sector}">
+							</div>
+						</div>
+	
+						<div class="col-md-6">
+							<label>Habilitación:</label>
+							<div class="form-check mt-3">
+								<input class="form-check-input " type="checkbox" value="true" name="enabled" id="enabled" checked>
+								<label class="form-check-label" for="flexCheckDefault">
+							    Sector Habilitado
+							  	</label>
+							</div>
+						</div>
+					</div>					
+
+
+					<div
+						class="card-footer bg-dark mt-3 d-grid gap-2 d-md-flex justify-content-between">
+						<input type="button" class="btn btn-primary btn-sm" onclick="cancelarEdit()"
+						value="Cancelar" />
+						<input type="submit" class="btn btn-primary btn-sm"
+							value="Confirmar" />
+					</div>
+
+				</form>
+
+
+			</div>
+
+			`;
+			
+			
+			const checkB = document.getElementById('enabled');
+			
+			if(sec.enabled){
+				checkB.checked = true;
+			}else checkB.checked = false;
+			
+			
+			window.scroll(0, 0);
+			
+			
+		}
+		
+		function cancelarEdit(){			
+			cardEditar.innerHTML = '';		
+		}
+		
+		
+		function nuevoSector(){
+			
+			let urlA = "/views/sector_trabajo/crear";
+						
+			cardEditar.innerHTML = `
+				<div class="col-md-8">
+				
+				<div class="card-header bg-dark text-white">Nuevo Sector de Trabajo:</div>
+			
+				<form action=${urlA} method="post" autocomplete="off"
+					>
+					
+					<div class="card-body row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="usuario">Sector de Trabajo:</label> <input type="text"
+									class="form-control mt-2" id="sector"
+									name="sector" required>
+							</div>
+						</div>
+	
+						<div class="col-md-6">
+							<label>Habilitación:</label>
+							<div class="form-check mt-3">
+								<input class="form-check-input " type="checkbox" value="true" name="enabled" id="enabled" checked>
+								<label class="form-check-label" for="flexCheckDefault">
+							    Sector Habilitado
+							  	</label>
+							</div>
+						</div>
+					</div>					
+
+
+					<div
+						class="card-footer bg-dark mt-3 d-grid gap-2 d-md-flex justify-content-between">
+						<input type="button" class="btn btn-primary btn-sm" onclick="cancelarEdit()"
+						value="Cancelar" />
+						<input type="submit" class="btn btn-primary btn-sm"
+							value="Confirmar" />
+					</div>
+
+				</form>
+
+
+			</div>
+
+			`;
+			
+
+		
+			window.scroll(0, 0);
+			
+			
+		} 
+		
+		
+	
+	</script>
+</body>
+</html>

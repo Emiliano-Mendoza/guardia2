@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -25,7 +26,7 @@ public class LogAspect {
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaService.crearAsistencia(..))")
 	private void AsistenciaServiceMetodos() {
 	};
-	
+
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaProveedorService.crearAsistencia(..))")
 	private void AsistenciaProveedorServiceMetodos() {
 	};
@@ -33,13 +34,15 @@ public class LogAspect {
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.EventoService.crearEvento(..))")
 	private void EventoServiceMetodos() {
 	};
-	
+
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.PersonalService.crearPersonal(..))")
 	private void PersonalServiceMetodos() {
 	};
+
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.ProveedorService.crearProveedor(..))")
 	private void ProveedorServiceMetodos() {
 	};
+
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.VehiculoService.crearVehiculo(..))")
 	private void VehiculoServiceMetodos() {
 	};
@@ -47,15 +50,18 @@ public class LogAspect {
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.RetiroMaterialService.crearRetiroMaterial(..))")
 	private void RetiroMaterialServiceMetodos() {
 	};
-	
+
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.TransitoService.crearTransito(..))")
 	private void TransitoServiceMetodos() {
 	};
-	
+
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.UsuarioService.crearUsuario(..))")
 	private void UsuarioServiceMetodos() {
 	};
 	
+	@Pointcut("execution(* com.practicasupervisada.guardia2.service.SectorTrabajoService.crearSectorTrabajo(..))")
+	private void SectorTrabajoServiceMetodos() {
+	};
 
 	@Before("AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() ||"
 			+ " EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||"
@@ -64,17 +70,29 @@ public class LogAspect {
 	public void hacerAntes(JoinPoint jp) {
 
 		// TRACE -> DEBUG -> INFO -> WARN -> ERROR -> FATAL
-		logger.info("A continuacion se ejecutara el metodo: " + jp.getSignature().getName());
-		logger.info("Argumentos: " + Arrays.toString(jp.getArgs()));
+		logger.info("###### A continuacion se ejecutara el metodo: " + jp.getSignature().getName());
+		logger.info("###### Argumentos: " + Arrays.toString(jp.getArgs()));
 	}
-	
-
+	/*	
 	@After("AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() ||"
 			+ " EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||"
 			+ "PersonalServiceMetodos() || ProveedorServiceMetodos() || VehiculoServiceMetodos() || "
 			+ "TransitoServiceMetodos() || UsuarioServiceMetodos()")
 	public void hacerDespues(JoinPoint jp) {
 		logger.info("Se ha ejecutado el metodo: " + jp.getSignature().getName());
+	}
+	*/
+	@AfterReturning(pointcut = "AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() || EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||PersonalServiceMetodos() || ProveedorServiceMetodos() || VehiculoServiceMetodos() || TransitoServiceMetodos() || UsuarioServiceMetodos() || SectorTrabajoServiceMetodos() ", returning = "result")
+	public void audit(JoinPoint joinPoint, Object result) throws Throwable {
+		
+		logger.info("&&&&&& Retorno de la clase : {} ; Metodo : {} ", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName());
+	    if (result != null) {
+	        logger.info("&&&&&& Valor de retorno : {}", result.toString());
+	    } else{
+	        logger.info("&&&&&& Valor de retorno nulo.");
+	    }
+		
+	    
 	}
 
 }

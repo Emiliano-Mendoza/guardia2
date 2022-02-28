@@ -1,10 +1,9 @@
 package com.practicasupervisada.guardia2.domain;
 
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -24,7 +23,6 @@ public class Personal implements Comparable<Personal> {
 	@NotEmpty
 	private String apellido;
 	
-	private String sector;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_SectorTrabajo")
@@ -34,12 +32,6 @@ public class Personal implements Comparable<Personal> {
 	
 	private Boolean enabled;
 	
-	public String getSector() {
-		return sector;
-	}
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
 	public Integer getNroLegajo() {
 		return nroLegajo;
 	}
@@ -63,8 +55,7 @@ public class Personal implements Comparable<Personal> {
 
 	@Override
 	public String toString() {
-		return "Personal [nroLegajo=" + nroLegajo + ", nombre=" + nombre + ", apellido=" + apellido + ", sector="
-				+ sector + ", sectorTrabajo=" + sectorTrabajo + "]";
+		return "Personal [nroLegajo=" + nroLegajo + ", nombre=" + nombre + ", apellido=" + apellido + ", sectorTrabajo=" + sectorTrabajo + "]";
 	}
 	@Override
 	public int compareTo(Personal o) {

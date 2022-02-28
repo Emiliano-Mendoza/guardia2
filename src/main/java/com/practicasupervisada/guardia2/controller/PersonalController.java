@@ -54,7 +54,10 @@ public class PersonalController {
 		
 		model.addAttribute("listaPersonal", listaPersonal);
 		
-		List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo();
+		List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo()
+				.stream()
+				.filter(s -> s.getEnabled())
+				.collect(Collectors.toList());
 		
 		model.addAttribute("listaSectores", listaSectores);
 		
@@ -70,7 +73,10 @@ public class PersonalController {
 		
 		model.addAttribute("personal", personal);
 		
-		List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo();
+		List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo()
+				.stream()
+				.filter(s -> s.getEnabled())
+				.collect(Collectors.toList());
 		
 		model.addAttribute("listaSectores", listaSectores);
 		
@@ -186,14 +192,12 @@ public class PersonalController {
 			
 			empleado.setNombre(nombre);
 			empleado.setApellido(apellido);
-			//empleado.setSector(sector);
 			
 			SectorTrabajo sectorTrabajo = sectorTrabajoServ.findById(sector).orElseThrow();			
 			empleado.setSectorTrabajo(sectorTrabajo);
 			
 			personalServ.crearPersonal(empleado);
 			
-			System.out.println("Empleado editado correctamente.");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

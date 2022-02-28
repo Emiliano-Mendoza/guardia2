@@ -25,7 +25,7 @@ public class SectorTrabajoServiceImp implements SectorTrabajoService {
 	@Override
 	public List<SectorTrabajo> getAllSectorTrabajo() {
 		
-		return sectorRepo.findAll();
+		return sectorRepo.findAllByOrderByIdSector();
 	}
 
 	@Override

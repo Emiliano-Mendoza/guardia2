@@ -189,7 +189,7 @@ public class AsistenciaController {
 																			&& p.getEnabled()
 																			&& p.getNombre() !=null
 																			&& p.getApellido() !=null
-																			&& p.getSector() !=null)
+																			)
 																	.collect(Collectors.toList());
 		
 		
@@ -239,7 +239,7 @@ public class AsistenciaController {
 					.filter(p -> p.getEnabled() !=null 
 								&& p.getNombre() !=null
 								&& p.getApellido() !=null
-								&& p.getSector() !=null)
+								)
 			.collect(Collectors.toList());;
 			
 			model.addAttribute("todoPersonal", todoPersonal);
