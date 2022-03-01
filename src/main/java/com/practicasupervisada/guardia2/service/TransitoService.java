@@ -8,6 +8,7 @@ import com.practicasupervisada.guardia2.domain.Transito;
 public interface TransitoService {
 	
 	public Transito crearTransito(Transito t);
+	public Transito actualizarTransito(Transito t);
 	public List<Transito> getAllAsistencias();
 	public void eliminarTransito(int idTransito);
 	public Optional<Transito> findById(int idTransito);

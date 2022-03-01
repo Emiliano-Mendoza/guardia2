@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/views/retiro-material/previos").hasAnyRole("GUARDIA", "ADMIN")
 		.antMatchers("/views/personal/**").hasAnyRole("ADMIN")
 		.antMatchers("/views/vehiculo/**").hasAnyRole("ADMIN")
-		.antMatchers("/views/proveedor/**").hasAnyRole("ADMIN")
+		.antMatchers("/views/proveedor/**").hasAnyRole("ADMIN, GUARDIA")
 		.antMatchers("/views/evento").hasAnyRole("ADMIN","GUARDIA")
 		.antMatchers("/views/evento/nuevo").hasAnyRole("NOTIFICADOR","ADMIN")
 		.antMatchers("/views/evento/crear").hasAnyRole("NOTIFICADOR","ADMIN")

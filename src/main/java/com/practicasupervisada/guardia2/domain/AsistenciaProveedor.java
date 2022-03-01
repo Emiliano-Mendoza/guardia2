@@ -18,7 +18,7 @@ public class AsistenciaProveedor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idAsistencia;
+	private int idIngreso;
 	private Date entrada;
 	private Date salida;
 	private String nombreChofer;
@@ -39,11 +39,11 @@ public class AsistenciaProveedor {
 	private Proveedor proveedor;
 
 	public int getIdAsistencia() {
-		return idAsistencia;
+		return idIngreso;
 	}
 
-	public void setIdAsistencia(int idAsistencia) {
-		this.idAsistencia = idAsistencia;
+	public void setIdAsistencia(int idIngreso) {
+		this.idIngreso = idIngreso;
 	}
 
 	public Date getEntrada() {
@@ -104,7 +104,7 @@ public class AsistenciaProveedor {
 
 	@Override
 	public String toString() {
-		return "AsistenciaProveedor [idAsistencia=" + idAsistencia + ", entrada=" + entrada + ", salida=" + salida
+		return "IngresoProveedor [idIngreso=" + idIngreso + ", entrada=" + entrada + ", salida=" + salida
 				+ ", nombreChofer=" + nombreChofer + ", patenteVehiculo=" + patenteVehiculo + ", usuarioIngreso="
 				+ usuarioIngreso + ", usuarioEgreso=" + usuarioEgreso + ", proveedor=" + proveedor + "]";
 	}

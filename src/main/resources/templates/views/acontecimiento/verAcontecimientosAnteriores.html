@@ -17,18 +17,20 @@
 			<thead>
 				<tr>
 					<th scope="col" style="width: 20%; text-align: center;">Ronda</th>
+					<th scope="col" style="width: 30%; text-align: center;">Descripción</th>
 					<th scope="col" style="width: 20%; text-align: center;">Fecha </th>
 					<th scope="col" style="width: 30%; text-align: center;">Guardia </th>
-					<th scope="col" style="width: 30%; text-align: center;">Descripción</th>							
+												
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="ac:${listaAcontecimientos}">
 
 					<th scope="row" th:text="${ac.ronda}" style="text-align: center;"></th>
+					<td th:text="${ac.descripcion}" style="text-align: center;"></td>
 					<td th:text="${#dates.format(ac.fecha, 'dd-MM-yyyy')}" style="text-align: center;"></td>
 					<td style="text-align: center;">[[${ac?.usuario?.nombre}]] [[${ac?.usuario?.apellido}]]</td>
-					<td th:text="${ac.descripcion}" style="text-align: center;"></td>
+					
 					
 				</tr>
 

@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="Transito")
@@ -22,7 +20,8 @@ public class Transito {
 	private int idTransito;
 	private Date fechaSalidaTransitoria;
 	private Date fechaReingreso;
-	private String tipoTransito;
+	private String comentario;
+	private String comentario2;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_Personal")
@@ -123,21 +122,29 @@ public class Transito {
 		this.vehiculo2 = vehiculo2;
 	}
 
-	public String getTipoTransito() {
-		return tipoTransito;
+	public String getComentario() {
+		return comentario;
 	}
 
-	public void setTipoTransito(String tipoTransito) {
-		this.tipoTransito = tipoTransito;
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	public String getComentario2() {
+		return comentario2;
+	}
+
+	public void setComentario2(String comentario2) {
+		this.comentario2 = comentario2;
 	}
 
 	@Override
 	public String toString() {
 		return "Transito [idTransito=" + idTransito + ", fechaSalidaTransitoria=" + fechaSalidaTransitoria
-				+ ", fechaReingreso=" + fechaReingreso + ", tipoTransito=" + tipoTransito + ", personal=" + personal
-				+ ", vehiculo=" + vehiculo + ", vehiculo2=" + vehiculo2 + "]";
+				+ ", fechaReingreso=" + fechaReingreso + ", comentario=" + comentario + ", comentario2=" + comentario2
+				+ ", personal=" + personal + ", vehiculo=" + vehiculo + ", vehiculo2=" + vehiculo2 + ", asistencia="
+				+ asistencia + "]";
 	}
-	
-	
+
 	
 }

@@ -23,7 +23,7 @@ public class LogAspect {
 	private void AcontecimientoServiceMetodos() {
 	};
 
-	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaService.crearAsistencia(..)) || execution(* com.practicasupervisada.guardia2.service.AsistenciaService.registrarEgresoAsistencia(..))")
+	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AsistenciaService.crearAsistencia(..)) || execution(* com.practicasupervisada.guardia2.service.AsistenciaService.actualizarAsistencia(..))")
 	private void AsistenciaServiceMetodos() {
 	};
 
@@ -51,7 +51,7 @@ public class LogAspect {
 	private void RetiroMaterialServiceMetodos() {
 	};
 
-	@Pointcut("execution(* com.practicasupervisada.guardia2.service.TransitoService.crearTransito(..))")
+	@Pointcut("execution(* com.practicasupervisada.guardia2.service.TransitoService.crearTransito(..)) || execution(* com.practicasupervisada.guardia2.service.TransitoService.actualizarTransito(..)) ")
 	private void TransitoServiceMetodos() {
 	};
 

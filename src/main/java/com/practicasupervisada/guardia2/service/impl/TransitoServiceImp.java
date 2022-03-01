@@ -43,4 +43,10 @@ public class TransitoServiceImp implements TransitoService {
 		return transitoRepo.findAllByOrderByFechaSalidaTransitoriaAsc();
 	}
 
+	@Override
+	public Transito actualizarTransito(Transito t) {
+		
+		return transitoRepo.save(t);
+	}
+
 }

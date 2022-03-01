@@ -104,7 +104,7 @@ public class AcontecimientoController {
 			
 			model.addAttribute("listaAcontecimientos", listaAcontecimientos);			
 			model.addAttribute("acont", acont);
-			model.addAttribute("error", "No se pudo registrar el acontecimiento");
+			model.addAttribute("error", "No se pudo registrar la ronda");
 			
 			System.out.println("Formulario incorrecto");
 			System.out.println(result.toString());
@@ -124,7 +124,7 @@ public class AcontecimientoController {
 			System.out.println(e.getMessage());
 		}
 		
-		atributos.addFlashAttribute("success", "Acontecimiento registrado exitosamente!");
+		atributos.addFlashAttribute("success", "Ronda registrada exitosamente!");
 		return "redirect:/views/acontecimiento";
 	}
 	

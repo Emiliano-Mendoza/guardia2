@@ -94,7 +94,7 @@ public class AsistenciaController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
 			
-			asistenciaServ.registrarEgresoAsistencia(asis);
+			asistenciaServ.actualizarAsistencia(asis);
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -107,6 +107,7 @@ public class AsistenciaController {
 	@PostMapping("/egreso-transitorio/{idAsistencia}")
 	public String registrarSalidaTransitoria(@PathVariable("idAsistencia") int idAsistencia,
 						@RequestParam(name = "vehiculo") int idVehiculo,
+						@RequestParam(name = "comentario") String comentario,
 						RedirectAttributes atributos) {
 		
 			
@@ -124,6 +125,7 @@ public class AsistenciaController {
 			transito.setFechaSalidaTransitoria(new Date());
 			transito.setAsistencia(asis);
 			transito.setPersonal(asis.getPersonal());
+			transito.setComentario(comentario);
 			
 			//transito.setTipoTransito("Egreso Transitorio");
 			
@@ -133,7 +135,7 @@ public class AsistenciaController {
 			asis.setEnTransito(true);
 			
 			transitoServ.crearTransito(transito);
-			asistenciaServ.crearAsistencia(asis);
+			asistenciaServ.actualizarAsistencia(asis);
 
 			
 		}catch(Exception e) {
@@ -148,6 +150,7 @@ public class AsistenciaController {
 	@PostMapping("/reingreso-transitorio/{idAsistencia}")
 	public String reIngresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
 						@RequestParam(name = "vehiculo") int idVehiculo,
+						@RequestParam(name = "comentario") String comentario,
 						RedirectAttributes atributos) {
 			
 		try {
@@ -167,11 +170,13 @@ public class AsistenciaController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			transito.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
 			
+			transito.setComentario2(comentario);
+			
 			asis.setEnTransito(false);
 			
-			asistenciaServ.crearAsistencia(asis);
+			transitoServ.actualizarTransito(transito);
+			asistenciaServ.actualizarAsistencia(asis);
 
-			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

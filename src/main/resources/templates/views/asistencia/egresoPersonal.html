@@ -121,7 +121,9 @@
 							    d.getMinutes().toString().padStart(2, '0')}`;
 								
 							    
-							let idDiv = 'vehiculo' + aut.personal.nroLegajo; 
+							let idDiv = 'vehiculo' + aut.personal.nroLegajo;
+							let idComentario = 'coment' + aut.personal.nroLegajo;
+							//El idForm es necesario por si estan abiertos varios formularios en las cards de egresos
 							let idForm = 'idForm' + aut.personal.nroLegajo;
 							let idButtonEgreso = 'idButtonEgreso' + aut.personal.nroLegajo;
 							let idCancelarButton = 'idCancelarButton' + aut.personal.nroLegajo;
@@ -155,6 +157,7 @@
 											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
 											  <li id=${idDiv} class="list-group-item" hidden></li>
+											  <li id=${idComentario} class="list-group-item" hidden></li>
 											</ul>
 																						
 																						
@@ -176,7 +179,7 @@
 											hidden>Cancelar</button>
 										
 											<button type="button" class="btn btn-secondary btn-sm" 
-											onclick="mostrarListaVehiculos('${idDiv}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+											onclick="mostrarListaVehiculos('${idDiv}','${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
 											id=${idEgresoTransitorio}
 											>Egreso Transitorio</button>
 										
@@ -231,6 +234,7 @@
 											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
 											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
 											  <li id=${idDiv} class="list-group-item" hidden></li>
+											  <li id=${idComentario} class="list-group-item" hidden></li>
 											</ul>
 											
 										</div>
@@ -252,7 +256,7 @@
 												hidden>Cancelar</button>
 										
 											<button type="button" class="btn btn-secondary btn-sm" 
-												onclick="mostrarListaVehiculos('${idDiv}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+												onclick="mostrarListaVehiculos('${idDiv}', '${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
 												id=${idEgresoTransitorio}
 												>Reingreso</button>
 										
@@ -276,10 +280,14 @@
 		
 
 		
-		function mostrarListaVehiculos(idDiv, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio, idConfirmarButton){
+		function mostrarListaVehiculos(idDiv, idComentario, idForm, idButtonEgreso, idCancelarButton, idEgresoTransitorio, idConfirmarButton){
 						
 			const divVehiculos = document.getElementById(idDiv);
+			const divComentario = document.getElementById(idComentario);
+			
 			divVehiculos.hidden = false;
+			divComentario.hidden = false;
+			
 			if(document.getElementById(idButtonEgreso)!=null){
 				document.getElementById(idButtonEgreso).hidden = true;
 			}
@@ -300,7 +308,12 @@
 			const mySelect = document.getElementById(idSelect);
 			
 			listaVehiculos.forEach(v => mySelect.innerHTML+=`<option value=${v.idVehiculo}>${v.marca} ${v.modelo} - Patente: ${v.patente}</option>`);
-					
+			
+			divComentario.innerHTML = `
+				<label>Comentario:</label>
+				<input type="text" name="comentario" class="form-control" form=${idForm}>
+			`;
+			
 		}
 				
 		formulario.addEventListener('keyup', function(event) {

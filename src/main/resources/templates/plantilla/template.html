@@ -71,7 +71,7 @@
 							</ul></li>
 
 						<li class="nav-item dropdown"
-							sec:authorize="hasRole('ROLE_ADMIN')"><a
+							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
 							class="nav-link dropdown-toggle" id="navbarDropdown"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Agregar Entidad</a>

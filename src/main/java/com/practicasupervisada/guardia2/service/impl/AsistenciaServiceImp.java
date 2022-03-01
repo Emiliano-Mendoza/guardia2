@@ -49,7 +49,7 @@ public class AsistenciaServiceImp implements AsistenciaService {
 	}
 
 	@Override
-	public Asistencia registrarEgresoAsistencia(Asistencia asis) {
+	public Asistencia actualizarAsistencia(Asistencia asis) {
 		return asistenciaRepo.save(asis);
 	}
 
