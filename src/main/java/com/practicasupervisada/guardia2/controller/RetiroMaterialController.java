@@ -194,62 +194,32 @@ public class RetiroMaterialController {
 		Date fechaInicioAux = new Date(formatter.parse(parts[0]).getTime() - 1);
 		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		
-		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
-		
-		if(nroLegajo == -1) {		
-			listaRetiros = listaRetiros.stream()
-					.filter(a -> (a.getFechaRetiro() != null
-							&& a.getObservacionGuardia() != null
-							&& a.getDescripcion() != null
-							&& a.getFechaLimite() != null
-							&& a.getUsuarioGuardia() != null
-							&& a.getUsuarioSector() != null
-							&& a.getMateriales() != null
-							&& a.getFechaRetiro().after(fechaInicioAux)
-							&& a.getFechaRetiro().before(fechaFinalAux))
-							|| (mostrarTodo != null && mostrarTodo
-							&& a.getFechaLimite() != null
-							&& a.getFechaLimite().after(fechaInicioAux)
-							&& a.getFechaLimite().before(fechaFinalAux)))
-					.collect(Collectors.toList());
+		List<RetiroMaterial> listaRetiros = null;
+				
+		if(nroLegajo == -1) {
+			
+			if(mostrarTodo != null && mostrarTodo){
+				listaRetiros = retiroServ.findAllByFechasLimiteYRetiro(fechaInicioAux, fechaFinalAux);
+			}else {
+				listaRetiros = retiroServ.findAllByFechasRetiro(fechaInicioAux, fechaFinalAux);				
+			}
+						
 		}else if(nroLegajo == -2) {
-			listaRetiros = listaRetiros.stream()
-					.filter(a -> (a.getFechaRetiro() != null
-							&& a.getObservacionGuardia() != null
-							&& a.getDescripcion() != null
-							&& a.getFechaLimite() != null
-							&& a.getUsuarioGuardia() != null
-							&& a.getUsuarioSector() != null
-							&& a.getMateriales() != null
-							&& a.getPersonal() == null
-							&& a.getFechaRetiro().after(fechaInicioAux)
-							&& a.getFechaRetiro().before(fechaFinalAux))
-							|| (mostrarTodo != null && mostrarTodo
-							&& a.getFechaLimite() != null
-							&& a.getPersonal() == null
-							&& a.getFechaLimite().after(fechaInicioAux)
-							&& a.getFechaLimite().before(fechaFinalAux)))
-					.collect(Collectors.toList());
+			
+			if(mostrarTodo != null && mostrarTodo){
+				listaRetiros = retiroServ.findAllByFechasLimiteYRetiroDeRetiroExterno(fechaInicioAux, fechaFinalAux);
+			}else {
+				listaRetiros = retiroServ.findAllByFechasRetiroDeRetiroExterno(fechaInicioAux, fechaFinalAux);				
+			}
+						
 		}else {
-			listaRetiros = listaRetiros.stream()
-					.filter(a -> (a.getFechaRetiro() != null
-							&& a.getObservacionGuardia() != null
-							&& a.getDescripcion() != null
-							&& a.getFechaLimite() != null
-							&& a.getUsuarioGuardia() != null
-							&& a.getUsuarioSector() != null
-							&& a.getMateriales() != null
-							&& a.getPersonal() != null
-							&& a.getPersonal().getNroLegajo() == nroLegajo
-							&& a.getFechaRetiro().after(fechaInicioAux)
-							&& a.getFechaRetiro().before(fechaFinalAux))
-							|| (mostrarTodo != null && mostrarTodo
-							&& a.getFechaLimite() != null
-							&& a.getPersonal() != null
-							&& a.getPersonal().getNroLegajo() == nroLegajo
-							&& a.getFechaLimite().after(fechaInicioAux)
-							&& a.getFechaLimite().before(fechaFinalAux)))
-					.collect(Collectors.toList());
+			
+			if(mostrarTodo != null && mostrarTodo){
+				listaRetiros = retiroServ.findAllByFechasLimiteYRetiroDeEmpleado(fechaInicioAux, fechaFinalAux, nroLegajo);
+			}else {
+				listaRetiros = retiroServ.findAllByFechasRetiroDeEmpleado(fechaInicioAux, fechaFinalAux, nroLegajo);				
+			}			
+			
 		}						
 						
 		if(idUsuario != -1) {

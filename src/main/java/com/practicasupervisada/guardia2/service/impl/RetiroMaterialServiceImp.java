@@ -1,5 +1,6 @@
 package com.practicasupervisada.guardia2.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,36 @@ public class RetiroMaterialServiceImp implements RetiroMaterialService {
 	@Override
 	public List<RetiroMaterial> findAllByOrderByFechaLimiteAsc() {
 		return retiroRepo.findAllByOrderByFechaLimiteAsc();
+	}
+
+	@Override
+	public List<RetiroMaterial> findAllByFechasRetiro(Date fecha1, Date fecha2) {
+		return retiroRepo.findAllByFechasRetiro(fecha1, fecha2);
+	}
+
+	@Override
+	public List<RetiroMaterial> findAllByFechasLimiteYRetiro(Date fecha1, Date fecha2) {
+		return retiroRepo.findAllByFechasLimiteYRetiro(fecha1, fecha2);
+	}
+
+	@Override
+	public List<RetiroMaterial> findAllByFechasRetiroDeRetiroExterno(Date fecha1, Date fecha2) {
+		return retiroRepo.findAllByFechasRetiroDeRetiroExterno(fecha1, fecha2);
+	}
+
+	@Override
+	public List<RetiroMaterial> findAllByFechasLimiteYRetiroDeRetiroExterno(Date fecha1, Date fecha2) {
+		return retiroRepo.findAllByFechasLimiteYRetiroDeRetiroExterno(fecha1, fecha2);
+	}
+
+	@Override
+	public List<RetiroMaterial> findAllByFechasRetiroDeEmpleado(Date fecha1, Date fecha2, Integer nroLegajo) {
+		return retiroRepo.findAllByFechasRetiroDeEmpleado(fecha1, fecha2, nroLegajo);
+	}
+
+	@Override
+	public List<RetiroMaterial> findAllByFechasLimiteYRetiroDeEmpleado(Date fecha1, Date fecha2, Integer nroLegajo) {
+		return retiroRepo.findAllByFechasLimiteYRetiroDeEmpleado(fecha1, fecha2, nroLegajo);
 	}
 
 }
