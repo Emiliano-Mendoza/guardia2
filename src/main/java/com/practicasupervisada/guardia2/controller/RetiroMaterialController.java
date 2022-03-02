@@ -185,19 +185,20 @@ public class RetiroMaterialController {
 	public String retirosPrevios(Model model,
 						@RequestParam(name = "nroLegajo", required = false) Integer nroLegajo,
 						@RequestParam(name = "idUsuario", required = false) Integer idUsuario,
+						@RequestParam(name = "mostrarTodo", required = false) Boolean mostrarTodo,
 						@RequestParam(name = "date_range") String date_range) throws ParseException {
 				
 		String[] parts = date_range.split("-");
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date fechaInicioAux = formatter.parse(parts[0]);
+		Date fechaInicioAux = new Date(formatter.parse(parts[0]).getTime() - 1);
 		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		
 		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
 		
 		if(nroLegajo == -1) {		
 			listaRetiros = listaRetiros.stream()
-					.filter(a -> a.getFechaRetiro() != null
+					.filter(a -> (a.getFechaRetiro() != null
 							&& a.getObservacionGuardia() != null
 							&& a.getDescripcion() != null
 							&& a.getFechaLimite() != null
@@ -206,10 +207,14 @@ public class RetiroMaterialController {
 							&& a.getMateriales() != null
 							&& a.getFechaRetiro().after(fechaInicioAux)
 							&& a.getFechaRetiro().before(fechaFinalAux))
+							|| (mostrarTodo != null && mostrarTodo
+							&& a.getFechaLimite() != null
+							&& a.getFechaLimite().after(fechaInicioAux)
+							&& a.getFechaLimite().before(fechaFinalAux)))
 					.collect(Collectors.toList());
 		}else if(nroLegajo == -2) {
 			listaRetiros = listaRetiros.stream()
-					.filter(a -> a.getFechaRetiro() != null
+					.filter(a -> (a.getFechaRetiro() != null
 							&& a.getObservacionGuardia() != null
 							&& a.getDescripcion() != null
 							&& a.getFechaLimite() != null
@@ -219,10 +224,15 @@ public class RetiroMaterialController {
 							&& a.getPersonal() == null
 							&& a.getFechaRetiro().after(fechaInicioAux)
 							&& a.getFechaRetiro().before(fechaFinalAux))
+							|| (mostrarTodo != null && mostrarTodo
+							&& a.getFechaLimite() != null
+							&& a.getPersonal() == null
+							&& a.getFechaLimite().after(fechaInicioAux)
+							&& a.getFechaLimite().before(fechaFinalAux)))
 					.collect(Collectors.toList());
 		}else {
 			listaRetiros = listaRetiros.stream()
-					.filter(a -> a.getFechaRetiro() != null
+					.filter(a -> (a.getFechaRetiro() != null
 							&& a.getObservacionGuardia() != null
 							&& a.getDescripcion() != null
 							&& a.getFechaLimite() != null
@@ -233,10 +243,15 @@ public class RetiroMaterialController {
 							&& a.getPersonal().getNroLegajo() == nroLegajo
 							&& a.getFechaRetiro().after(fechaInicioAux)
 							&& a.getFechaRetiro().before(fechaFinalAux))
+							|| (mostrarTodo != null && mostrarTodo
+							&& a.getFechaLimite() != null
+							&& a.getPersonal() != null
+							&& a.getPersonal().getNroLegajo() == nroLegajo
+							&& a.getFechaLimite().after(fechaInicioAux)
+							&& a.getFechaLimite().before(fechaFinalAux)))
 					.collect(Collectors.toList());
-		}
-		
-				
+		}						
+						
 		if(idUsuario != -1) {
 			listaRetiros = listaRetiros.stream()
 					.filter(a -> a.getUsuarioSector().getIdUsuario() == idUsuario)

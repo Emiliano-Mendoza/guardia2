@@ -7,7 +7,7 @@
 
 	<header th:replace="plantilla/template :: header"></header>
 
-	<div class="container">
+	<div class="container-fluid px-5">
 		<div class="gap-2 d-md-flex justify-content-between">
 			<h3 class="mt-3">
 				Retiros de Material:
@@ -24,7 +24,7 @@
 					<th scope="col" style="width: 15%; text-align: center;">Empleado</th>
 					<th scope="col" style="width: 15%; text-align: center;">Autorizante</th>															
 					<th scope="col" style="width: 15%; text-align: center;">Guardia</th>					
-					<th scope="col" style="width: 20%; text-align: center;">Materiales
+					<th scope="col" style="width: 15%; text-align: center;">Materiales
 					</th>
 					<th scope="col" style="width: 15%; text-align: center;">Descripción</th>
 					<th scope="col" style="width: 15%; text-align: center;">Observación</th>
@@ -85,9 +85,9 @@
 						<td scope="row" style="text-align:center;">${ret.personal.nombre} ${ret.personal.apellido}</td>
 						<td style="text-align:center;">${ret.usuarioSector.nombre} ${ret.usuarioSector.apellido}</td>
 						<td style="text-align:center;">${usuarioG}</td>						
-						<td  id=${idMat}></td>
-						<td >${ret.descripcion}</td>					
-						<td >${observacion}</td>
+						<td  id=${idMat} style="text-align:center;"></td>
+						<td style="text-align:center;">${ret.descripcion}</td>					
+						<td style="text-align:center;">${observacion}</td>
 					</tr>
 				`;
 			}else{
@@ -98,9 +98,9 @@
 						<td scope="row" style="text-align:center;">Retiro Externo</td>
 						<td style="text-align:center;">${ret.usuarioSector.nombre} ${ret.usuarioSector.apellido}</td>
 						<td style="text-align:center;">${usuarioG}</td>
-						<td  id=${idMat}></td>
-						<td >${ret.descripcion}</td>					
-						<td >${observacion}</td>
+						<td  id=${idMat} style="text-align:center;"></td>
+						<td style="text-align:center;">${ret.descripcion}</td>					
+						<td style="text-align:center;">${observacion}</td>
 					</tr>
 				`;
 			}	
