@@ -145,10 +145,10 @@
 			let imagenEmpleado= `/recursos/${imagenAux}` ;
 			
 			let plantaIngresante = "";
-			
-			if(getCookie("planta").indexOf("Peñaloza") != -1){
+						
+			if(getCookie(nombreUsuario).indexOf("Peñaloza") != -1){
 				plantaIngresante = "Av. Peñaloza 5750 - Planta II";
-			}else if(getCookie("planta").indexOf("Facundo") != -1){
+			}else if(getCookie(nombreUsuario).indexOf("Facundo") != -1){
 				plantaIngresante = "Av. Facundo Zuviría 4740 - Planta I";
 			}else{
 				plantaIngresante = "No definida";
@@ -160,7 +160,7 @@
 					a la Planta</div>
 				<div class="row g-0 ">
 					<div class="col-md-4" id="imagen" style="margin-top: 3px;">
-						<img src=${imagenEmpleado} width="270" height="280"
+						<img src=${imagenEmpleado} width="270" height="270"
 						
 						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 					</div>
@@ -169,7 +169,7 @@
 							<h5 class="card-title">Registrar asistencia:</h5>
 							
 							
-							<ul class="list-group list-group-flush mt-4">
+							<ul class="list-group list-group-flush mt-3">
 							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
 							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
 							  <li class="list-group-item">Sector de trabajo: ${sector}</li>

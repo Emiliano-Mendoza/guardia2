@@ -178,7 +178,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form id="myform">
+					<form id="myformPlanta">
 						<div class="modal-body" id="modalbody">
 
 
@@ -186,9 +186,8 @@
 
 								<li class="list-group-item"><label>Planta: </label> <select
 									class="form-select" id="plantaSelect" name="plantaSelect">
-										<option value="Peñaloza-Planta2" selected>Planta II
-										- Peñaloza</option>
-										<option value="Facundo-Planta1">Planta I - Facundo</option>
+										<option value="Peñaloza-Planta2" selected>Av. Peñaloza 5750 - Planta II</option>
+										<option value="Facundo-Planta1">Av. Facundo Zuviría 4740 - Planta I</option>
 
 
 								</select></li>
@@ -205,7 +204,14 @@
 				</div>
 			</div>
 		</div>
-
+	
+	<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px">
+		<p sec:authentication='name' class="blockquote" style="margin-right: 5px; margin-top: 10px;"></p>		
+		<a class="navbar-brand" th:href="@{/home}"><img th:src="@{/images/casa.JPG}" width="40" height="40"></a>		
+	</div>
+		
+		
+		
 	</header>
 
 	<!-- CONTENIDO -->
@@ -218,10 +224,10 @@
 		<div>
 			<p>Práctica Supervisada - Trabajo de Mendoza Emiliano</p>
 			<p sec:authentication='principal.authorities' id="rolesUsuario" hidden></p>
+			<p sec:authentication='name' id="nombreUsuario" hidden></p>
 		</div>
 		
-		
-		
+			
 		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
@@ -236,8 +242,10 @@
 		</script>
 
 		<script th:inline="javascript">
+			
 			const roles = document.getElementById("rolesUsuario").textContent;
-			//console.log(roles);
+			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
+			//console.log(nombreUsuario);
 			
 			if(roles.indexOf("ROLE_GUARDIAa") !== -1){
 				console.log("hola");
@@ -280,8 +288,9 @@
 
 			function setCookie() {
 				let aux = document.getElementById('plantaSelect').value;
-
-				document.cookie = "planta=" + aux+ "; path=/";
+				
+				document.cookie = nombreUsuario + "=" + aux+ "; path=/";
+				//document.cookie = "planta=" + aux+ "; path=/";
 				document.cookie = "logueado=true; path=/";
 				
 			}
@@ -303,30 +312,36 @@
 			}
 			
 			
-			if (getCookie("planta") != "") {
-				document.getElementById("plantaButton").innerText = getCookie("planta");
+			if (getCookie(nombreUsuario) != "") {
+				
+				if(getCookie(nombreUsuario).indexOf("Peñaloza") != -1){
+					document.getElementById("plantaButton").innerText = "Peñaloza - Planta II";
+				}else if(getCookie(nombreUsuario).indexOf("Facundo") != -1){
+					document.getElementById("plantaButton").innerText = "Facundo Zuviría - Planta I";
+				}else{
+					document.getElementById("plantaButton").innerText =  "No definida";
+				}
+				
 								
 			}
 			
 			setPlantaEnCookie();
 			function setPlantaEnCookie(){
 				
-				if(getCookie("planta") != ""){
+				if(getCookie(nombreUsuario) != ""){
 					const plantaSelect = document.getElementById("plantaSelect");
 					
-					let plantaAnterior = getCookie("planta");
+					let plantaAnterior = getCookie(nombreUsuario);
 					
 					if(plantaAnterior.indexOf("Peñaloza")!=-1){
 						plantaSelect.innerHTML=`
-							<option value="Peñaloza-Planta2" selected>Planta II
-							- Peñaloza</option>
-							<option value="Facundo-Planta1">Planta I - Facundo</option>
+							<option value="Peñaloza-Planta2" selected>Av. Peñaloza 5750 - Planta II</option>
+							<option value="Facundo-Planta1">Av. Facundo Zuviría 4740 - Planta I</option>
 						`;
 					}else if(plantaAnterior.indexOf("Facundo")!=-1){
 						plantaSelect.innerHTML=`
-							<option value="Peñaloza-Planta2">Planta II
-							- Peñaloza</option>
-							<option value="Facundo-Planta1" selected>Planta I - Facundo</option>
+							<option value="Peñaloza-Planta2">Av. Peñaloza 5750 - Planta II</option>
+							<option value="Facundo-Planta1" selected>Av. Facundo Zuviría 4740 - Planta I</option>
 						`;
 					}
 					

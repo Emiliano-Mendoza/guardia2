@@ -82,7 +82,8 @@ public class AsistenciaProveedorController {
 										  @RequestParam(name = "nombreChofer", required = false) String nombreChofer,
 										  @RequestParam(name = "patenteVehiculo", required = false) String patenteVehiculo,
 										  RedirectAttributes atributos) {
-			
+		
+		
 		try {
 			Proveedor proveedor = proveedorServ.findById(idProveedor).orElseThrow();
 			
