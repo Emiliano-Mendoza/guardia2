@@ -1,8 +1,9 @@
 package com.practicasupervisada.guardia2.domain;
 
 import java.util.Date;
-import java.util.HashSet;
+
 import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

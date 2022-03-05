@@ -6,9 +6,10 @@
 <body>
 
 	<header th:replace="plantilla/template :: header"></header>
-
-	<div class="container-fluid px-5" sec:authorize="isAuthenticated()">
-		<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
+	
+	<div class="container-fluid px-5"
+		sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
+		<div>
 			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
 				style="padding-top: 20px;">
 				<div class="col-sm-2">
@@ -96,14 +97,11 @@
 						<h5 class="card-title">Listado de Retiros de Material:</h5>
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item" th:each="ret : ${listaRetiros}">
-								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"
-								></span> - RETIRA:  
-								<span 
+								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"></span>
+								- RETIRA: <span
 								th:text="${ret.personal != null} ? ${ret.personal.nombre} + ' ' + ${ret.personal.apellido} : 'Retiro externo'"></span>
-								 - MATERIALES:
-								<span
-								th:id="mat + ${ret.idRetiro}"></span> - AUTORIZA:
-								[[${ret.usuarioSector.nombre}]]
+								- MATERIALES: <span th:id="mat + ${ret.idRetiro}"></span> -
+								AUTORIZA: [[${ret.usuarioSector.nombre}]]
 								[[${ret.usuarioSector.apellido}]]
 							</li>
 						</ul>
@@ -113,6 +111,8 @@
 		</div>
 
 	</div>
+
+
 
 	<div class="mt-5"></div>
 
@@ -156,7 +156,9 @@
 			  }
 			  return 0;
 		}
-				
+
+		
+			
 		
 	</script>
 </body>

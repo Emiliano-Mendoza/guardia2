@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.practicasupervisada.guardia2.domain.Evento;
@@ -23,7 +26,7 @@ public class HomeController {
 	private EventoService eventoServ;
 	
 	@GetMapping({"/home", "/index","/"})
-	public String index(Model model) {
+	public String index(Model model, @CookieValue(value = "planta", defaultValue = "atte") String planta) {
 		
 		List<RetiroMaterial> listaRetiros = retiroServ.findAllByOrderByFechaLimiteAsc();
 		
@@ -48,15 +51,16 @@ public class HomeController {
 		
 		listaEventos = listaEventos.stream()
 				.filter(e -> (e.getOcurrencia()==false 
-						&& e.getCancelado()==false  
-						&& e.getCancelado()==false 
+						&& e.getCancelado()==false   
 						&& e.getFechaEvento() != null
 						&& e.getDescripcion() != null
 						&& e.getFechaEvento().after(beforeYesterday)))
 				.collect(Collectors.toList());				
 							
 		model.addAttribute("listaEventos", listaEventos);
-				
+		//model.addAttribute("plantaCookie", planta);
+		//System.out.println(planta);
+		
 		return "home";
 	}
 	

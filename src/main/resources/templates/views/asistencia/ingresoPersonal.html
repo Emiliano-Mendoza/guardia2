@@ -144,13 +144,23 @@
 			let imagenAux = imagen.replace(/\s/g, "%20");
 			let imagenEmpleado= `/recursos/${imagenAux}` ;
 			
+			let plantaIngresante = "";
+			
+			if(getCookie("planta").indexOf("Peñaloza") != -1){
+				plantaIngresante = "Av. Peñaloza 5750 - Planta II";
+			}else if(getCookie("planta").indexOf("Facundo") != -1){
+				plantaIngresante = "Av. Facundo Zuviría 4740 - Planta I";
+			}else{
+				plantaIngresante = "No definida";
+			}
+			
 			cardAsis.innerHTML = `
 				<div class="col-md-8" >
 				<div class="card-header bg-dark text-white ">Registro de Ingreso
 					a la Planta</div>
 				<div class="row g-0 ">
-					<div class="col-md-4" id="imagen">
-						<img src=${imagenEmpleado} width="270" height="270"
+					<div class="col-md-4" id="imagen" style="margin-top: 3px;">
+						<img src=${imagenEmpleado} width="270" height="280"
 						
 						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 					</div>
@@ -163,6 +173,7 @@
 							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
 							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
 							  <li class="list-group-item">Sector de trabajo: ${sector}</li>
+							  <li class="list-group-item">Planta: ${plantaIngresante}</li>
 							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
 								id='date-time'></span></small></li>
 							</ul>
@@ -288,7 +299,7 @@
 		formulario.addEventListener('keyup', filtrar);
 		filtrar();
 		
-		
+
 		
 	</script>
 </body>
