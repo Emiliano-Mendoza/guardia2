@@ -246,11 +246,7 @@
 			const roles = document.getElementById("rolesUsuario").textContent;
 			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
 			//console.log(nombreUsuario);
-			
-			if(roles.indexOf("ROLE_GUARDIAa") !== -1){
-				console.log("hola");
-			}
-			
+						
 			var time = new Date().getTime();
 
 			// cada vez que se mueva el mouse en el body o se toque una tecla se guarda el tiempo en el que se hizo
@@ -260,12 +256,13 @@
 
 			function refresh() {
 				//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
-				if (new Date().getTime() - time >= 30000)
+				if (new Date().getTime() - time >= 60000)
 					window.location.reload(true);
 				else
 					setTimeout(refresh, 10000);
 			}
-
+			
+			//setTimeout(modificarHorarioTransito, 5000);
 			// Se llama a refresh cada 10 segundos
 			setTimeout(refresh, 10000);
 			

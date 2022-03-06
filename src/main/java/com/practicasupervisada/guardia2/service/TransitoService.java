@@ -14,4 +14,5 @@ public interface TransitoService {
 	public Optional<Transito> findById(int idTransito);
 	public List<Transito> findAllByOrderByFechaSalidaTransitoriaAsc();
 	
+	public void inspecciondarTransitosExpirados();
 }

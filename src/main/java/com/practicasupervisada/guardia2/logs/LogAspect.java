@@ -17,7 +17,7 @@ import com.practicasupervisada.guardia2.logs.LogAspect;
 @Aspect
 @Component
 public class LogAspect {
-	private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
+	public static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.AcontecimientoService.crearAcontecimiento(..))")
 	private void AcontecimientoServiceMetodos() {
@@ -62,6 +62,10 @@ public class LogAspect {
 	@Pointcut("execution(* com.practicasupervisada.guardia2.service.SectorTrabajoService.crearSectorTrabajo(..))")
 	private void SectorTrabajoServiceMetodos() {
 	};
+	
+	@Pointcut("execution(* com.practicasupervisada.guardia2.service.TransitoService.inspecciondarTransitosExpirados(..))")
+	private void expirarTransitoMetodo() {
+	};
 
 	@Before("AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() ||"
 			+ " EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||"
@@ -70,14 +74,14 @@ public class LogAspect {
 	public void hacerAntes(JoinPoint jp) {
 
 		// TRACE -> DEBUG -> INFO -> WARN -> ERROR -> FATAL
-		logger.info("###### A continuacion se ejecutara el metodo: " + jp.getSignature().getName());
+		logger.info("###### A continuación se ejecutara el método: " + jp.getSignature().getName());
 		logger.info("###### Argumentos: " + Arrays.toString(jp.getArgs()));
 	}
 
 	@AfterReturning(pointcut = "AcontecimientoServiceMetodos() || AsistenciaServiceMetodos() || EventoServiceMetodos() || RetiroMaterialServiceMetodos() || AsistenciaProveedorServiceMetodos() ||PersonalServiceMetodos() || ProveedorServiceMetodos() || VehiculoServiceMetodos() || TransitoServiceMetodos() || UsuarioServiceMetodos() || SectorTrabajoServiceMetodos() ", returning = "result")
 	public void audit(JoinPoint joinPoint, Object result) throws Throwable {
 		
-		logger.info("&&&&&& Retorno de la clase : {} ; Metodo : {} ", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName());
+		logger.info("&&&&&& Retorno de la clase : {} ; Método : {} ", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName());
 	    if (result != null) {
 	        logger.info("&&&&&& Valor de retorno : {}", result.toString());
 	    } else{
@@ -86,5 +90,18 @@ public class LogAspect {
 		
 	    
 	}
-
+	
+	
+	@Before("expirarTransitoMetodo()")
+	public void hacerAntesExpiracion(JoinPoint jp) {
+		
+		logger.info("@@@@@@ Inspección de Transitos expirados ; Método : " + jp.getSignature().getName());
+		
+	}
+	@After("expirarTransitoMetodo()")
+	public void hacerDespuesExpiracion(JoinPoint jp) {
+		
+		logger.info("@@@@@@ Finalización de inspección ; Método : " + jp.getSignature().getName());
+		
+	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,8 @@ public class AsistenciaController {
 	@Autowired
 	private TransitoService transitoServ;
 	
-	
+	public static int cantHoras = 16;
+			
 	@GetMapping
 	public String index() {
 		return "home";
@@ -138,8 +140,9 @@ public class AsistenciaController {
 			
 			transitoServ.crearTransito(transito);
 			asistenciaServ.actualizarAsistencia(asis);
-
 			
+			//
+			transitoServ.inspecciondarTransitosExpirados();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -178,7 +181,10 @@ public class AsistenciaController {
 			
 			transitoServ.actualizarTransito(transito);
 			asistenciaServ.actualizarAsistencia(asis);
-
+			
+			
+			//
+			transitoServ.inspecciondarTransitosExpirados();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -358,7 +364,19 @@ public class AsistenciaController {
 				
 		model.addAttribute("listaTransito", listaTransito);
 		
+		
 		return "/views/asistencia/verTransitos";
 	}
+	
+//	@GetMapping("/modificar_cant_horas/{cantidadH}")
+//	public void modificarHorarioTransito(@PathVariable("cantidadH") int cantidadH) {
+//		
+//		cantHoras = cantidadH;
+//		
+//		System.out.println(cantHoras);
+//	}
+	
+	
+	
 	
 }

@@ -112,7 +112,7 @@
 
 	</div>
 
-
+	<form th:action="@{/home_ex}" method="get" id="expForm" hidden></form>
 
 	<div class="mt-5"></div>
 
@@ -157,7 +157,11 @@
 			  return 0;
 		}
 
-		
+		function expirarTransito(){
+			
+			document.getElementById("expForm").submit();
+		}
+		//setTimeout(expirarTransito, 55000);
 			
 		
 	</script>
