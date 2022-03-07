@@ -153,43 +153,45 @@ public class AsistenciaController {
 	}
 	
 	//Tener en cuenta que sería mejor si le pasara el idTransito
-	@PostMapping("/reingreso-transitorio/{idAsistencia}")
-	public String reIngresoTransitorio(@PathVariable("idAsistencia") int idAsistencia,
+	@PostMapping("/reingreso-transitorio/{idTransito}")
+	public String reIngresoTransitorio(@PathVariable("idTransito") int idTransito,
 						@RequestParam(name = "vehiculo") int idVehiculo,
 						@RequestParam(name = "comentario") String comentario,
 						RedirectAttributes atributos) {
 			
+		
 		try {
-			Asistencia asis = asistenciaServ.findById(idAsistencia).orElseThrow();
-			Transito transito = transitoServ.getAllAsistencias()
-					.stream()
-					.filter(t -> (t.getAsistencia().getIdAsistencia() == idAsistencia && t.getFechaReingreso()==null && t.getUsuarioIngreso()==null))
-					.findFirst().orElseThrow();
 
-			transito.setFechaReingreso(new Date());
+			Transito transito = transitoServ.findById(idTransito).orElseThrow();
+						
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			if(transito.getAsistencia()!=null) {
+				transito.getAsistencia().setEnTransito(false);
+				transito.setFechaReingreso(new Date());
+				transito.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
+			}else {
+				transito.setFechaSalidaTransitoria(new Date());
+				transito.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
+			}
 			
 			if(idVehiculo != -1) {
 				Vehiculo vehiculo = vehiculoServ.findById(idVehiculo).orElseThrow();
 				transito.setVehiculo2(vehiculo);				
 			}
 						
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			transito.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
-			
+						
 			transito.setComentario2(comentario);
-			
-			asis.setEnTransito(false);
-			
+						
 			transitoServ.actualizarTransito(transito);
-			asistenciaServ.actualizarAsistencia(asis);
-			
-			
-			
+
+			atributos.addFlashAttribute("success", "Reingreso transitorio registrado!");						
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			atributos.addFlashAttribute("error", "Error inesperado!");
 		}
 		
-		atributos.addFlashAttribute("success", "Reingreso transitorio registrado!");
+		
 		return "redirect:/views/asistencia/personal/egreso";
 	}
 
@@ -229,7 +231,9 @@ public class AsistenciaController {
 		
 		model.addAttribute("todoPersonal", todoPersonal);
 		
+		List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
 		
+		model.addAttribute("listaVehiculos", listaVehiculos);
 		
 		return "/views/asistencia/ingresoPersonal";
 	}
@@ -241,7 +245,7 @@ public class AsistenciaController {
 			List<Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 			List<Asistencia> AsisSinEgreso = listaAsistencias
 											.stream()
-											.filter(a -> a.getSalida() == null && a.getPersonal()!=null)
+											.filter(a -> a.getSalida() == null && a.getPersonal()!=null && !a.getEnTransito())
 											.collect(Collectors.toList());
 			
 			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
@@ -261,7 +265,8 @@ public class AsistenciaController {
 			
 			List<Transito> listaTransito = transitoServ.findAllByOrderByFechaSalidaTransitoriaAsc()
 					.stream()
-					.filter(t -> t.getFechaReingreso()==null && t.getUsuarioIngreso()==null)
+					.filter(t -> (t.getFechaReingreso()==null && t.getUsuarioIngreso()==null)
+								|| (t.getFechaSalidaTransitoria()==null && t.getUsuarioEgreso()==null && t.getAsistencia()==null))
 					.collect(Collectors.toList());
 			
 			model.addAttribute("listaTransito", listaTransito);
@@ -353,21 +358,33 @@ public class AsistenciaController {
 		
 		if(nroLegajo>0) {
 			listaTransito = listaTransito.stream()
-					.filter(t -> t.getFechaSalidaTransitoria() != null
+					.filter(t -> (t.getFechaSalidaTransitoria() != null
 								 && t.getUsuarioEgreso() != null
 								 && t.getAsistencia() != null
 								 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
 							     && t.getFechaSalidaTransitoria().before(fechaFinalAux)
 							     && t.getPersonal() != null
 							     && t.getPersonal().getNroLegajo() == nroLegajo)
+								|| (t.getFechaReingreso() != null
+										 && t.getUsuarioIngreso() != null
+										 && t.getAsistencia() == null
+										 && t.getFechaReingreso().after(fechaInicioAux)
+									     && t.getFechaReingreso().before(fechaFinalAux)
+									     && t.getPersonal() != null
+									     && t.getPersonal().getNroLegajo() == nroLegajo))
 					.collect(Collectors.toList());
 		}else {
 			listaTransito = listaTransito.stream()
-					.filter(t -> t.getFechaSalidaTransitoria() != null
-									 && t.getUsuarioEgreso() != null
-									 && t.getAsistencia() != null
-									 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
-									 && t.getFechaSalidaTransitoria().before(fechaFinalAux))
+					.filter(t -> (t.getFechaSalidaTransitoria() != null
+								&& t.getUsuarioEgreso() != null
+								&& t.getAsistencia() != null
+								&& t.getFechaSalidaTransitoria().after(fechaInicioAux)
+								&& t.getFechaSalidaTransitoria().before(fechaFinalAux))
+							    || (t.getFechaReingreso() != null
+										 && t.getUsuarioIngreso() != null
+										 && t.getAsistencia() == null
+										 && t.getFechaReingreso().after(fechaInicioAux)
+									     && t.getFechaReingreso().before(fechaFinalAux)))
 					.collect(Collectors.toList());
 		}
 				
@@ -385,6 +402,45 @@ public class AsistenciaController {
 		return "redirect:/views/usuario/editar";
 	}
 	
+	
+	
+	@PostMapping("/transito_externo/{nroLegajo}")
+	public String registrarTransitoExterno(@PathVariable("nroLegajo") int nroLegajo,
+						@RequestParam(name = "vehiculo") int idVehiculo,
+						@RequestParam(name = "comentario") String comentario,
+						RedirectAttributes atributos) {
+		
+			
+		try {
+			
+			Transito transito = new Transito();
+			
+			if(idVehiculo != -1) {
+				Vehiculo vehiculo = vehiculoServ.findById(idVehiculo).orElseThrow();
+				transito.setVehiculo(vehiculo);				
+			}			
+
+			
+			transito.setFechaReingreso(new Date());
+			transito.setAsistencia(null);
+			transito.setPersonal(personalServ.findById(nroLegajo).orElseThrow());
+			transito.setComentario(comentario);
+			
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			transito.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
+			
+			
+			transitoServ.crearTransito(transito);
+			
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		atributos.addFlashAttribute("success", "Ingreso transitorio externo registrado!");
+		return "redirect:/views/asistencia/personal";
+	}
 	
 	
 	

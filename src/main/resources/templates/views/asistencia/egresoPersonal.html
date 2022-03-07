@@ -13,7 +13,7 @@
 
 			<button type="button" class="btn btn-primary btn-sm"
 				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
-				salidas transitorias</button>
+				Tránsitos</button>
 		</div>
 
 
@@ -84,40 +84,34 @@
 		var listaVehiculos = /*[[${listaVehiculos}]]*/ 'default';
 		var listaTransito = /*[[${listaTransito}]]*/ 'default';
 		
-		let listaAux = asistencias;
 		
-		Array.prototype.push.apply(listaTransito, listaAux);
-		
+		let listaAux = asistencias;		
+		Array.prototype.push.apply(listaTransito, listaAux);		
 		console.log(listaTransito);
-		
-// 		function compare( a, b ) {
-// 			if(a.fechaReingreso == null && a.fechaSalidaTransitoria != null){				
-// 				if ( a.entrada < b.entrada || a.fechaSalidaTransitoria < b.fechaSalidaTransitoria 
-// 						  || a.fechaSalidaTransitoria < b.entrada || a.entrada < b.fechaSalidaTransitoria){
-// 				    return -1;
-// 				  }
-// 				  if ( a.entrada > b.entrada || a.fechaSalidaTransitoria > b.fechaSalidaTransitoria 
-// 						  || a.fechaSalidaTransitoria > b.entrada || a.entrada > b.fechaSalidaTransitoria ){
-// 				    return 1;
-// 				  }
-// 				  return 0;		
-				  
-// 			}else if(a.fechaReingreso != null && a.fechaSalidaTransitoria == null){
-// 				if ( a.entrada < b.entrada || a.fechaReingreso < b.fechaReingreso 
-// 						  || a.fechaReingreso < b.entrada || a.entrada < b.fechaReingreso){
-// 				    return -1;
-// 				  }
-// 				  if ( a.entrada > b.entrada || a.fechaReingreso > b.fechaSalidaTransitoria 
-// 						  || a.fechaSalidaTransitoria > b.entrada || a.entrada > b.fechaSalidaTransitoria ){
-// 				    return 1;
-// 				  }
-// 				  return 0;
-// 			}
+		/*
+		function compare( a, b ) {
+						
+			  if ( a.entrada < b.entrada || a.fechaSalidaTransitoria < b.fechaSalidaTransitoria 
+					  || a.fechaSalidaTransitoria < b.entrada || a.entrada < b.fechaSalidaTransitoria){
+			    return -1;
+			  }
+			  if ( a.entrada > b.entrada || a.fechaSalidaTransitoria > b.fechaSalidaTransitoria 
+					  || a.fechaSalidaTransitoria > b.entrada || a.entrada > b.fechaSalidaTransitoria ){
+			    return 1;
+			  }
+			  if(a.entrada < b.entrada || a.fechaReingreso < b.fechaReingreso 
+					  || a.fechaReingreso < b.entrada || a.entrada < b.fechaReingreso){
+				  return -1;
+			  }
+			  if ( a.entrada > b.entrada || a.fechaReingreso > b.fechaReingreso 
+					  || a.fechaReingreso > b.entrada || a.entrada > b.fechaReingreso ){
+			    return 1;
+			  }
 			
-				  
-// 		}
+			return 0;	  
+		}
 		
-		
+		*/
 		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
@@ -131,12 +125,13 @@
 					
 					const texto = formulario.value.toLowerCase();
 					
-					for(let aut of asistencias){
+					for(let aut of listaTransito){
 						let nombre = aut.personal.nombre.toLowerCase();
 						let apellido = aut.personal.apellido.toLowerCase();
 						
+						
 						if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
-								
+																					
 							//reemplazo el espacion en blanco por %20 para tener el path correcto
 							let imagenAux = 'sinImagen';
 							if(aut.personal.imagen != null){
@@ -145,18 +140,7 @@
 							
 							let imagenEmpleado= `/recursos/${imagenAux}` ;
 							
-							let idFoo= `foo${aut.personal.nroLegajo}`;							
-						
-							//le doy el formato correcto a la fecha
-							let d = new Date(aut.entrada);
-							dformat = `${
-							    d.getDate().toString().padStart(2, '0')}/${
-							    (d.getMonth()+1).toString().padStart(2, '0')}/${
-							    d.getFullYear().toString().padStart(4, '0')} ${
-							    d.getHours().toString().padStart(2, '0')}:${
-							    d.getMinutes().toString().padStart(2, '0')}`;
-								
-							    
+							let idFoo= `foo${aut.personal.nroLegajo}`;
 							let idDiv = 'vehiculo' + aut.personal.nroLegajo;
 							let idComentario = 'coment' + aut.personal.nroLegajo;
 							//El idForm es necesario por si estan abiertos varios formularios en las cards de egresos
@@ -164,10 +148,21 @@
 							let idButtonEgreso = 'idButtonEgreso' + aut.personal.nroLegajo;
 							let idCancelarButton = 'idCancelarButton' + aut.personal.nroLegajo;
 							let idConfirmarButton = 'idConfirmarButton' + aut.personal.nroLegajo;
-							let idEgresoTransitorio = 'idEgresoTransitorio' + aut.personal.nroLegajo;    
-							    
-							if(!aut.enTransito){
-								
+							let idEgresoTransitorio = 'idEgresoTransitorio' + aut.personal.nroLegajo; 
+														
+							//Pregunto si es un transito o asistencia
+							if(aut.idTransito === undefined){
+																															
+								//le doy el formato correcto a la fecha
+								let d = new Date(aut.entrada);
+								dformat = `${
+								    d.getDate().toString().padStart(2, '0')}/${
+								    (d.getMonth()+1).toString().padStart(2, '0')}/${
+								    d.getFullYear().toString().padStart(4, '0')} ${
+								    d.getHours().toString().padStart(2, '0')}:${
+								    d.getMinutes().toString().padStart(2, '0')}`;
+									
+								    								   								    
 								let urlEgreso= '/views/asistencia/egreso-empleado/' + aut.idAsistencia;
 								let urlEgresoTransitorio= '/views/asistencia/egreso-transitorio/' + aut.idAsistencia;
 																
@@ -241,75 +236,157 @@
 								</div>
 								</div>
 								`;
-								
-								//------------------	
 							}else{
 								
-								let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idAsistencia;								
+								if(aut.fechaSalidaTransitoria!=null && aut.usuarioEgreso!=null){
+									
+									let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idTransito;
+									
+									//le doy el formato correcto a la fecha
+									let d = new Date(aut.fechaSalidaTransitoria);
+									dformat = `${
+									    d.getDate().toString().padStart(2, '0')}/${
+									    (d.getMonth()+1).toString().padStart(2, '0')}/${
+									    d.getFullYear().toString().padStart(4, '0')} ${
+									    d.getHours().toString().padStart(2, '0')}:${
+									    d.getMinutes().toString().padStart(2, '0')}`;
+									
+									resultado.innerHTML += `
+										<div class="col-sm-6 mt-3">
+											<div class="card text-dark mb-3" >
+												<div class="card-header text-dark"
+													style="background-color:	#dcdcdc"><dt>Registro de Egreso
+													de la Planta</dt></div>
+											<div class="row g-0 ">
+												<div class="col-md-4">
+													<img src=${imagenEmpleado}
+														id=${idFoo}
+														width="215" height="230"
+														onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+												</div>
+												<div class="card-body col-md-8">
+													<h5 class="card-title">Empleado en tránsito:</h5>
+													
+													<ul class="list-group list-group-flush">
+													  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+														${aut.personal.apellido}</li>
+													  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+													  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
+													  <li class="list-group-item">Fecha y hora del egreso: ${dformat}</li>
+													  <li id=${idDiv} class="list-group-item" hidden></li>
+													  <li id=${idComentario} class="list-group-item" hidden></li>
+													</ul>
+													
+												</div>
+											</div>
+											
+											<div
+											class="card-footer  d-grid gap-2 d-md-flex justify-content-md-end"
+												style="background-color:	#dcdcdc">
+												<form 
+													action=${urlReingresoTransitorio}
+													object=${aut}
+													method="post"
+													id=${idForm}
+														>
+													
+														<button type="button" class="btn btn-secondary btn-sm"
+															id=${idCancelarButton}
+															onclick="filtrar()"
+															hidden>Cancelar</button>
+													
+														<button type="button" class="btn btn-secondary btn-sm" 
+															onclick="mostrarListaVehiculos('${idDiv}', '${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+															id=${idEgresoTransitorio}
+															>Reingreso</button>
+													
+														<input type="submit" class="btn btn-secondary btn-sm"
+															id=${idConfirmarButton} hidden
+															value="Confirmar" />
+												</form>
+											
+											</div>											
+										</div>
+									</div>
+									`;
+									
+								}else if(aut.fechaSalidaTransitoria==null && aut.usuarioEgreso==null){
+									
+let 								urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idTransito;
+									
+									//le doy el formato correcto a la fecha
+									let d = new Date(aut.fechaReingreso);
+									dformat = `${
+									    d.getDate().toString().padStart(2, '0')}/${
+									    (d.getMonth()+1).toString().padStart(2, '0')}/${
+									    d.getFullYear().toString().padStart(4, '0')} ${
+									    d.getHours().toString().padStart(2, '0')}:${
+									    d.getMinutes().toString().padStart(2, '0')}`;
+									
+									resultado.innerHTML += `
+										<div class="col-sm-6 mt-3">
+											<div class="card text-dark mb-3" >
+												<div class="card-header text-dark"
+													style="background-color: #9acd32"><dt>Registro de Egreso
+													de la Planta</dt></div>
+											<div class="row g-0 ">
+												<div class="col-md-4">
+													<img src=${imagenEmpleado}
+														id=${idFoo}
+														width="215" height="230"
+														onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+												</div>
+												<div class="card-body col-md-8">
+													<h5 class="card-title">Empleado en tránsito:</h5>
+													
+													<ul class="list-group list-group-flush">
+													  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+														${aut.personal.apellido}</li>
+													  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+													  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
+													  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+													  <li id=${idDiv} class="list-group-item" hidden></li>
+													  <li id=${idComentario} class="list-group-item" hidden></li>
+													</ul>
+													
+												</div>
+											</div>
+											
+											<div
+											class="card-footer  d-grid gap-2 d-md-flex justify-content-md-end"
+												style="background-color: #9acd32">
+												<form 
+													action=${urlReingresoTransitorio}
+													object=${aut}
+													method="post"
+													id=${idForm}
+														>
+													
+														<button type="button" class="btn btn-secondary btn-sm"
+															id=${idCancelarButton}
+															onclick="filtrar()"
+															hidden>Cancelar</button>
+													
+														<button type="button" class="btn btn-secondary btn-sm" 
+															onclick="mostrarListaVehiculos('${idDiv}', '${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+															id=${idEgresoTransitorio}
+															>Egreso</button>
+													
+														<input type="submit" class="btn btn-secondary btn-sm"
+															id=${idConfirmarButton} hidden
+															value="Confirmar" />
+												</form>
+											
+											</div>											
+										</div>
+									</div>
+									`;
+									
+								}
 								
-								resultado.innerHTML += `
-									<div class="col-sm-6 mt-3">
-									<div class="card text-dark mb-3" >
-									<div class="card-header text-dark"
-										style="background-color:	#dcdcdc"><dt>Registro de Egreso
-										de la Planta</dt></div>
-									<div class="row g-0 ">
-										<div class="col-md-4">
-											<img src=${imagenEmpleado}
-												id=${idFoo}
-												width="215" height="230"
-												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
-										</div>
-										<div class="card-body col-md-8">
-											<h5 class="card-title">Empleado en tránsito:</h5>
-											
-											<ul class="list-group list-group-flush">
-											  <li class="list-group-item">Empleado: ${aut.personal.nombre}
-												${aut.personal.apellido}</li>
-											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
-											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
-											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
-											  <li id=${idDiv} class="list-group-item" hidden></li>
-											  <li id=${idComentario} class="list-group-item" hidden></li>
-											</ul>
-											
-										</div>
-									</div>
-									
-									<div
-									class="card-footer  d-grid gap-2 d-md-flex justify-content-md-end"
-										style="background-color:	#dcdcdc">
-									<form 
-										action=${urlReingresoTransitorio}
-										object=${aut}
-										method="post"
-										id=${idForm}
-											>
-										
-											<button type="button" class="btn btn-secondary btn-sm"
-												id=${idCancelarButton}
-												onclick="filtrar()"
-												hidden>Cancelar</button>
-										
-											<button type="button" class="btn btn-secondary btn-sm" 
-												onclick="mostrarListaVehiculos('${idDiv}', '${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
-												id=${idEgresoTransitorio}
-												>Reingreso</button>
-										
-											<input type="submit" class="btn btn-secondary btn-sm"
-												id=${idConfirmarButton} hidden
-												value="Confirmar" />
-									</form>
-									
-									</div>
-									
-								</div>
-								</div>
-								`;
 							}
 							
-							
-						
+	
 					}
 			}			
 		}

@@ -100,6 +100,7 @@
 	<script th:inline="javascript"> 
 		
 		var personal = /*[[${personal}]]*/ 'default';
+		let listaVehiculos = /*[[${listaVehiculos}]]*/ 'default';
 		var urlAsis = '';
 		
 		const formulario = document.querySelector('#formulario');
@@ -192,7 +193,7 @@
 							<div>
 								<button type="button" class="btn btn-secondary"
 									onclick="transitoCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
-									>Transito</button>
+									>Tránsito</button>
 								<button type="submit" class="btn btn-secondary"
 									>Registrar</button>
 							</div>
@@ -223,7 +224,7 @@
 		
 		function transitoCard(nroLegajo,nombre,apellido,sector, imagen){
 			
-			let urlA = "/views/asistencia/ingreso-empleado/" + nroLegajo;
+			let urlA = "/views/asistencia/transito_externo/" + nroLegajo;
 			let imagenAux = imagen.replace(/\s/g, "%20");
 			let imagenEmpleado= `/recursos/${imagenAux}` ;
 			
@@ -232,7 +233,7 @@
 				<div class="card-header text-dark" style="background-color: #9acd32	"
 					><dt>Registro de Ingreso Transitorio a Planta</dt></div>
 				<div class="row g-0 ">
-					<div class="col-md-4" id="imagen">
+					<div class="col-md-4 mt-1" id="imagen">
 						<img src=${imagenEmpleado} width="270" height="270"
 						
 						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
@@ -242,12 +243,14 @@
 							<h5 class="card-title">Registrar asistencia:</h5>
 							
 							
-							<ul class="list-group list-group-flush mt-4">
+							<ul class="list-group list-group-flush mt-3">
 							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
-							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
-							  <li class="list-group-item">Sector de trabajo: ${sector}</li>
-							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
+							  <li class="list-group-item">Fecha y hora del ingreso transitorio: <small class="text-muted"><span
 								id='date-time'></span></small></li>
+							  <li class="list-group-item" id="liVehiculos"></li>
+							  <li class="list-group-item"><lable>Comentario:</label>
+							  	<input type="text" class="form-control" form="formTransitoExterno" name="comentario">
+							  </li>
 							</ul>
 							
 						</div>
@@ -256,14 +259,15 @@
 				<form 	
 						action=${urlA}
 						method="post"
+						id="formTransitoExterno"
 						>
 					<div
 						class="card-footer d-grid gap-2 d-md-flex justify-content-between"
 							style="background-color: #9acd32">
-							<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+							<button type="button" class="btn btn-secondary" onclick="AsistenciaCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
 								>Cancelar</button>
 							<div>
-								<button type="button" class="btn btn-secondary"
+								<button type="submit" class="btn btn-secondary"
 									>Registrar</button>
 							</div>
 							 
@@ -282,11 +286,24 @@
 			    d.getFullYear().toString().padStart(4, '0')} ${
 			    d.getHours().toString().padStart(2, '0')}:${
 			    d.getMinutes().toString().padStart(2, '0')}`;
-			
-			
-			
+					
 			document.getElementById('date-time').innerHTML = dformat;
-				
+			
+			
+			const divVehiculos = document.getElementById("liVehiculos");
+			
+			divVehiculos.innerHTML = `
+				<label>Vehículo utilizado:</label>
+				<select name="vehiculo" form="formTransitoExterno" class="form-select mt-2" id="vehiculoSelect" forEach>
+				<option value="-1">Sin vehículo</option>
+				</select>
+			`;
+			
+			const mySelect = document.getElementById("vehiculoSelect");
+			
+			listaVehiculos.forEach(v => mySelect.innerHTML+=`<option value=${v.idVehiculo}>${v.marca} ${v.modelo} - Patente: ${v.patente}</option>`);
+					
+			
 			window.scroll(0, 0);
 		}
 		

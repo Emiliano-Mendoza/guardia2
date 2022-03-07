@@ -19,7 +19,7 @@ public class Transito {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idTransito;
 	private Date fechaSalidaTransitoria;
-	private Date fechaReingreso;
+	private Date fechaIngreso;
 	private String comentario;
 	private String comentario2;
 	
@@ -65,11 +65,11 @@ public class Transito {
 	}
 
 	public Date getFechaReingreso() {
-		return fechaReingreso;
+		return fechaIngreso;
 	}
 
 	public void setFechaReingreso(Date fechaReingreso) {
-		this.fechaReingreso = fechaReingreso;
+		this.fechaIngreso = fechaReingreso;
 	}
 
 	public Personal getPersonal() {
@@ -141,7 +141,7 @@ public class Transito {
 	@Override
 	public String toString() {
 		return "Transito [idTransito=" + idTransito + ", fechaSalidaTransitoria=" + fechaSalidaTransitoria
-				+ ", fechaReingreso=" + fechaReingreso + ", comentario=" + comentario + ", comentario2=" + comentario2
+				+ ", fechaIngreso=" + fechaIngreso + ", comentario=" + comentario + ", comentario2=" + comentario2
 				+ ", personal=" + personal + ", vehiculo=" + vehiculo + ", vehiculo2=" + vehiculo2 + ", asistencia="
 				+ asistencia + "]";
 	}

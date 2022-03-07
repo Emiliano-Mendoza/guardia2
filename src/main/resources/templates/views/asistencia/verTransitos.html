@@ -19,15 +19,15 @@
 				<tr>
 					<th scope="col" style="width: 11%; text-align: center;">Egreso
 					</th>
-					<th scope="col" style="width: 11%; text-align: center;">Reingreso
+					<th scope="col" style="width: 11%; text-align: center;">Ingreso
 					</th>
 					<th scope="col" style="width: 11%; text-align: center;">Empleado</th>														
-					<th scope="col" style="width: 11%; text-align: center;">Guardia Egreso</th>
-					<th scope="col" style="width: 11%; text-align: center;">Vehículo Egreso</th>
-					<th scope="col" style="width: 11%; text-align: center;">Comentario Egreso</th>
-					<th scope="col" style="width: 11%; text-align: center;">Guardia Reingreso</th>
-					<th scope="col" style="width: 11%; text-align: center;">Vehículo Reingreso</th>
-					<th scope="col" style="width: 11%; text-align: center;">Comentario Reingreso</th>
+					<th scope="col" style="width: 11%; text-align: center;">1er Guardia</th>
+					<th scope="col" style="width: 11%; text-align: center;">1er Vehículo</th>
+					<th scope="col" style="width: 11%; text-align: center;">1er Comentario</th>
+					<th scope="col" style="width: 11%; text-align: center;">2do Guardia</th>
+					<th scope="col" style="width: 11%; text-align: center;">2do Vehículo</th>
+					<th scope="col" style="width: 11%; text-align: center;">2do Comentario</th>
 
 				</tr>
 			</thead>
@@ -45,39 +45,36 @@
 	
 	<script th:inline="javascript">
 			
-		const listaTransito =  /*[[${listaTransito}]]*/ 'default';
+		let listaTransito =  /*[[${listaTransito}]]*/ 'default';
 		const resultado = document.querySelector('#fila');
+		
+		listaTransito = listaTransito.sort(compare);
 		
 		console.log(listaTransito);
 		
 		for(let tran of listaTransito){
-			
-			var d1 = new Date(tran.fechaSalidaTransitoria);
-			dformat1 = `${
-			    d1.getDate().toString().padStart(2, '0')}/${
-			    (d1.getMonth()+1).toString().padStart(2, '0')}/${
-			    d1.getFullYear().toString().padStart(4, '0')} ${
-			    d1.getHours().toString().padStart(2, '0')}:${
-			    d1.getMinutes().toString().padStart(2, '0')}`;
+					
+			if(tran.asistencia != null){
+				
+				let d1 = new Date(tran.fechaSalidaTransitoria);
+				dformat1 = `${
+				    d1.getDate().toString().padStart(2, '0')}/${
+				    (d1.getMonth()+1).toString().padStart(2, '0')}/${
+				    d1.getFullYear().toString().padStart(4, '0')} ${
+				    d1.getHours().toString().padStart(2, '0')}:${
+				    d1.getMinutes().toString().padStart(2, '0')}`;
 				
 			    let vehiculo = 'Sin vehículo';
 			    if(tran.vehiculo != null){
 			    	vehiculo = tran.vehiculo.marca + ' ' + tran.vehiculo.modelo + ' ' + tran.vehiculo.patente;
 			    }
-			    
-			    /* let vehiculo2 = 'Sin vehículo';
-			    if(tran.vehiculo2 != null){
-			    	vehiculo2 = tran.vehiculo2.marca + ' ' + tran.vehiculo2.modelo + ' ' + tran.vehiculo2.patente;
-			    }else if(tran.usuarioIngreso == null && tran.fechaReingreso == null){
-			    	vehiculo2 = '-';
-			    } */
-			    
+			    			    
 			    let usuarioIngreso = '-';
 			    let dformat2 = '-';
 			    let comentarioIngreso = "-";
 			    let vehiculo2 = '-';
 			    if(tran.usuarioIngreso != null && tran.fechaReingreso != null){
-			    	var d2 = new Date(tran.fechaReingreso);
+			    	let d2 = new Date(tran.fechaReingreso);
 					dformat2 = `${
 						    d2.getDate().toString().padStart(2, '0')}/${
 						    (d2.getMonth()+1).toString().padStart(2, '0')}/${
@@ -96,7 +93,7 @@
 			    }
 			    
 			    resultado.innerHTML += `
-					<tr >
+					<tr style="background-color: #DCDCDC">
 						<td style="text-align:center;">${dformat1}</td>						
 						<td style="text-align:center;">${dformat2}</td>
 						<td style="text-align:center;">${tran.personal.nombre} ${tran.personal.apellido}</td>													
@@ -108,10 +105,91 @@
 						<td style="text-align:center;">${comentarioIngreso}</td>
 					</tr>
 				`;
-			    			     
-			
+			}else{
+				
+				let usuarioEgreso = '-';
+			    let dformat1 = '-';
+			    let comentario2 = "-";
+			    let vehiculo2 = '-';
+			    if(tran.fechaSalidaTransitoria != null && tran.fechaSalidaTransitoria != null){
+			    	let d2 = new Date(tran.fechaSalidaTransitoria);
+					dformat1 = `${
+						    d2.getDate().toString().padStart(2, '0')}/${
+						    (d2.getMonth()+1).toString().padStart(2, '0')}/${
+						    d2.getFullYear().toString().padStart(4, '0')} ${
+						    d2.getHours().toString().padStart(2, '0')}:${
+						    d2.getMinutes().toString().padStart(2, '0')}`;
+					usuarioEgreso = tran.usuarioEgreso.nombre + ' ' + tran.usuarioEgreso.apellido;
+					comentario2 = tran.comentario2;
+					
+					if(tran.vehiculo2 != null){
+				    	vehiculo2 = tran.vehiculo2.marca + ' ' + tran.vehiculo2.modelo + ' ' + tran.vehiculo2.patente;
+				    }else{
+				    	vehiculo2 = 'Sin vehículo';
+				    } 
+					
+			    }    
+				
+			    let vehiculo = 'Sin vehículo';
+			    if(tran.vehiculo != null){
+			    	vehiculo = tran.vehiculo.marca + ' ' + tran.vehiculo.modelo + ' ' + tran.vehiculo.patente;
+			    }
+			    
+			    let d1 = new Date(tran.fechaReingreso);
+				dformat2 = `${
+				    d1.getDate().toString().padStart(2, '0')}/${
+				    (d1.getMonth()+1).toString().padStart(2, '0')}/${
+				    d1.getFullYear().toString().padStart(4, '0')} ${
+				    d1.getHours().toString().padStart(2, '0')}:${
+				    d1.getMinutes().toString().padStart(2, '0')}`;
+			    
+				    
+				resultado.innerHTML += `
+					<tr style="background-color: #C8FC65">
+						<td style="text-align:center;">${dformat1}</td>						
+						<td style="text-align:center;">${dformat2}</td>
+						<td style="text-align:center;">${tran.personal.nombre} ${tran.personal.apellido}</td>													
+						<td style="text-align:center;">${tran.usuarioIngreso.nombre} ${tran.usuarioIngreso.apellido}</td>
+						<td style="text-align:center;">${vehiculo}</td>
+						<td style="text-align:center;">${tran.comentario}</td>
+						<td style="text-align:center;">${usuarioEgreso}</td>
+						<td style="text-align:center;">${vehiculo2}</td>
+						<td style="text-align:center;">${comentario2}</td>
+					</tr>
+				`;    
+				    
+			}	
+										    			    		
 		}
-	
+		
+		function compare( a, b ) {
+			
+			let fecha1;
+			let fecha2;
+			
+			if(a.fechaSalidaTransitoria != null){
+				fecha1 = a.fechaSalidaTransitoria;
+			}else{
+				fecha1 = a.fechaReingreso;
+			}
+			
+			if(b.fechaSalidaTransitoria != null){
+				fecha2 = b.fechaSalidaTransitoria;
+			}else{
+				fecha2 = b.fechaReingreso;
+			}
+						
+			if ( fecha1 < fecha2){
+				return -1;
+			}
+			if ( fecha1 > fecha2 ){
+				return 1;
+			} 
+			
+			return 0;	  
+		}
+				
+		
 		function goBack(){
 			window.history.back();
 		}
