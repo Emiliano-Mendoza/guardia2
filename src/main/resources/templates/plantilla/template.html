@@ -175,8 +175,7 @@
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">Ingrese la
 							planta correspondiente:</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+						
 					</div>
 					<form id="myformPlanta">
 						<div class="modal-body" id="modalbody">
@@ -205,11 +204,10 @@
 			</div>
 		</div>
 	
-	<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px">
-		<p sec:authentication='name' class="blockquote" style="margin-right: 5px; margin-top: 10px;"></p>		
-		<a class="navbar-brand" th:href="@{/home}"><img th:src="@{/images/casa.JPG}" width="40" height="40"></a>		
-	</div>
-		
+		<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px">
+			<p sec:authentication='name' class="blockquote" style="margin-right: 5px; margin-top: 10px;"></p>		
+			<a class="navbar-brand" th:href="@{/home}"><img th:src="@{/images/casa.JPG}" width="40" height="40"></a>		
+		</div>
 		
 		
 	</header>
@@ -245,7 +243,6 @@
 			
 			const roles = document.getElementById("rolesUsuario").textContent;
 			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
-			//console.log(nombreUsuario);
 						
 			var time = new Date().getTime();
 
@@ -262,7 +259,6 @@
 					setTimeout(refresh, 10000);
 			}
 			
-			//setTimeout(modificarHorarioTransito, 5000);
 			// Se llama a refresh cada 10 segundos
 			setTimeout(refresh, 10000);
 			

@@ -28,7 +28,7 @@ public class UsuarioController {
 	
 	@GetMapping("/editar")
 	public String listarUsuarios(Model model) {
-		
+				
 		List<Usuario> listaUsuarios = usuarioServ.getAllUsuario();
 		
 //		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -40,6 +40,7 @@ public class UsuarioController {
 //				.collect(Collectors.toList());
 		
 		model.addAttribute("listaUsuarios", listaUsuarios);
+		model.addAttribute("cantHoras", AsistenciaController.cantHoras);
 		
 		return "/views/usuario/editarUsuario";
 	}

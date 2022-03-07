@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.practicasupervisada.guardia2.domain.Asistencia;
 import com.practicasupervisada.guardia2.domain.Personal;
 import com.practicasupervisada.guardia2.domain.Transito;
+import com.practicasupervisada.guardia2.domain.Usuario;
 import com.practicasupervisada.guardia2.domain.Vehiculo;
 import com.practicasupervisada.guardia2.service.AsistenciaService;
 import com.practicasupervisada.guardia2.service.PersonalService;
@@ -142,7 +143,7 @@ public class AsistenciaController {
 			asistenciaServ.actualizarAsistencia(asis);
 			
 			//
-			transitoServ.inspecciondarTransitosExpirados();
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -183,8 +184,7 @@ public class AsistenciaController {
 			asistenciaServ.actualizarAsistencia(asis);
 			
 			
-			//
-			transitoServ.inspecciondarTransitosExpirados();
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -258,6 +258,15 @@ public class AsistenciaController {
 			.collect(Collectors.toList());;
 			
 			model.addAttribute("todoPersonal", todoPersonal);
+			
+			List<Transito> listaTransito = transitoServ.findAllByOrderByFechaSalidaTransitoriaAsc()
+					.stream()
+					.filter(t -> t.getFechaReingreso()==null && t.getUsuarioIngreso()==null)
+					.collect(Collectors.toList());
+			
+			model.addAttribute("listaTransito", listaTransito);
+			
+			transitoServ.inspecciondarTransitosExpirados(cantHoras);
 			
 		}catch(Exception e) {
 			return "home";
@@ -368,13 +377,13 @@ public class AsistenciaController {
 		return "/views/asistencia/verTransitos";
 	}
 	
-//	@GetMapping("/modificar_cant_horas/{cantidadH}")
-//	public void modificarHorarioTransito(@PathVariable("cantidadH") int cantidadH) {
-//		
-//		cantHoras = cantidadH;
-//		
-//		System.out.println(cantHoras);
-//	}
+	@PostMapping("/modificar_cant_horas")
+	public String modificarHorarioTransito(Model model, @RequestParam(name = "cantidadH") int cantidadH) {
+				
+		cantHoras = cantidadH;
+						
+		return "redirect:/views/usuario/editar";
+	}
 	
 	
 	

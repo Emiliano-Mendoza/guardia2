@@ -54,7 +54,7 @@ public class TransitoServiceImp implements TransitoService {
 	}
 
 	@Override
-	public void inspecciondarTransitosExpirados() {
+	public void inspecciondarTransitosExpirados(int horas) {
 		
 		List<Transito> listaTransito = transitoRepo.findAllByOrderByFechaSalidaTransitoriaAsc()
 				.stream()
@@ -64,15 +64,15 @@ public class TransitoServiceImp implements TransitoService {
 		for(Transito transito :listaTransito) {
 		      
 		    //Date fechaAux = new Date(transito.getFechaSalidaTransitoria().getTime() + (1000 * 60 * 60 * 24));
-			//10 min despues de que ingrese 
-			Date fechaAux = new Date(transito.getFechaSalidaTransitoria().getTime() + (1000 * 60 * 1));
+			//La fecha de expiracion es su fecha de ingreso + la cantidad de horas + 5 segundos ---- Recordar que la cantidad de horas se reinicia a 16
+			Date fechaExpiracion = new Date(transito.getFechaSalidaTransitoria().getTime() + (1000 * 60 * 60 * horas) + 5000);
 			Date fechaPresente = new Date();
 			
 			//pregunto si la fecha presente es superior a la fecha limite del transito
-			if(fechaPresente.after(fechaAux)) {
+			if(fechaPresente.after(fechaExpiracion)) {
 				
 				transito.setComentario2("Tránsito expirado");
-			    transito.setFechaReingreso(fechaAux);
+			    transito.setFechaReingreso(fechaExpiracion);
 			    transito.setUsuarioIngreso(transito.getUsuarioEgreso());
 			    transito.getAsistencia().setEnTransito(false);
 			    

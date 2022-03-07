@@ -82,6 +82,42 @@
 		
 		var asistencias = /*[[${asistencias}]]*/ 'default';
 		var listaVehiculos = /*[[${listaVehiculos}]]*/ 'default';
+		var listaTransito = /*[[${listaTransito}]]*/ 'default';
+		
+		let listaAux = asistencias;
+		
+		Array.prototype.push.apply(listaTransito, listaAux);
+		
+		console.log(listaTransito);
+		
+// 		function compare( a, b ) {
+// 			if(a.fechaReingreso == null && a.fechaSalidaTransitoria != null){				
+// 				if ( a.entrada < b.entrada || a.fechaSalidaTransitoria < b.fechaSalidaTransitoria 
+// 						  || a.fechaSalidaTransitoria < b.entrada || a.entrada < b.fechaSalidaTransitoria){
+// 				    return -1;
+// 				  }
+// 				  if ( a.entrada > b.entrada || a.fechaSalidaTransitoria > b.fechaSalidaTransitoria 
+// 						  || a.fechaSalidaTransitoria > b.entrada || a.entrada > b.fechaSalidaTransitoria ){
+// 				    return 1;
+// 				  }
+// 				  return 0;		
+				  
+// 			}else if(a.fechaReingreso != null && a.fechaSalidaTransitoria == null){
+// 				if ( a.entrada < b.entrada || a.fechaReingreso < b.fechaReingreso 
+// 						  || a.fechaReingreso < b.entrada || a.entrada < b.fechaReingreso){
+// 				    return -1;
+// 				  }
+// 				  if ( a.entrada > b.entrada || a.fechaReingreso > b.fechaSalidaTransitoria 
+// 						  || a.fechaSalidaTransitoria > b.entrada || a.entrada > b.fechaSalidaTransitoria ){
+// 				    return 1;
+// 				  }
+// 				  return 0;
+// 			}
+			
+				  
+// 		}
+		
+		
 		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');

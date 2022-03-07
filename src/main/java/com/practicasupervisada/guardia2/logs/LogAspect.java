@@ -95,7 +95,7 @@ public class LogAspect {
 	@Before("expirarTransitoMetodo()")
 	public void hacerAntesExpiracion(JoinPoint jp) {
 		
-		logger.info("@@@@@@ Inspección de Transitos expirados ; Método : " + jp.getSignature().getName());
+		logger.info("@@@@@@ Inspección de Tránsitos expirados ; Método : " + jp.getSignature().getName());
 		
 	}
 	@After("expirarTransitoMetodo()")
