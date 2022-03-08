@@ -220,10 +220,16 @@ public class AsistenciaController {
 		// Busco al personal que aun no ha egresado
 		List<Personal> personalSinEgresar = new ArrayList <Personal> ();
 		AsisSinEgreso.stream().forEach(a -> personalSinEgresar.add(a.getPersonal()));
+						
+		// Busco al personal en transito desde el exterior
+		List<Transito> listaTransito = transitoServ.getAllAsistencias()
+				.stream()
+				.filter(t -> t.getAsistencia()==null && t.getFechaSalidaTransitoria()==null && t.getUsuarioEgreso()==null)
+				.collect(Collectors.toList());
+		listaTransito.stream().forEach(t -> personalSinEgresar.add(t.getPersonal()));
 		
 		// Remuevo al personal sin egresar de la lista 
 		personalSinEgresar.stream().forEach(p -> {listaPersonal.remove(p);});
-		
 		
 		model.addAttribute("personal", listaPersonal);
 		

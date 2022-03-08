@@ -17,7 +17,7 @@
 
 	<div class="container">
 
-		<div class="gap-2 d-md-flex justify-content-between mt-3">
+		<div class="gap-2 d-md-flex justify-content-between mt-2">
 			<h2>Listado del Personal:</h2>
 
 			<button type="button" class="btn btn-primary btn-sm"
@@ -157,52 +157,52 @@
 			
 			cardAsis.innerHTML = `
 				<div class="col-md-8" >
-				<div class="card-header bg-dark text-white ">Registro de Ingreso
-					a la Planta</div>
-				<div class="row g-0 ">
-					<div class="col-md-4" id="imagen" style="margin-top: 3px;">
-						<img src=${imagenEmpleado} width="270" height="270"
-						
-						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
-					</div>
-					<div class="col-md-8">
-						<div class="card-body">
-							<h5 class="card-title">Registrar asistencia:</h5>
-							
-							
-							<ul class="list-group list-group-flush mt-3">
-							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
-							  <li class="list-group-item">Número de Legajo: ${nroLegajo}</li>
-							  <li class="list-group-item">Sector de trabajo: ${sector}</li>
-							  <li class="list-group-item">Planta: ${plantaIngresante}</li>
-							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
-								id='date-time'></span></small></li>
-							</ul>
-							
-						</div>
-					</div>
-				</div>
-				<form 	
-						action=${urlA}
-						method="post"
-						>
-					<div
-						class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
-							<button type="button" class="btn btn-secondary" onclick="CloseCard()"
-								>Cancelar</button>
-							<div>
-								<button type="button" class="btn btn-secondary"
-									onclick="transitoCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
-									>Tránsito</button>
-								<button type="submit" class="btn btn-secondary"
-									>Registrar</button>
+					<div class="card text-dark bg-light mb-3">
+						<p class="card-header bg-dark text-white ">Registro de Ingreso
+						a la Planta</p>
+						<div class="row g-0 card-body ">
+							<div class="col-md-4 mt-1" id="imagen">
+								<img src=${imagenEmpleado} width="100%" height="auto"
+								
+								onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 							</div>
-							 
-							
-					</div>
-				</form>
-
-			</div>
+							<div class="col-md-8">
+								<div style="margin-left: 18px;">
+									<h5 class="card-title">Registrar asistencia:</h5>
+																		
+									<ul class="list-group list-group-flush mt-3">
+									  <li class="list-group-item bg-light">Empleado: ${nombre} ${apellido}</li>
+									  <li class="list-group-item bg-light">Número de Legajo: ${nroLegajo}</li>
+									  <li class="list-group-item bg-light">Sector de trabajo: ${sector}</li>
+									  <li class="list-group-item bg-light">Planta: ${plantaIngresante}</li>
+									  <li class="list-group-item bg-light">Fecha y hora del ingreso: <small class="text-muted"><span
+										id='date-time'></span></small></li>
+									</ul>
+									
+								</div>
+							</div>
+						</div>
+						<form 	
+							action=${urlA}
+							method="post"
+							>
+							<div
+								class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+									<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+										>Cancelar</button>
+									<div>
+										<button type="button" class="btn btn-secondary"
+											onclick="transitoCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
+											>Tránsito</button>
+										<button type="submit" class="btn btn-secondary"
+											>Registrar</button>
+									</div>
+									 
+									
+							</div>
+						</form>
+					</div>					
+				</div>
 			`;
 			
 			//formato de la fecha
@@ -230,52 +230,53 @@
 			
 			cardAsis.innerHTML = `
 				<div class="col-md-8" >
-				<div class="card-header text-dark" style="background-color: #9acd32	"
-					><dt>Registro de Ingreso Transitorio a Planta</dt></div>
-				<div class="row g-0 ">
-					<div class="col-md-4 mt-1" id="imagen">
-						<img src=${imagenEmpleado} width="270" height="270"
-						
-						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
-					</div>
-					<div class="col-md-8">
-						<div class="card-body">
-							<h5 class="card-title">Registrar asistencia:</h5>
-							
-							
-							<ul class="list-group list-group-flush mt-3">
-							  <li class="list-group-item">Empleado: ${nombre} ${apellido}</li>
-							  <li class="list-group-item">Fecha y hora del ingreso transitorio: <small class="text-muted"><span
-								id='date-time'></span></small></li>
-							  <li class="list-group-item" id="liVehiculos"></li>
-							  <li class="list-group-item"><lable>Comentario:</label>
-							  	<input type="text" class="form-control" form="formTransitoExterno" name="comentario">
-							  </li>
-							</ul>
-							
+					<div class="card text-dark bg-light mb-3" >
+						<p class="card-header text-dark" style="background-color: #9acd32"
+							><b>Registro de Ingreso Transitorio a Planta</b></p>
+						<div class="row g-0 card-body">
+							<div class="col-md-4 mt-1" id="imagen">
+								<img src=${imagenEmpleado} width="100%" height="auto"
+								
+								onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+							</div>
+							<div class="col-md-8">
+								<div style="margin-left: 18px;">
+									<h5 class="card-title">Registrar asistencia:</h5>
+									
+									
+									<ul class="list-group list-group-flush mt-3">
+									  <li class="list-group-item bg-light">Empleado: ${nombre} ${apellido}</li>
+									  <li class="list-group-item bg-light">Fecha y hora del ingreso transitorio: <small class="text-muted"><span
+										id='date-time'></span></small></li>
+									  <li class="list-group-item bg-light" id="liVehiculos"></li>
+									  <li class="list-group-item bg-light"><lable>Comentario:</label>
+									  	<input type="text" class="form-control" form="formTransitoExterno" name="comentario">
+									  </li>
+									</ul>
+									
+								</div>
+							</div>
 						</div>
+						<form 	
+								action=${urlA}
+								method="post"
+								id="formTransitoExterno"
+								>
+							<div
+								class="card-footer d-grid gap-2 d-md-flex justify-content-between"
+									style="background-color: #9acd32">
+									<button type="button" class="btn btn-secondary" onclick="AsistenciaCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
+										>Cancelar</button>
+									<div>
+										<button type="submit" class="btn btn-secondary"
+											>Registrar</button>
+									</div>
+									 
+									
+							</div>
+						</form>
 					</div>
 				</div>
-				<form 	
-						action=${urlA}
-						method="post"
-						id="formTransitoExterno"
-						>
-					<div
-						class="card-footer d-grid gap-2 d-md-flex justify-content-between"
-							style="background-color: #9acd32">
-							<button type="button" class="btn btn-secondary" onclick="AsistenciaCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
-								>Cancelar</button>
-							<div>
-								<button type="submit" class="btn btn-secondary"
-									>Registrar</button>
-							</div>
-							 
-							
-					</div>
-				</form>
-
-			</div>
 			`;
 			
 			//formato de la fecha

@@ -17,7 +17,7 @@
 <body>
 
 	<!-- BARRA DE NAVEGACION -->
-	<header th:fragment="header">
+	<header th:fragment="header" >
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 			id="main_navbar">
 			<div class="container-fluid">
@@ -204,9 +204,10 @@
 			</div>
 		</div>
 	
-		<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px">
-			<p sec:authentication='name' class="blockquote" style="margin-right: 5px; margin-top: 10px;"></p>		
-			<a class="navbar-brand" th:href="@{/home}"><img th:src="@{/images/casa.JPG}" width="40" height="40"></a>		
+		<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px;">
+			<p sec:authentication='name'  style="margin-right: 2px; margin-top: 10px;"></p>		
+			<a class="navbar-brand" th:href="@{/home}" ><img th:src="@{/images/casa.JPG}" width="35" height="35" ></a>
+					
 		</div>
 		
 		
@@ -353,6 +354,11 @@
 // 		        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
 // 		    }
 			
+			
+// 			function zoom() {
+//             	document.body.style.zoom = "90%" 
+//        		 }
+// 			zoom();
 		</script>
 
 

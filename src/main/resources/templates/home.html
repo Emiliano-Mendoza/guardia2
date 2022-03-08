@@ -3,13 +3,13 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
-<body>
+<body >
 
 	<header th:replace="plantilla/template :: header"></header>
 	
 	<div class="container-fluid px-5"
-		sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
-		<div>
+		>
+		<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
 			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
 				style="padding-top: 20px;">
 				<div class="col-sm-2">
@@ -75,7 +75,7 @@
 			</div>
 		</div>
 		<div class="row " style="padding-top: 25px;">
-			<div class="col-sm-6">
+			<div class="col-sm-6" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA', 'ROLE_NOTIFICADOR')">
 				<div class="card">
 					<div class="card-body"
 						style="overflow-x: hidden; overflow-y: auto; height: 35vh; border: 1px solid">
@@ -90,7 +90,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA', 'ROLE_AUTORIZADOR')">
 				<div class="card">
 					<div class="card-body"
 						style="overflow-x: hidden; overflow-y: auto; height: 35vh; border: 1px solid">
@@ -112,7 +112,6 @@
 
 	</div>
 
-	<form th:action="@{/home_ex}" method="get" id="expForm" hidden></form>
 
 	<div class="mt-5"></div>
 

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="plantilla/template :: head">
 </head>
-<body>
+<body >
 
 	<header th:replace="plantilla/template :: header"></header>
 
@@ -88,35 +88,9 @@
 		let listaAux = asistencias;		
 		Array.prototype.push.apply(listaTransito, listaAux);		
 		console.log(listaTransito);
-		/*
-		function compare( a, b ) {
-						
-			  if ( a.entrada < b.entrada || a.fechaSalidaTransitoria < b.fechaSalidaTransitoria 
-					  || a.fechaSalidaTransitoria < b.entrada || a.entrada < b.fechaSalidaTransitoria){
-			    return -1;
-			  }
-			  if ( a.entrada > b.entrada || a.fechaSalidaTransitoria > b.fechaSalidaTransitoria 
-					  || a.fechaSalidaTransitoria > b.entrada || a.entrada > b.fechaSalidaTransitoria ){
-			    return 1;
-			  }
-			  if(a.entrada < b.entrada || a.fechaReingreso < b.fechaReingreso 
-					  || a.fechaReingreso < b.entrada || a.entrada < b.fechaReingreso){
-				  return -1;
-			  }
-			  if ( a.entrada > b.entrada || a.fechaReingreso > b.fechaReingreso 
-					  || a.fechaReingreso > b.entrada || a.entrada > b.fechaReingreso ){
-			    return 1;
-			  }
-			
-			return 0;	  
-		}
-		
-		*/
 		
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#cardEgreso');
-		
-		//console.log(asistencias);
 		
 		const filtrar = () => {
 			
@@ -168,72 +142,72 @@
 																
 								resultado.innerHTML += `
 									<div class="col-sm-6 mt-3">
-									<div class="card text-dark  mb-3" >
-									<div class="card-header bg-dark text-white">Registro de Egreso
-									de la Planta</div>
-									<div class="row g-0 ">
-										<div class="col-md-4" >
-											<img src=${imagenEmpleado}
-												id=${idFoo}
-												width="215" height="230"
-												onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+										<div class="card text-dark  mb-3" >
+											<div class="card-header bg-dark text-white">Registro de Egreso
+											de la Planta</div>
+										<div class="row g-0 card-body">
+											<div class="col-md-4 ">
+												<img src=${imagenEmpleado}
+													id=${idFoo}
+													width="100%" height="auto"
+													onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+											</div>
+											<div class="col-md-8" >
+												<div style="margin-left: 18px;">
+													<h5 class="card-title">Empleado ingresado:</h5>
+													
+													<ul class="list-group list-group-flush">
+													  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+														${aut.personal.apellido}</li>
+													  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+													  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
+													  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+													  <li id=${idDiv} class="list-group-item" hidden></li>
+													  <li id=${idComentario} class="list-group-item" hidden></li>
+													</ul>
+												</div>																																																										
+											</div>
 										</div>
-										<div class="card-body col-md-8">
-											<h5 class="card-title">Empleado ingresado:</h5>
-											
-											<ul class="list-group list-group-flush">
-											  <li class="list-group-item">Empleado: ${aut.personal.nombre}
-												${aut.personal.apellido}</li>
-											  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
-											  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
-											  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
-											  <li id=${idDiv} class="list-group-item" hidden></li>
-											  <li id=${idComentario} class="list-group-item" hidden></li>
-											</ul>
-																						
-																						
-										</div>
-									</div>
-									
-									<div
-									class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
-									<form 
-										action=${urlEgresoTransitorio}
-										object=${aut}
-										method="post"  
 										
-										id=${idForm}>									
-											
-											<button type="button" class="btn btn-secondary btn-sm"
-											id=${idCancelarButton}
-											onclick="filtrar()"
-											hidden>Cancelar</button>
-										
-											<button type="button" class="btn btn-secondary btn-sm" 
-											onclick="mostrarListaVehiculos('${idDiv}','${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
-											id=${idEgresoTransitorio}
-											>Egreso Transitorio</button>
-										
-											<input type="submit" class="btn btn-secondary btn-sm"
-												id=${idConfirmarButton} hidden
-												value="Confirmar" />
+										<div
+										class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-md-end">
+											<form 
+												action=${urlEgresoTransitorio}
+												object=${aut}
+												method="post"  
 												
-									</form>
-									<form 
-									action=${urlEgreso}
-									object=${aut}
-									method="post"  
-										>
-									
-										<input type="submit" class="btn btn-primary btn-sm"
-											id=${idButtonEgreso}
-											value="Registrar Egreso" />
-									
-									</form>
-									
+												id=${idForm}>									
+													
+													<button type="button" class="btn btn-secondary btn-sm"
+													id=${idCancelarButton}
+													onclick="filtrar()"
+													hidden>Cancelar</button>
+												
+													<button type="button" class="btn btn-secondary btn-sm" 
+													onclick="mostrarListaVehiculos('${idDiv}','${idComentario}','${idForm}','${idButtonEgreso}','${idCancelarButton}','${idEgresoTransitorio}','${idConfirmarButton}')"		
+													id=${idEgresoTransitorio}
+													>Egreso Transitorio</button>
+												
+													<input type="submit" class="btn btn-secondary btn-sm"
+														id=${idConfirmarButton} hidden
+														value="Confirmar" />
+														
+											</form>
+											<form 
+											action=${urlEgreso}
+											object=${aut}
+											method="post"  
+												>
+											
+												<input type="submit" class="btn btn-primary btn-sm"
+													id=${idButtonEgreso}
+													value="Registrar Egreso" />
+											
+											</form>
+										
+										</div>
+										
 									</div>
-									
-								</div>
 								</div>
 								`;
 							}else{
@@ -257,26 +231,27 @@
 												<div class="card-header text-dark"
 													style="background-color:	#dcdcdc"><dt>Registro de Egreso
 													de la Planta</dt></div>
-											<div class="row g-0 ">
+											<div class="row g-0 card-body">
 												<div class="col-md-4">
 													<img src=${imagenEmpleado}
 														id=${idFoo}
-														width="215" height="230"
+														width="100%" height="auto"
 														onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 												</div>
-												<div class="card-body col-md-8">
-													<h5 class="card-title">Empleado en tránsito:</h5>
-													
-													<ul class="list-group list-group-flush">
-													  <li class="list-group-item">Empleado: ${aut.personal.nombre}
-														${aut.personal.apellido}</li>
-													  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
-													  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
-													  <li class="list-group-item">Fecha y hora del egreso: ${dformat}</li>
-													  <li id=${idDiv} class="list-group-item" hidden></li>
-													  <li id=${idComentario} class="list-group-item" hidden></li>
-													</ul>
-													
+												<div class="col-md-8">
+													<div style="margin-left: 18px;">
+														<h5 class="card-title">Empleado en tránsito:</h5>
+														
+														<ul class="list-group list-group-flush">
+														  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+															${aut.personal.apellido}</li>
+														  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+														  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
+														  <li class="list-group-item">Fecha y hora del egreso: ${dformat}</li>
+														  <li id=${idDiv} class="list-group-item" hidden></li>
+														  <li id=${idComentario} class="list-group-item" hidden></li>
+														</ul>
+													</div>																										
 												</div>
 											</div>
 											
@@ -310,9 +285,9 @@
 									</div>
 									`;
 									
-								}else if(aut.fechaSalidaTransitoria==null && aut.usuarioEgreso==null){
+								}else if(aut.fechaSalidaTransitoria==null && aut.usuarioEgreso==null && aut.asistencia==null){
 									
-let 								urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idTransito;
+									let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + aut.idTransito;
 									
 									//le doy el formato correcto a la fecha
 									let d = new Date(aut.fechaReingreso);
@@ -329,26 +304,27 @@ let 								urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' 
 												<div class="card-header text-dark"
 													style="background-color: #9acd32"><dt>Registro de Egreso
 													de la Planta</dt></div>
-											<div class="row g-0 ">
+											<div class="row g-0 card-body ">
 												<div class="col-md-4">
 													<img src=${imagenEmpleado}
 														id=${idFoo}
-														width="215" height="230"
+														width="100%" height="auto"
 														onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
 												</div>
-												<div class="card-body col-md-8">
-													<h5 class="card-title">Empleado en tránsito:</h5>
-													
-													<ul class="list-group list-group-flush">
-													  <li class="list-group-item">Empleado: ${aut.personal.nombre}
-														${aut.personal.apellido}</li>
-													  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
-													  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
-													  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
-													  <li id=${idDiv} class="list-group-item" hidden></li>
-													  <li id=${idComentario} class="list-group-item" hidden></li>
-													</ul>
-													
+												<div class="col-md-8">
+													<div style="margin-left: 18px;">
+														<h5 class="card-title">Empleado en tránsito:</h5>
+														
+														<ul class="list-group list-group-flush">
+														  <li class="list-group-item">Empleado: ${aut.personal.nombre}
+															${aut.personal.apellido}</li>
+														  <li class="list-group-item">Número de legajo: ${aut.personal.nroLegajo}</li>
+														  <li class="list-group-item">Sector de trabajo: ${aut.personal.sectorTrabajo.sector}</li>
+														  <li class="list-group-item">Fecha y hora del ingreso: ${dformat}</li>
+														  <li id=${idDiv} class="list-group-item" hidden></li>
+														  <li id=${idComentario} class="list-group-item" hidden></li>
+														</ul>
+													</div>
 												</div>
 											</div>
 											

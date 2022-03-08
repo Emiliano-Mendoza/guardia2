@@ -100,42 +100,47 @@
 		let urlA = "/views/retiro-material/autorizacion";
 		
 		cardAutorization.innerHTML = `
-			<h5>Autorización de Retiro de Material</h5>
-			<p class="mt-3">Empleado autorizado: ${nombre} ${apellido}</p>
-			
-			<form id="formAut" action=${urlA} method="post"
-				>
+		<div class="card text-dark bg-light mb-3">
+			<div class="card-body">
+				<h5>Autorización de Retiro de Material</h5>
+				<p class="mt-3">Empleado autorizado: ${nombre} ${apellido}</p>
 				
-				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label">Descripción:</label>
-					<textarea class="form-control" id="desc" name="desc"
-						rows="3" required></textarea>
+				<form id="formAut" action=${urlA} method="post"
+					>
+					
+					<div class="mb-3">
+						<label for="exampleInputEmail1" class="form-label">Descripción:</label>
+						<textarea class="form-control" id="desc" name="desc"
+							rows="3" required></textarea>
+					</div>
+					<div class="mb-3">
+					<label for="exampleInput1" class="form-label">Materiales: </label>
+					<small class="text-muted"><span> (Ctrl + click para selección múltiple)</span></small>
+					<select class="form-select"
+						multiple aria-label="multiple select example" name="materiales"
+						id="materiales">
+	
+					</select>
+					</div>
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
+						<input type="date" id="fechaLimite" name="fechaLimite"
+				       		>
+					</div>
+					<div>
+						<input type="hidden" id="nroLegajo" name="nroLegajo" value="${nroLegajo}">
+					</div>
+					<div
+					class=" d-grid gap-2 d-md-flex justify-content-between">
+					<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+						>Cancelar</button> 
+						<input type="submit"
+						class="btn btn-secondary btn-sm" value="Confirmar" />
 				</div>
-				<div class="mb-3">
-				<label for="exampleInput1" class="form-label">Materiales: </label>
-				<small class="text-muted"><span> (Ctrl + click para selección múltiple)</span></small>
-				<select class="form-select"
-					multiple aria-label="multiple select example" name="materiales"
-					id="materiales">
-
-				</select>
-				</div>
-				<div class="mb-3">
-					<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
-					<input type="date" id="fechaLimite" name="fechaLimite"
-			       		>
-				</div>
-				<div>
-					<input type="hidden" id="nroLegajo" name="nroLegajo" value="${nroLegajo}">
-				</div>
-				<div
-				class="card-footer bg-white d-grid gap-2 d-md-flex justify-content-between">
-				<button type="button" class="btn btn-secondary" onclick="CloseCard()"
-					>Cancelar</button> 
-					<input type="submit"
-					class="btn btn-secondary btn-sm" value="Confirmar" />
+				</form>
 			</div>
-			</form>
+		</div>
+
 		`
 		
 		SetDate();
@@ -209,41 +214,46 @@
 		let urlA = "/views/retiro-material/autorizacion";
 		
 		cardAutorization.innerHTML = `
-				<h5>Autorización de Retiro de Material</h5>
-				<p class="mt-3">Retiro externo</p>
-			
-				<form id="formAut" action=${urlA} method="post"
-				>
+		<div class="card text-dark bg-light mb-3">
+			<div class="card-body">
+					<h5>Autorización de Retiro de Material</h5>
+					<p class="mt-3">Retiro externo</p>
 				
-				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label">Descripción:</label>
-					<textarea class="form-control" id="desc" name="desc"
-						rows="3" required></textarea>
+					<form id="formAut" action=${urlA} method="post"
+					>
+					
+					<div class="mb-3">
+						<label for="exampleInputEmail1" class="form-label">Descripción:</label>
+						<textarea class="form-control" id="desc" name="desc"
+							rows="3" required></textarea>
+					</div>
+					<div class="mb-3">
+					<label for="exampleInput1" class="form-label">Materiales:</label>
+					<small class="text-muted"><span> (Ctrl + click para selección múltiple)</span></small>
+					<select class="form-select"
+						multiple aria-label="multiple select example" name="materiales"
+						id="materiales">
+	
+					</select>
+					</div>
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
+						<input type="date" id="fechaLimite" name="fechaLimite"
+				       		>
+					</div>
+					<div>
+						<input type="hidden" id="nroLegajo" name="nroLegajo" value=0>
+					</div>
+					<div
+					class=" d-grid gap-2 d-md-flex justify-content-between">
+					<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+						>Cancelar</button> 
+						<input type="submit"
+						class="btn btn-secondary btn-sm" value="Confirmar" />
 				</div>
-				<div class="mb-3">
-				<label for="exampleInput1" class="form-label">Materiales:</label>
-				<select class="form-select"
-					multiple aria-label="multiple select example" name="materiales"
-					id="materiales">
-
-				</select>
-				</div>
-				<div class="mb-3">
-					<label for="exampleInputPassword1" class="form-label">Fecha Límite:  </label>
-					<input type="date" id="fechaLimite" name="fechaLimite"
-			       		>
-				</div>
-				<div>
-					<input type="hidden" id="nroLegajo" name="nroLegajo" value=0>
-				</div>
-				<div
-				class="card-footer bg-white d-grid gap-2 d-md-flex justify-content-between">
-				<button type="button" class="btn btn-secondary" onclick="CloseCard()"
-					>Cancelar</button> 
-					<input type="submit"
-					class="btn btn-secondary btn-sm" value="Confirmar" />
+				</form>
 			</div>
-			</form>
+		</div>
 		`;
 		
 		SetDate();
