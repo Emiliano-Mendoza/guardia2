@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+	<!-- th:href="@{/css/bootstrap.min.css}" -->
+
+	<header th:replace="plantilla/template :: header"></header>
+		
+	<div class="container">
+
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center"
+			id="cardEgreso"></div>
+
+	</div>
+
+
+	<div class="container">
+
+		<div class="gap-2 d-md-flex justify-content-between mt-2">
+			<h5>Buscar Empleado:</h5>
+			
+			<div class="gap-2 d-md-flex justify-content-end">
+				<form th:action="@{/views/asistencia/personal/egreso}" method="get">
+					<button type="submit" class="btn btn-info">Modo tarjetas</button>
+				</form>
+				
+				<button type="button" class="btn btn-primary btn-sm"
+					data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+					Tránsitos</button>
+			</div>
+		</div>
+
+
+		<input type="text" id="formulario" class="form-control mt-3">
+		<table class="table" style="width: 100%">
+			<thead>
+				<tr>
+
+					<th class="sortable" scope="col"
+						style="width: 15%; text-align: center;">Legajo</th>
+					<th class="sortable" scope="col"
+						style="width: 25%; text-align: center;">Nombre</th>
+					<th class="sortable" scope="col"
+						style="width: 20%; text-align: center;">Apellido</th>
+					<th class="sortable" style="width: 20%; text-align: center;">Sector</th>
+					<th scope="col" style="width: 20%; text-align: center;">Registrar
+						Egreso</th>
+				</tr>
+			</thead>
+			<tbody id="fila">
+
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Salidas
+						Transitorias:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get"
+					th:action="@{/views/asistencia/salidas-transitorias}">
+					<div class="modal-body" id="modalbody">
+
+
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas:
+							</label> <input type="text" id="date_range" name="date_range"
+								class="form-control"></li>
+							<li class="list-group-item"><label>Empleado: </label> <select
+								class="form-select" id="sector" name="nroLegajo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="p:${todoPersonal}" th:value='${p.nroLegajo}'>[[${p.apellido}]]
+										[[${p.nombre}]]</option>
+
+							</select></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="mt-5"></div>
+
+	<footer th:replace="plantilla/template ::footer"></footer>
+	
+	<script th:inline="javascript">
+		let asistencias = /*[[${asistencias}]]*/ 'default';
+		let listaVehiculos = /*[[${listaVehiculos}]]*/ 'default';
+		let listaTransito = /*[[${listaTransito}]]*/ 'default';
+		
+		let listaAux = asistencias;		
+		Array.prototype.push.apply(listaTransito, listaAux);		
+		console.log(listaTransito);
+		
+		const formulario = document.querySelector('#formulario');
+		const resultado = document.querySelector('#fila');
+		const cardEgreso = document.querySelector('#cardEgreso');
+		cardEgreso.innerHTML = '';
+		
+		const filtrar = () => {
+			resultado.innerHTML = '';
+			const texto = formulario.value.toLowerCase();
+			
+			for(let aut of listaTransito){
+				let nombre = aut.personal.nombre.toLowerCase();
+				let apellido = aut.personal.apellido.toLowerCase();
+				
+				if(nombre.indexOf(texto) !== -1 || apellido.indexOf(texto) !== -1){
+					
+					if(aut.idTransito === undefined){
+						resultado.innerHTML += `
+							<tr>
+								<td scope="row" style="text-align:center;">${aut.personal.nroLegajo}</td>
+								<td style="text-align:center;">${aut.personal.nombre}</td>
+								<td style="text-align:center;">${aut.personal.apellido}</td>
+								<td style="text-align:center;">${aut.personal.sectorTrabajo.sector}</td>						
+								<td style="text-align:center;">
+									<button class="btn btn-outline-secondary btn-sm"
+									onclick="EgresoTransitorioCard('${aut.personal.nroLegajo}','${aut.personal.nombre}','${aut.personal.apellido}','${aut.personal.sectorTrabajo.sector}','${aut.personal.imagen}','${aut.entrada}', '${aut.idAsistencia}')"
+									>Egreso Transitorio</button>
+									<button class="btn btn-outline-success btn-sm d" 
+									title:"Registrar Egreso" id="asisBtn" 
+									onclick="EgresoCard('${aut.personal.nroLegajo}','${aut.personal.nombre}','${aut.personal.apellido}','${aut.personal.sectorTrabajo.sector}','${aut.personal.imagen}','${aut.entrada}', '${aut.idAsistencia}')">
+									Egreso
+									</button>
+								</td>
+							</tr>
+						`	
+					}else if(aut.fechaSalidaTransitoria!=null && aut.usuarioEgreso!=null && aut.asistencia != null){
+						resultado.innerHTML += `
+							<tr style="background-color: #dcdcdc">
+								<td scope="row" style="text-align:center;">${aut.personal.nroLegajo}</td>
+								<td style="text-align:center;">${aut.personal.nombre}</td>
+								<td style="text-align:center;">${aut.personal.apellido}</td>
+								<td style="text-align:center;">${aut.personal.sectorTrabajo.sector}</td>						
+								<td style="text-align:center;">
+									<button class="btn btn btn-outline-success btn-sm d" 
+									title:"Registrar Reingreso" id="asisBtn" 
+									onclick="ReingresoTransitorioCard('${aut.personal.nroLegajo}','${aut.personal.nombre}','${aut.personal.apellido}','${aut.personal.imagen}','${aut.fechaSalidaTransitoria}', '${aut.idTransito}')">
+									Reingreso
+									</button>
+								</td>
+							</tr>
+						`
+					}else if(aut.fechaSalidaTransitoria==null && aut.usuarioEgreso==null && aut.asistencia==null){
+						resultado.innerHTML += `
+							<tr style="background-color: #DEFFA0">
+								<td scope="row" style="text-align:center;">${aut.personal.nroLegajo}</td>
+								<td style="text-align:center;">${aut.personal.nombre}</td>
+								<td style="text-align:center;">${aut.personal.apellido}</td>
+								<td style="text-align:center;">${aut.personal.sectorTrabajo.sector}</td>						
+								<td style="text-align:center;">
+									<button class="btn btn btn-outline-secondary btn-sm d" 
+									title:"Registrar egreso transito externo" id="asisBtn" 
+									onclick="EgresoTransitoExternoCard('${aut.personal.nombre}','${aut.personal.apellido}','${aut.personal.imagen}','${aut.fechaReingreso}', '${aut.idTransito}')">
+									Egreso
+									</button>
+								</td>
+							</tr>
+						`
+					}
+									
+				}
+			}
+			
+		}
+		formulario.addEventListener('keyup', filtrar);
+		filtrar();
+		
+		function EgresoCard(nroLegajo,nombre,apellido,sector, imagen, entrada, idAsistencia){
+			let d = new Date(entrada);
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			
+			let urlEgreso= '/views/asistencia/egreso-empleado/' + idAsistencia;
+			
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			
+			if(getCookie(nombreUsuario).indexOf("Peñaloza") != -1){
+				plantaIngresante = "Av. Peñaloza 5750 - Planta II";
+			}else if(getCookie(nombreUsuario).indexOf("Facundo") != -1){
+				plantaIngresante = "Av. Facundo Zuviría 4740 - Planta I";
+			}else{
+				plantaIngresante = "No definida";
+			}
+			
+			cardEgreso.innerHTML = `
+				<div class="col-md-8" >
+					<div class="card text-dark bg-light mb-3">
+						<p class="card-header bg-dark text-white ">Registro de Egreso
+						de la Planta</p>
+						<div class="row g-0 card-body ">
+							<div class="col-md-4 mt-1" id="imagen">
+								<img src=${imagenEmpleado} width="100%" height="auto"
+								
+								onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+							</div>
+							<div class="col-md-8">
+								<div style="margin-left: 18px;">
+									<h5 class="card-title">Registrar asistencia:</h5>
+																		
+									<ul class="list-group list-group-flush mt-3">
+									  <li class="list-group-item bg-light">Empleado: ${nombre} ${apellido}</li>
+									  <li class="list-group-item bg-light">Número de Legajo: ${nroLegajo}</li>
+									  <li class="list-group-item bg-light">Sector de trabajo: ${sector}</li>
+									  <li class="list-group-item bg-light">Planta: ${plantaIngresante}</li>
+									  <li class="list-group-item bg-light">Fecha y hora del ingreso: ${dformat}</li>
+									</ul>
+									
+								</div>
+							</div>
+						</div>
+						<form 	
+							action=${urlEgreso}
+							method="post"
+							>
+							<input name="modo" value="lista" hidden></input>
+							<div
+								class="card-footer bg-dark d-grid gap-2 d-md-flex justify-content-between">
+									<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+										>Cancelar</button>
+									<div>										
+										<button type="submit" class="btn btn-secondary"
+											>Registrar</button>
+									</div>									 									
+							</div>
+						</form>
+					</div>					
+				</div>
+			`;
+			window.scroll(0, 0);
+		}
+		
+		function EgresoTransitorioCard(nroLegajo,nombre,apellido,sector, imagen, entrada, idAsistencia){
+			let d = new Date();
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+						
+			let urlEgresoTransitorio= '/views/asistencia/egreso-transitorio/' + idAsistencia;
+			
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			
+			cardEgreso.innerHTML = `
+				<div class="col-md-8" >
+					<div class="card text-dark bg-light mb-3">
+						<div class="card-header text-dark" style="background-color:	#dcdcdc">
+							<dt>Registro de Egreso Transitorio</dt>
+						</div>
+						
+						<form 	
+						action=${urlEgresoTransitorio}
+						method="post">
+						
+							<div class="row g-0 card-body ">
+								<div class="col-md-4 mt-1" id="imagen">
+									<img src=${imagenEmpleado} width="100%" height="auto"
+									
+									onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+								</div>
+								<div class="col-md-8">
+									<div style="margin-left: 18px;">
+										<h5 class="card-title">Registrar egreso transitorio:</h5>
+																			
+										<ul class="list-group list-group-flush mt-3">
+										  <li class="list-group-item bg-light">Empleado: ${nombre} ${apellido}</li>										  									
+										  <li class="list-group-item bg-light">Fecha y hora del egreso transitorio:<small class="text-muted"><span
+											> ${dformat}</span></small></li>
+										  <li id="vehiculosID" class="list-group-item" hidden></li>
+										  <li id="comentarioID" class="list-group-item" >
+										  	<label>Comentario:</label>
+											<input type="text" name="comentario" class="form-control">
+										  </li>
+										</ul>
+										
+									</div>
+								</div>
+							</div>						
+							<input name="modo" value="lista" hidden></input>
+							<div
+								class="card-footer gap-2 d-md-flex justify-content-between" style="background-color:	#dcdcdc">
+									<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+										>Cancelar</button>
+									<div>										
+										<button type="submit" class="btn btn-secondary"
+											>Registrar</button>
+									</div>									 									
+							</div>
+						</form>
+					</div>					
+				</div>
+			`;
+			
+			const divVehiculos = document.getElementById("vehiculosID");
+			divVehiculos.hidden = false;
+			
+			divVehiculos.innerHTML = `
+				<label>Vehículo utilizado:</label>
+				<select name="vehiculo" class="form-select mt-2" id="selectVehiculoID" forEach>
+				<option value="-1">Sin vehículo</option>
+				</select>
+			`;
+			const mySelect = document.getElementById("selectVehiculoID");
+			
+			listaVehiculos.forEach(v => mySelect.innerHTML+=`<option value=${v.idVehiculo}>${v.marca} ${v.modelo} - Patente: ${v.patente}</option>`);
+			
+			window.scroll(0, 0);
+		}
+		
+		function ReingresoTransitorioCard(nroLegajo, nombre, apellido, imagen, fechaSalidaTransitoria, idTransito){
+			let d = new Date(fechaSalidaTransitoria);
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			    
+			let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + idTransito; 
+			    
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			
+			cardEgreso.innerHTML = `
+				<div class="col-md-8" >
+					<div class="card text-dark bg-light mb-3">
+						<div class="card-header text-dark" style="background-color:	#dcdcdc">
+							<dt>Registro de Reingreso Transitorio</dt>
+						</div>
+						
+						<form 	
+						action=${urlReingresoTransitorio}
+						method="post">
+						
+							<div class="row g-0 card-body ">
+								<div class="col-md-4 mt-1" id="imagen">
+									<img src=${imagenEmpleado} width="100%" height="auto"
+									
+									onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+								</div>
+								<div class="col-md-8">
+									<div style="margin-left: 18px;">
+										<h5 class="card-title">Registrar reingreso transitorio:</h5>
+																			
+										<ul class="list-group list-group-flush mt-3">
+										  <li class="list-group-item bg-light">Empleado: ${nombre} ${apellido}</li>										  									
+										  <li class="list-group-item bg-light">Fecha y hora del egreso transitorio:<small class="text-muted"><span
+											> ${dformat}</span></small></li>
+										  <li id="vehiculosID" class="list-group-item" hidden></li>
+										  <li id="comentarioID" class="list-group-item" >
+										  	<label>Comentario:</label>
+											<input type="text" name="comentario" class="form-control">
+										  </li>
+										</ul>
+										
+									</div>
+								</div>
+							</div>						
+							<input name="modo" value="lista" hidden></input>
+							<div
+								class="card-footer gap-2 d-md-flex justify-content-between" style="background-color:	#dcdcdc">
+									<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+										>Cancelar</button>
+									<div>										
+										<button type="submit" class="btn btn-secondary"
+											>Registrar</button>
+									</div>									 									
+							</div>
+						</form>
+					</div>					
+				</div>
+			`;
+			
+			const divVehiculos = document.getElementById("vehiculosID");
+			divVehiculos.hidden = false;
+			
+			divVehiculos.innerHTML = `
+				<label>Vehículo utilizado:</label>
+				<select name="vehiculo" class="form-select mt-2" id="selectVehiculoID" forEach>
+				<option value="-1">Sin vehículo</option>
+				</select>
+			`;
+			const mySelect = document.getElementById("selectVehiculoID");
+			
+			listaVehiculos.forEach(v => mySelect.innerHTML+=`<option value=${v.idVehiculo}>${v.marca} ${v.modelo} - Patente: ${v.patente}</option>`);
+			
+			window.scroll(0, 0);
+		}
+		
+		function EgresoTransitoExternoCard(nombre, apellido, imagen, fechaReingreso, idTransito){
+			let d = new Date(fechaReingreso);
+			dformat = `${
+			    d.getDate().toString().padStart(2, '0')}/${
+			    (d.getMonth()+1).toString().padStart(2, '0')}/${
+			    d.getFullYear().toString().padStart(4, '0')} ${
+			    d.getHours().toString().padStart(2, '0')}:${
+			    d.getMinutes().toString().padStart(2, '0')}`;
+			    
+			let urlReingresoTransitorio= '/views/asistencia/reingreso-transitorio/' + idTransito;
+			    
+			let imagenAux = imagen.replace(/\s/g, "%20");
+			let imagenEmpleado= `/recursos/${imagenAux}` ;
+			
+			cardEgreso.innerHTML = `
+				<div class="col-md-8" >
+					<div class="card text-dark bg-light mb-3">
+						<div class="card-header text-dark" style="background-color:	#DEFFA0">
+						<dt>Registro de Egresode la Planta</dt>
+						</div>
+						
+						<form 	
+						action=${urlReingresoTransitorio}
+						method="post">
+						
+							<div class="row g-0 card-body ">
+								<div class="col-md-4 mt-1" id="imagen">
+									<img src=${imagenEmpleado} width="100%" height="auto"
+									
+									onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
+								</div>
+								<div class="col-md-8">
+									<div style="margin-left: 18px;">
+										<h5 class="card-title">Empleado en tránsito:</h5>
+																			
+										<ul class="list-group list-group-flush mt-3">
+										  <li class="list-group-item bg-light">Empleado: ${nombre} ${apellido}</li>										  									
+										  <li class="list-group-item bg-light">Fecha y hora del ingreso transitorio:<small class="text-muted"><span
+											> ${dformat}</span></small></li>
+										  <li id="vehiculosID" class="list-group-item" hidden></li>
+										  <li id="comentarioID" class="list-group-item" >
+										  	<label>Comentario:</label>
+											<input type="text" name="comentario" class="form-control">
+										  </li>
+										</ul>
+										
+									</div>
+								</div>
+							</div>						
+							<input name="modo" value="lista" hidden></input>
+							<div
+								class="card-footer gap-2 d-md-flex justify-content-between" style="background-color:	#DEFFA0">
+									<button type="button" class="btn btn-secondary" onclick="CloseCard()"
+										>Cancelar</button>
+									<div>										
+										<button type="submit" class="btn btn-secondary"
+											>Registrar</button>
+									</div>									 									
+							</div>
+						</form>
+					</div>					
+				</div>
+			`;
+			
+			const divVehiculos = document.getElementById("vehiculosID");
+			divVehiculos.hidden = false;
+			
+			divVehiculos.innerHTML = `
+				<label>Vehículo utilizado:</label>
+				<select name="vehiculo" class="form-select mt-2" id="selectVehiculoID" forEach>
+				<option value="-1">Sin vehículo</option>
+				</select>
+			`;
+			const mySelect = document.getElementById("selectVehiculoID");
+			
+			listaVehiculos.forEach(v => mySelect.innerHTML+=`<option value=${v.idVehiculo}>${v.marca} ${v.modelo} - Patente: ${v.patente}</option>`);
+			
+			window.scroll(0, 0);
+		}
+		
+		function CloseCard(){
+			cardEgreso.innerHTML = '';
+		}
+		
+	</script>
+</body>
+</html>

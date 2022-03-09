@@ -76,7 +76,7 @@ public class TransitoServiceImp implements TransitoService {
 			    transito.setUsuarioIngreso(transito.getUsuarioEgreso());
 			    transito.getAsistencia().setEnTransito(false);
 			    
-			    LogAspect.logger.info("@@@@@@ Tránsito expirado: " + transito);
+			    LogAspect.logger.info("@@@@@@ Transito expirado: " + transito);
 			    
 			    crearTransito(transito);
 				

@@ -28,7 +28,7 @@
 
 
 			<div class="d-grid gap-2 mt-2">
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+				<button class="btn btn-lg btn-primary btn-block" type="submit" onclick="deleteCookies()">Entrar</button>
 			</div>
 
 		</form>
@@ -38,7 +38,7 @@
 
 	<div class="mt-5"></div>
 
-	<footer th:replace="plantilla/template ::footer"></footer>
+<!-- 	<footer th:replace="plantilla/template ::footer"></footer> -->
 
 	<script th:inline="javascript">
 		function mostrarContraseña() {
@@ -49,6 +49,11 @@
 				x.type = "password";
 			}
 		}
+		
+		function deleteCookies() {
+			document.cookie = "logueado=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		}
+		
 	</script>
 </body>
 </html>

@@ -127,12 +127,22 @@
 		function AsistenciaCard (idProveedor, razonSocial){
 			let urlA = "/views/asistencia-proveedor/ingreso/" + idProveedor;
 			
+			let plantaIngresante = "";
+			
+			if(getCookie(nombreUsuario).indexOf("Peñaloza") != -1){
+				plantaIngresante = "Av. Peñaloza 5750 - Planta II";
+			}else if(getCookie(nombreUsuario).indexOf("Facundo") != -1){
+				plantaIngresante = "Av. Facundo Zuviría 4740 - Planta I";
+			}else{
+				plantaIngresante = "No definida";
+			}
+								
 			cardAsis.innerHTML = `
 				<div class="col-md-8" >
 				<div class="card-header bg-dark text-white ">Registro de Ingreso
 					a la Planta</div>
 				<div class="row g-0 ">
-					<div class="col-md-4" id="imagen">
+					<div class="col-md-4 mt-3" id="imagen">
 						<img src='/images/proveedor.jpg' width="270" height="280"
 						
 						onerror="this.onerror=null;this.src='/images/anonimo.jpg';">
@@ -144,6 +154,7 @@
 							
 							<ul class="list-group list-group-flush mt-2">
 							  <li class="list-group-item">Proveedor: ${razonSocial}</li>
+							  <li class="list-group-item">Planta: ${plantaIngresante}</li>
 							  <li class="list-group-item">Fecha y hora del ingreso: <small class="text-muted"><span
 								id='date-time'></span></small></li>
 							  <li class="list-group-item">
@@ -151,7 +162,7 @@
 							  		<input type="text" class="form-control" name="nombreChofer" form="myform">
 							  </li>
 							  <li class="list-group-item">
-						  		<label>Patente del vehiculo: </label>
+						  		<label>Patente del vehículo: </label>
 						  		<input type="text" class="form-control" name="patenteVehiculo" form="myform">
 						 	 </li>
 							</ul>
@@ -191,9 +202,7 @@
 			document.getElementById('date-time').innerHTML = dformat;
 				
 			window.scroll(0, 0);
-			
-			
-			
+									
 		}
 		function CloseCard(){
 			cardAsis.innerHTML = '';

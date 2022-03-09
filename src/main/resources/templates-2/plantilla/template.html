@@ -17,7 +17,7 @@
 <body>
 
 	<!-- BARRA DE NAVEGACION -->
-	<header th:fragment="header">
+	<header th:fragment="header" >
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 			id="main_navbar">
 			<div class="container-fluid">
@@ -30,25 +30,26 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent" 
-				style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;">
+				<div class="collapse navbar-collapse" id="navbarSupportedContent"
+					style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; -o-user-select: none;">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" th:href="@{/home}">Inicio</a></li>
 
 						<li class="nav-item dropdown"
 							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
-							class="nav-link dropdown-toggle" id="navbarDropdown1" 
-							role="button" > Registrar Actividad
-							</a>
+							class="nav-link dropdown-toggle" id="navbarDropdown1"
+							role="button"> Registrar Actividad </a>
 
 							<ul class="dropdown-menu">
 								<li class="nav-item dropdown mt-0"><a
 									class="dropdown-item dropdown-toggle" href="#" role="button"
 									data-bs-toggle="dropdown"> Registrar Ingreso</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item" th:href="@{/views/asistencia/personal}">Empleado</a></li>
-										<li><a class="dropdown-item" th:href="@{/views/asistencia-proveedor}">Proveedor</a></li>
+										<li><a class="dropdown-item"
+											th:href="@{/views/asistencia/personal}">Empleado</a></li>
+										<li><a class="dropdown-item"
+											th:href="@{/views/asistencia-proveedor}">Proveedor</a></li>
 
 									</ul></li>
 								<li class="nav-item dropdown"><a
@@ -57,7 +58,7 @@
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item"
 											th:href="@{/views/asistencia/personal/egreso}">Empleado</a></li>
-										<li><a class="dropdown-item" 
+										<li><a class="dropdown-item"
 											th:href="@{/views/asistencia-proveedor/egreso}">Proveedor</a></li>
 
 
@@ -71,7 +72,7 @@
 							</ul></li>
 
 						<li class="nav-item dropdown"
-							sec:authorize="hasRole('ROLE_ADMIN')"><a
+							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
 							class="nav-link dropdown-toggle" id="navbarDropdown"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Agregar Entidad</a>
@@ -79,14 +80,14 @@
 
 								<li><a class="dropdown-item"
 									th:href="@{/views/personal/agregar}">Empleado</a></li>
-								<li><a class="dropdown-item" 
+								<li><a class="dropdown-item"
 									th:href="@{/views/proveedor/agregar}">Proveedor</a></li>
 								<li><a class="dropdown-item"
-									th:href="@{/views/vehiculo/agregar}">Vehiculo</a></li>
+									th:href="@{/views/vehiculo/agregar}">Vehículo</a></li>
 
 							</ul></li>
-							
-							<li class="nav-item dropdown"
+
+						<li class="nav-item dropdown"
 							sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link dropdown-toggle" id="navbarDropdown2"
 							role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -95,14 +96,16 @@
 
 								<li><a class="dropdown-item"
 									th:href="@{/views/personal/editar}">Empleado</a></li>
-								<li><a class="dropdown-item" 
+								<li><a class="dropdown-item"
 									th:href="@{/views/proveedor/editar}">Proveedor</a></li>
 								<li><a class="dropdown-item"
-									th:href="@{/views/vehiculo/editar}">Vehiculo</a></li>
+									th:href="@{/views/vehiculo/editar}">Vehículo</a></li>
+								<li><a class="dropdown-item"
+									th:href="@{/views/sector_trabajo/editar}">Sector de Trabajo</a></li>
 
 							</ul></li>
-							
-							
+
+
 						<li class="nav-item"
 							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_AUTORIZADOR')"><a
 							class="nav-link active" aria-current="page"
@@ -112,25 +115,34 @@
 							sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_NOTIFICADOR')"><a
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/evento/nuevo}">Nuevo Evento</a></li>
-										
+
 					</ul>
 
 					<ul class="navbar-nav mr-auto">
+					
+						
+					
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/usuario/crear}">Crear Usuario</a></li>
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link active" aria-current="page"
-							th:href="@{/views/usuario/editar}"
-							style="padding-right: 20px;">Editar Usuarios</a></li>
-
+							th:href="@{/views/usuario/editar}" style="padding-right: 20px;">Editar
+								Usuarios</a></li>
+						
+						<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GUARDIA')" style="padding-right: 20px;">
+							<button type="button" class="btn btn-outline-info"
+									id="plantaButton" data-bs-toggle="modal" data-bs-target="#modalPlanta">Seleccionar Planta</button>
+						</li>
+						
+						
 						<li class="nav-item" sec:authorize="!isAuthenticated()"><a
 							class="btn btn-outline-warning" aria-current="page"
 							th:href="@{/login}">Iniciar Sesión</a></li>
 						<li sec:authorize="isAuthenticated()">
 							<form th:action="@{/logout}" method="post">
-								<button type="submit" class="btn btn-outline-warning">Cerrar
-									Sesión</button>
+								<button type="submit" class="btn btn-outline-warning"
+									onclick="deleteCookies()">Cerrar Sesión</button>
 							</form>
 						</li>
 					</ul>
@@ -153,6 +165,52 @@
 			<button type="button" class="btn-close mr-auto"
 				data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
+
+
+		<!-- Modal -->
+		<div class="modal fade" id="modalPlanta" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Ingrese la
+							planta correspondiente:</h5>
+						
+					</div>
+					<form id="myformPlanta">
+						<div class="modal-body" id="modalbody">
+
+
+							<ul class="list-group list-group-flush">
+
+								<li class="list-group-item"><label>Planta: </label> <select
+									class="form-select" id="plantaSelect" name="plantaSelect">
+										<option value="Peñaloza-Planta2" selected>Av. Peñaloza 5750 - Planta II</option>
+										<option value="Facundo-Planta1">Av. Facundo Zuviría 4740 - Planta I</option>
+
+
+								</select></li>
+							</ul>
+
+
+						</div>
+						<div class="modal-footer">
+
+							<button type="submit" class="btn btn-primary"
+								onclick="setCookie()" data-bs-dismiss="modal">Aceptar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+		<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px;">
+			<p sec:authentication='name'  style="margin-right: 2px; margin-top: 10px;"></p>		
+			<a class="navbar-brand" th:href="@{/home}" ><img th:src="@{/images/casa.jpg}" width="35" height="35" ></a>
+					
+		</div>
+		
+		
 	</header>
 
 	<!-- CONTENIDO -->
@@ -164,8 +222,11 @@
 
 		<div>
 			<p>Práctica Supervisada - Trabajo de Mendoza Emiliano</p>
+			<p sec:authentication='principal.authorities' id="rolesUsuario" hidden></p>
+			<p sec:authentication='name' id="nombreUsuario" hidden></p>
 		</div>
 		
+			
 		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
@@ -180,29 +241,128 @@
 		</script>
 
 		<script th:inline="javascript">
+			
+			const roles = document.getElementById("rolesUsuario").textContent;
+			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
 						
-			//const roles = document.getElementById("rolesUsuario").textContent;			
-			
 			var time = new Date().getTime();
-			
+
 			// cada vez que se mueva el mouse en el body o se toque una tecla se guarda el tiempo en el que se hizo
-		     $(document.body).bind("mousemove keypress", function(e) {
-		         time = new Date().getTime();
-		     });
+			$(document.body).bind("mousemove keypress", function(e) {
+				time = new Date().getTime();
+			});
 
-		     function refresh() {
-		    	 //Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
-		         if(new Date().getTime() - time >= 30000) 
-		             window.location.reload(true);
-		         else 
-		             setTimeout(refresh, 10000);
-		     }
-		     
-			// Se llama a refresh cada 10 segundos
-		     setTimeout(refresh, 10000);
+			function refresh() {
+				//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
+				if (new Date().getTime() - time >= 60000)
+					window.location.reload(true);
+				else
+					setTimeout(refresh, 10000);
+			}
 			
+			// Se llama a refresh cada 10 segundos
+			setTimeout(refresh, 10000);
+			
+			
+			
+			
+			
+			//cookies									
+			function deleteCookies() {
+				document.cookie = "logueado=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			}
 
+			$(window).on('load', function() {
+				if (getCookie("logueado") == "" && roles.indexOf("ROLE_GUARDIA") !== -1) {
+					$('#modalPlanta').modal('show');
+				}
+			});
+
+			//console.log(document.cookie);
+
+			function setCookie() {
+				let aux = document.getElementById('plantaSelect').value;
+				
+				document.cookie = nombreUsuario + "=" + aux+ "; path=/";
+				//document.cookie = "planta=" + aux+ "; path=/";
+				document.cookie = "logueado=true; path=/";
+				
+			}
+
+			function getCookie(cname) {
+				let name = cname + "=";
+				let decodedCookie = decodeURIComponent(document.cookie);
+				let ca = decodedCookie.split(';');
+				for (let i = 0; i < ca.length; i++) {
+					let c = ca[i];
+					while (c.charAt(0) == ' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length, c.length);
+					}
+				}
+				return "";
+			}
+			
+			
+			if (getCookie(nombreUsuario) != "") {
+				
+				if(getCookie(nombreUsuario).indexOf("Peñaloza") != -1){
+					document.getElementById("plantaButton").innerText = "Peñaloza - Planta II";
+				}else if(getCookie(nombreUsuario).indexOf("Facundo") != -1){
+					document.getElementById("plantaButton").innerText = "Facundo Zuviría - Planta I";
+				}else{
+					document.getElementById("plantaButton").innerText =  "No definida";
+				}
+				
+								
+			}
+			
+			setPlantaEnCookie();
+			function setPlantaEnCookie(){
+				
+				if(getCookie(nombreUsuario) != ""){
+					const plantaSelect = document.getElementById("plantaSelect");
+					
+					let plantaAnterior = getCookie(nombreUsuario);
+					
+					if(plantaAnterior.indexOf("Peñaloza")!=-1){
+						plantaSelect.innerHTML=`
+							<option value="Peñaloza-Planta2" selected>Av. Peñaloza 5750 - Planta II</option>
+							<option value="Facundo-Planta1">Av. Facundo Zuviría 4740 - Planta I</option>
+						`;
+					}else if(plantaAnterior.indexOf("Facundo")!=-1){
+						plantaSelect.innerHTML=`
+							<option value="Peñaloza-Planta2">Av. Peñaloza 5750 - Planta II</option>
+							<option value="Facundo-Planta1" selected>Av. Facundo Zuviría 4740 - Planta I</option>
+						`;
+					}
+					
+					
+				}
+				
+			}
+			
+			
+// 			var cookies = document.cookie.split(";");
+
+// 		    for (var i = 0; i < cookies.length; i++) {
+// 		        var cookie = cookies[i];
+// 		        var eqPos = cookie.indexOf("=");
+// 		        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+// 		        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+// 		    }
+			
+			
+// 			function zoom() {
+//             	document.body.style.zoom = "90%" 
+//        		 }
+// 			zoom();
 		</script>
+
+
+		
 
 	</footer>
 

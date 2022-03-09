@@ -3,11 +3,12 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
-<body>
+<body >
 
 	<header th:replace="plantilla/template :: header"></header>
-
-	<div class="container" sec:authorize="isAuthenticated()">
+	
+	<div class="container-fluid px-5"
+		>
 		<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')">
 			<div class="row d-grid gap-2 d-md-flex justify-content-md-center"
 				style="padding-top: 20px;">
@@ -74,10 +75,10 @@
 			</div>
 		</div>
 		<div class="row " style="padding-top: 25px;">
-			<div class="col-sm-6">
+			<div class="col-sm-6" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA', 'ROLE_NOTIFICADOR')">
 				<div class="card">
 					<div class="card-body"
-						style="overflow-x: hidden; overflow-y: auto; height: 14em; border: 1px solid">
+						style="overflow-x: hidden; overflow-y: auto; height: 35vh; border: 1px solid">
 						<h5 class="card-title">Listado de Eventos:</h5>
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item" th:each="ev : ${listaEventos}">
@@ -89,21 +90,18 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA', 'ROLE_AUTORIZADOR')">
 				<div class="card">
 					<div class="card-body"
-						style="overflow-x: hidden; overflow-y: auto; height: 14em; border: 1px solid">
+						style="overflow-x: hidden; overflow-y: auto; height: 35vh; border: 1px solid">
 						<h5 class="card-title">Listado de Retiros de Material:</h5>
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item" th:each="ret : ${listaRetiros}">
-								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"
-								></span> - RETIRA:  
-								<span 
+								<span th:text="${#dates.format(ret.fechaLimite, 'dd/MM/yyyy')}"></span>
+								- RETIRA: <span
 								th:text="${ret.personal != null} ? ${ret.personal.nombre} + ' ' + ${ret.personal.apellido} : 'Retiro externo'"></span>
-								 - MATERIALES:
-								<span
-								th:id="mat + ${ret.idRetiro}"></span> - AUTORIZA:
-								[[${ret.usuarioSector.nombre}]]
+								- MATERIALES: <span th:id="mat + ${ret.idRetiro}"></span> -
+								AUTORIZA: [[${ret.usuarioSector.nombre}]]
 								[[${ret.usuarioSector.apellido}]]
 							</li>
 						</ul>
@@ -113,6 +111,7 @@
 		</div>
 
 	</div>
+
 
 	<div class="mt-5"></div>
 
@@ -156,7 +155,8 @@
 			  }
 			  return 0;
 		}
-				
+
+			
 		
 	</script>
 </body>

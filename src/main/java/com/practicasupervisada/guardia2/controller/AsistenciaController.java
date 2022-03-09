@@ -75,12 +75,14 @@ public class AsistenciaController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			asis.setUsuarioIngreso(usuarioServ.findByUsuario(auth.getName()));
 			asistenciaServ.crearAsistencia(asis);
+			
+			atributos.addFlashAttribute("success", "Ingreso registrado exitosamente!");
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
 		
-		atributos.addFlashAttribute("success", "Ingreso registrado exitosamente!");
+		
 		return "redirect:/views/asistencia/personal";
 	}
 	
@@ -88,6 +90,7 @@ public class AsistenciaController {
 	
 	@PostMapping("/egreso-empleado/{idAsistencia}")
 	public String RegistrarEgresoDeAsistencia(@PathVariable("idAsistencia") int idAsistencia,
+						@RequestParam(name = "modo", required = false) String modo,
 						RedirectAttributes atributos) {
 			
 		try {
@@ -100,12 +103,16 @@ public class AsistenciaController {
 			asis.setUsuarioEgreso(usuarioServ.findByUsuario(auth.getName()));
 			
 			asistenciaServ.actualizarAsistencia(asis);
-			
+			atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
-		atributos.addFlashAttribute("success", "Egreso registrado exitosamente!");
+		
+		if(modo!=null && modo.equals("lista")) {
+			return "redirect:/views/asistencia/personal/egreso/lista";
+		}
+				
 		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
@@ -113,6 +120,7 @@ public class AsistenciaController {
 	public String registrarSalidaTransitoria(@PathVariable("idAsistencia") int idAsistencia,
 						@RequestParam(name = "vehiculo") int idVehiculo,
 						@RequestParam(name = "comentario") String comentario,
+						@RequestParam(name = "modo", required = false) String modo,
 						RedirectAttributes atributos) {
 		
 			
@@ -143,12 +151,15 @@ public class AsistenciaController {
 			asistenciaServ.actualizarAsistencia(asis);
 			
 			//
-			
+			atributos.addFlashAttribute("success", "Egreso transitorio registrado!");
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
+						
+		if(modo!=null && modo.equals("lista")) {
+			return "redirect:/views/asistencia/personal/egreso/lista";
+		}
 		
-		atributos.addFlashAttribute("success", "Egreso transitorio registrado!");
 		return "redirect:/views/asistencia/personal/egreso";
 	}
 	
@@ -157,6 +168,7 @@ public class AsistenciaController {
 	public String reIngresoTransitorio(@PathVariable("idTransito") int idTransito,
 						@RequestParam(name = "vehiculo") int idVehiculo,
 						@RequestParam(name = "comentario") String comentario,
+						@RequestParam(name = "modo", required = false) String modo,
 						RedirectAttributes atributos) {
 			
 		
@@ -191,7 +203,9 @@ public class AsistenciaController {
 			atributos.addFlashAttribute("error", "Error inesperado!");
 		}
 		
-		
+		if(modo!=null && modo.equals("lista")) {
+			return "redirect:/views/asistencia/personal/egreso/lista";
+		}
 		return "redirect:/views/asistencia/personal/egreso";
 	}
 
@@ -286,6 +300,47 @@ public class AsistenciaController {
 		return "/views/asistencia/egresoPersonal";
 	}
 	
+	@GetMapping("/personal/egreso/lista")
+	public String mostrarListaAsistenciasEmpleadosIngresados(Model model){
+		
+		try {
+			List<Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
+			List<Asistencia> AsisSinEgreso = listaAsistencias
+											.stream()
+											.filter(a -> a.getSalida() == null && a.getPersonal()!=null && !a.getEnTransito())
+											.collect(Collectors.toList());
+			
+			List<Vehiculo> listaVehiculos = vehiculoServ.getAllVehiculo();
+			
+			model.addAttribute("asistencias", AsisSinEgreso);
+			model.addAttribute("listaVehiculos", listaVehiculos);
+			
+			List<Personal> todoPersonal = personalServ.findAllByOrderByApellidoAsc()
+					.stream()
+					.filter(p -> p.getEnabled() !=null 
+								&& p.getNombre() !=null
+								&& p.getApellido() !=null
+								)
+			.collect(Collectors.toList());;
+			
+			model.addAttribute("todoPersonal", todoPersonal);
+			
+			List<Transito> listaTransito = transitoServ.findAllByOrderByFechaSalidaTransitoriaAsc()
+					.stream()
+					.filter(t -> (t.getFechaReingreso()==null && t.getUsuarioIngreso()==null)
+								|| (t.getFechaSalidaTransitoria()==null && t.getUsuarioEgreso()==null && t.getAsistencia()==null))
+					.collect(Collectors.toList());
+			
+			model.addAttribute("listaTransito", listaTransito);
+			
+			transitoServ.inspecciondarTransitosExpirados(cantHoras);
+			
+		}catch(Exception e) {
+			return "home";
+		}
+		
+		return "/views/asistencia/egresoPersonalLista";
+	}	
 	
 	@GetMapping("/asistencias-empleado/{nroLegajo}")
 	public String asistenciasEmpleado(@PathVariable("nroLegajo") int nroLegajo,
@@ -439,12 +494,12 @@ public class AsistenciaController {
 			
 			transitoServ.crearTransito(transito);
 			
-			
+			atributos.addFlashAttribute("success", "Ingreso transitorio externo registrado!");
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
-		atributos.addFlashAttribute("success", "Ingreso transitorio externo registrado!");
+		
 		return "redirect:/views/asistencia/personal";
 	}
 	

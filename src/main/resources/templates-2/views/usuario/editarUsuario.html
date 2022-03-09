@@ -7,19 +7,31 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
-	
-		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center" id="cardEditar"></div>
-		
-		<h3 class="mt-3">Listado de usuarios: </h3>
-		
+
+		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center"
+			id="cardEditar"></div>
+
+		<div class="gap-2 d-md-flex justify-content-md-between">
+			<h3 class="mt-3">Listado de usuarios:</h3>
+			<button class="btn btn-sm" data-bs-toggle="modal"
+				data-bs-target="#modalEditarExpiracion">
+				<img th:src="@{/images/reloj.jpg}" width="35" height="35" >
+			</button>
+		</div>
+
+
 		<table class="table mt-3" id="myTable">
 			<thead>
 				<tr>
-					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Usuario</th>
-					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Habilitado</th>
-					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Nombre y Apellido</th>
-					<th class="sortable" scope="col" style="width: 25%; text-align: center;">Editar</th>
-					
+					<th class="sortable" scope="col"
+						style="width: 25%; text-align: center;">Usuario</th>
+					<th class="sortable" scope="col"
+						style="width: 25%; text-align: center;">Habilitado</th>
+					<th class="sortable" scope="col"
+						style="width: 25%; text-align: center;">Nombre y Apellido</th>
+					<th class="sortable" scope="col"
+						style="width: 25%; text-align: center;">Editar</th>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -27,23 +39,62 @@
 
 					<td th:text="${us.usuario}" style="text-align: center;"></td>
 					<td th:text="${us.enabled}" style="text-align: center;"></td>
-					<td  style="text-align: center;">[[${us.nombre}]] [[${us.apellido}]]</td>
-					<td  style="text-align: center;">
+					<td style="text-align: center;">[[${us.nombre}]]
+						[[${us.apellido}]]</td>
+					<td style="text-align: center;">
 						<button class="btn btn-success btn-sm"
-						 th:onclick="editarUsuario([[${us}]])">Editar</button>
+							th:onclick="editarUsuario([[${us}]])">Editar</button>
 					</td>
-					
+
 				</tr>
 
 			</tbody>
 		</table>
 	</div>
-	
+
+	<!-- Modal -->
+	<div class="modal fade" id="modalEditarExpiracion" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Ingrese límite
+						de expiración de tránsito:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myformExpiracion" th:action="@{/views/asistencia/modificar_cant_horas}" method="post">
+					<div class="modal-body" id="modalbody">
+
+
+						<ul class="list-group list-group-flush">
+
+							<li class="list-group-item"><label >Cantidad de
+									horas: </label> <input type="number" min=0 max=48 style="margin-left: 8px;" name="cantidadH" th:value="${cantHoras}"></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+						
+						<button type="submit" class="btn btn-primary"
+							>Aceptar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
 	<div class="mt-5"></div>
-	
+
 	<footer th:replace="plantilla/template ::footer"></footer>
-	
-	<script  th:inline="javascript">
+
+	<script th:inline="javascript">
 	
 		const cardEditar = document.getElementById('cardEditar');
 			

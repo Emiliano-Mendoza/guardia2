@@ -7,7 +7,7 @@
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container">
-
+		
 		<div class="row mt-3 d-grid gap-2 d-md-flex justify-content-md-center"
 			id="cardEditar"></div>
 
@@ -71,7 +71,8 @@
 	<script th:inline="javascript"> 
 	
 		var personal = /*[[${listaPersonal}]]*/ 'default';
-		
+		var listaSectores = /*[[${listaSectores}]]*/ 'default';
+				
 		const formulario = document.querySelector('#formulario');
 		const resultado = document.querySelector('#fila')
 		const cardEditar = document.getElementById('cardEditar');
@@ -92,11 +93,11 @@
 						<td scope="row" style="text-align:center;">${p.nroLegajo}</td>
 						<td style="text-align:center;">${p.nombre}</td>
 						<td style="text-align:center;">${p.apellido}</td>
-						<td style="text-align:center;">${p.sector}</td>						
+						<td style="text-align:center;">${p.sectorTrabajo.sector}</td>						
 						<td style="text-align:center;">
 							<button class="btn btn-success btn-sm" 
 							title:"Registrar Nueva Asistencia" id="asisBtn" 
-							onclick="editarEmpleado('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sector}','${p.imagen}','${p.enabled}')">
+							onclick="editarEmpleado('${p.nroLegajo}','${p.nombre}','${p.apellido}','${p.sectorTrabajo.idSector}','${p.imagen}','${p.enabled}')">
 							Editar
 							</button>
 						</td>
@@ -116,8 +117,13 @@
 	
 		function editarEmpleado(nroLegajo, nombre, apellido, sector, imagen, enabled){
 			
-			let urlA = "/views/personal/editar/" + nroLegajo;		
-			let imagenAux = imagen.replace(/\s/g, "%20");
+			let urlA = "/views/personal/editar/" + nroLegajo;
+			
+			let imagenAux = '';
+			if(imagen != null){
+				imagenAux = imagen.replace(/\s/g, "%20");
+			}
+			
 			let imagenEmpleado= `/recursos/${imagenAux}` ;
 			
 			cardEditar.innerHTML = `
@@ -221,25 +227,20 @@
 			cardEditar.innerHTML = '';		
 		}
 			
-		function selectedSector(sector){
-			
-			let sectores = ["Administrativo","Almacenes","Ayud. Gral.",
-							"Descartonado","Enfardado","Impresión","Informática",
-							"Mantenimiento","Mantenimiento Electrico","Mantenimiento Mec",
-							"Movimientos Internos","Oficina Tecnica","Pegadora",
-							"Preprensa","Producción","Tintas","Troquelado","Otro"];
-			
+		function selectedSector(idSector){
+						
 			const selector = document.getElementById("sector");
 			
-			for(let sec of sectores){
+			for(let sec of listaSectores){
 				
-				if(sector == sec){
+				if(idSector == sec.idSector){
 					selector.innerHTML += `
-						<option value="${sec}" selected>${sec}</option>
+						<option value="${sec.idSector}" selected>${sec.sector}</option>
 					`;
+					
 				}else{
 					selector.innerHTML += `
-						<option value="${sec}">${sec}</option>
+						<option value="${sec.idSector}">${sec.sector}</option>
 					`;
 				}
 			}
