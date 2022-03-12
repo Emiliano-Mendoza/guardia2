@@ -110,21 +110,23 @@
 				
 				<form action=${action} method="post" >
 					<div class="card-body" >
-					<div class="card-text">
-						<label for="exampleInput" class="form-label">Descripción:</label>
-						<textarea class="form-control" rows="3" id="descripcion" name="descripcion"
-							required >${descripcion}</textarea>
-					</div>
-					<div class="card-text mt-3">
-						<label for="exampleInputDate" class="form-label">Fecha
-						del Evento: </label> <input type="datetime-local" name="fechaEvento"
-						id=${fechaN} required>
-					</div>
-	
-					<p class="card-text mt-3">
-						Encargado: <span>${nombre} ${apellido}</span>
-					</p>
-	
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+								<label for="exampleInput" class="form-label">Descripción:</label>
+								<textarea class="form-control" rows="3" id="descripcion" name="descripcion"
+									required >${descripcion}</textarea>
+							</li>
+							<li class="list-group-item">
+								<label for="exampleInputDate" class="form-label">Fecha
+								del Evento: </label> <input type="datetime-local" name="fechaEvento"
+								id=${fechaN} required>
+								</li>
+							<li class="list-group-item">
+								<p>
+									Encargado: <span>${nombre} ${apellido}</span>
+								</p>
+							</li>
+						</ul>
 					</div>
 		
 					<div class="card-footer gap-2 d-md-flex justify-content-between">

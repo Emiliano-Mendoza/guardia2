@@ -262,6 +262,8 @@ public class AsistenciaController {
 	public String mostrarAsistenciasEmpleadosIngresados(Model model){
 		
 		try {
+			transitoServ.inspecciondarTransitosExpirados(cantHoras);
+			
 			List<Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 			List<Asistencia> AsisSinEgreso = listaAsistencias
 											.stream()
@@ -289,9 +291,7 @@ public class AsistenciaController {
 								|| (t.getFechaSalidaTransitoria()==null && t.getUsuarioEgreso()==null && t.getAsistencia()==null))
 					.collect(Collectors.toList());
 			
-			model.addAttribute("listaTransito", listaTransito);
-			
-			transitoServ.inspecciondarTransitosExpirados(cantHoras);
+			model.addAttribute("listaTransito", listaTransito);						
 			
 		}catch(Exception e) {
 			return "home";
@@ -304,6 +304,8 @@ public class AsistenciaController {
 	public String mostrarListaAsistenciasEmpleadosIngresados(Model model){
 		
 		try {
+			transitoServ.inspecciondarTransitosExpirados(cantHoras);
+			
 			List<Asistencia> listaAsistencias = asistenciaServ.findAllByOrderByEntradaAsc();
 			List<Asistencia> AsisSinEgreso = listaAsistencias
 											.stream()
@@ -333,7 +335,7 @@ public class AsistenciaController {
 			
 			model.addAttribute("listaTransito", listaTransito);
 			
-			transitoServ.inspecciondarTransitosExpirados(cantHoras);
+			
 			
 		}catch(Exception e) {
 			return "home";

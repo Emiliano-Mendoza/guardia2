@@ -17,7 +17,7 @@
 <body>
 
 	<!-- BARRA DE NAVEGACION -->
-	<header th:fragment="header" >
+	<header th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 			id="main_navbar">
 			<div class="container-fluid">
@@ -119,9 +119,9 @@
 					</ul>
 
 					<ul class="navbar-nav mr-auto">
-					
-						
-					
+
+
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/usuario/crear}">Crear Usuario</a></li>
@@ -129,13 +129,15 @@
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/usuario/editar}" style="padding-right: 20px;">Editar
 								Usuarios</a></li>
-						
-						<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GUARDIA')" style="padding-right: 20px;">
+
+						<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GUARDIA')"
+							style="padding-right: 20px;">
 							<button type="button" class="btn btn-outline-info"
-									id="plantaButton" data-bs-toggle="modal" data-bs-target="#modalPlanta">Seleccionar Planta</button>
+								id="plantaButton" data-bs-toggle="modal"
+								data-bs-target="#modalPlanta">Seleccionar Planta</button>
 						</li>
-						
-						
+
+
 						<li class="nav-item" sec:authorize="!isAuthenticated()"><a
 							class="btn btn-outline-warning" aria-current="page"
 							th:href="@{/login}">Iniciar Sesión</a></li>
@@ -165,7 +167,7 @@
 			<button type="button" class="btn-close mr-auto"
 				data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
-
+		<div id="notificacionAlert"></div>
 
 		<!-- Modal -->
 		<div class="modal fade" id="modalPlanta" tabindex="-1"
@@ -175,7 +177,7 @@
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">Ingrese la
 							planta correspondiente:</h5>
-						
+
 					</div>
 					<form id="myformPlanta">
 						<div class="modal-body" id="modalbody">
@@ -185,8 +187,10 @@
 
 								<li class="list-group-item"><label>Planta: </label> <select
 									class="form-select" id="plantaSelect" name="plantaSelect">
-										<option value="Peñaloza-Planta2" selected>Av. Peñaloza 5750 - Planta II</option>
-										<option value="Facundo-Planta1">Av. Facundo Zuviría 4740 - Planta I</option>
+										<option value="Peñaloza-Planta2" selected>Av.
+											Peñaloza 5750 - Planta II</option>
+										<option value="Facundo-Planta1">Av. Facundo Zuviría
+											4740 - Planta I</option>
 
 
 								</select></li>
@@ -203,14 +207,21 @@
 				</div>
 			</div>
 		</div>
-	
-		<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px;">
-			<p sec:authentication='name'  style="margin-right: 2px; margin-top: 10px;"></p>		
-			<a class="navbar-brand" th:href="@{/home}" ><img th:src="@{/images/casa.jpg}" width="35" height="35" ></a>
-					
+
+		<div class="d-md-flex justify-content-end"
+			sec:authorize="isAuthenticated()"
+			style="float: right; margin-top: 10px;">
+			<p sec:authentication='name'
+				style="margin-right: 2px; margin-top: 10px;"></p>
+			<a class="navbar-brand" th:href="@{/home}"><img
+				th:src="@{/images/casa.jpg}" width="35" height="35"></a>
+
 		</div>
-		
-		
+		<form th:action="@{/msj}" method="get">
+			<button type="submit">Mensajes</button>
+		</form>
+
+
 	</header>
 
 	<!-- CONTENIDO -->
@@ -221,12 +232,12 @@
 		class="bg-dark text-white text-center fixed-bottom ">
 
 		<div>
-			<p>Práctica Supervisada - Trabajo de Mendoza Emiliano</p>
-			<p sec:authentication='principal.authorities' id="rolesUsuario" hidden></p>
-			<p sec:authentication='name' id="nombreUsuario" hidden></p>
+			<span>Práctica Supervisada - Trabajo de Mendoza Emiliano</span> <span
+				sec:authentication='principal.authorities' id="rolesUsuario" hidden></span>
+			<span sec:authentication='name' id="nombreUsuario" hidden></span>
 		</div>
-		
-			
+
+
 		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
@@ -235,6 +246,8 @@
 		<script type="text/javascript" th:src="@{/js/moment.js}"></script>
 		<script type="text/javascript" th:src="@{/js/daterangepicker.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/daterangeconfig.js}"></script>
+		<script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
 
 		<script>
 			new bootnavbar();
@@ -244,7 +257,8 @@
 			
 			const roles = document.getElementById("rolesUsuario").textContent;
 			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
-						
+			
+			
 			var time = new Date().getTime();
 
 			// cada vez que se mueva el mouse en el body o se toque una tecla se guarda el tiempo en el que se hizo
@@ -253,15 +267,16 @@
 			});
 
 			function refresh() {
-				//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
-				if (new Date().getTime() - time >= 60000)
-					window.location.reload(true);
-				else
-					setTimeout(refresh, 10000);
+				
+					//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
+					if (new Date().getTime() - time >= 60000)
+						window.location.reload(true);
+					else
+						setTimeout(refresh, 10000);
 			}
 			
 			// Se llama a refresh cada 10 segundos
-			setTimeout(refresh, 10000);
+			//setTimeout(refresh, 10000);
 			
 			
 			
@@ -345,24 +360,14 @@
 			}
 			
 			
-// 			var cookies = document.cookie.split(";");
+			
 
-// 		    for (var i = 0; i < cookies.length; i++) {
-// 		        var cookie = cookies[i];
-// 		        var eqPos = cookie.indexOf("=");
-// 		        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-// 		        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-// 		    }
 			
-			
-// 			function zoom() {
-//             	document.body.style.zoom = "90%" 
-//        		 }
-// 			zoom();
+
 		</script>
 
 
-		
+
 
 	</footer>
 

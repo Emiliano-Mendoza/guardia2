@@ -20,9 +20,15 @@
 		<div class="gap-2 d-md-flex justify-content-between mt-2">
 			<h2>Listado del Personal:</h2>
 
-			<button type="button" class="btn btn-primary btn-sm"
-				data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
-				asistencias</button>
+			<div class="gap-2 d-md-flex justify-content-end">
+				<button type="button" class="btn btn-primary btn-sm"
+					data-bs-toggle="modal" data-bs-target="#modalTransito">Ver
+					Tránsitos</button>
+
+				<button type="button" class="btn btn-primary btn-sm"
+					data-bs-toggle="modal" data-bs-target="#exampleModal">Ver
+					Asistencias</button>
+			</div>
 		</div>
 
 
@@ -82,14 +88,53 @@
 						<button type="button" class="btn btn-secondary "
 							data-bs-dismiss="modal">Cerrar</button>
 
-						<button type="submit" class="btn btn-primary">Ver
-							Asistencias</button>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="modalTransito" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Salidas
+						Transitorias:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form id="myform" method="get"
+					th:action="@{/views/asistencia/salidas-transitorias}">
+					<div class="modal-body" id="modalbody">
 
+
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><label>Rango de fechas:
+							</label> <input type="text" id="date_range2" name="date_range"
+								class="form-control"></li>
+							<li class="list-group-item"><label>Empleado: </label> <select
+								class="form-select" id="sector" name="nroLegajo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="p:${todoPersonal}" th:value='${p.nroLegajo}'>[[${p.apellido}]]
+										[[${p.nombre}]]</option>
+
+							</select></li>
+						</ul>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary "
+							data-bs-dismiss="modal">Cerrar</button>
+
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 
 	<div class="mt-5"></div>
@@ -231,7 +276,7 @@
 			cardAsis.innerHTML = `
 				<div class="col-md-8" >
 					<div class="card text-dark bg-light mb-3" >
-						<p class="card-header text-dark" style="background-color: #9acd32"
+						<p class="card-header text-dark" style="background-color: #DEFFA0"
 							><b>Registro de Ingreso Transitorio a Planta</b></p>
 						<div class="row g-0 card-body">
 							<div class="col-md-4 mt-1" id="imagen">
@@ -264,7 +309,7 @@
 								>
 							<div
 								class="card-footer d-grid gap-2 d-md-flex justify-content-between"
-									style="background-color: #9acd32">
+									style="background-color: #DEFFA0">
 									<button type="button" class="btn btn-secondary" onclick="AsistenciaCard('${nroLegajo}','${nombre}','${apellido}','${sector}', '${imagen}')"
 										>Cancelar</button>
 									<div>

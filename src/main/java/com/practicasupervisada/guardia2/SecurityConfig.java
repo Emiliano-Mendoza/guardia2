@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/css/**", "/images/**", "/js/**", "/websocket").permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/css/**", "/audios/**", "/images/**", "/js/**", "/websocket", "/message","/topic/messages").permitAll()
 		.antMatchers("/views/personal").hasAnyRole("ADMIN","GUARDIA")
 		.antMatchers("/views/retiro-material/autorizar").hasAnyRole("AUTORIZADOR", "ADMIN")
 		.antMatchers("/views/retiro-material/autorizacion").hasAnyRole("AUTORIZADOR", "ADMIN")

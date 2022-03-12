@@ -16,12 +16,9 @@
 		<table class="table mt-3" id="myTable">
 			<thead>
 				<tr>
-					<!-- <th class="sortable" scope="col"
-						style="width: 25%; text-align: center;">Marca</th>
+					
 					<th class="sortable" scope="col"
-						style="width: 25%; text-align: center;">Modelo</th> -->
-					<th class="sortable" scope="col"
-						style="width: 25%; text-align: center;">Razón Social</th>
+						style="width: 25%; text-align: center;">Proveedor</th>
 					<th class="sortable" scope="col"
 						style="width: 25%; text-align: center;">Editar</th>
 
@@ -30,8 +27,7 @@
 			<tbody>
 				<tr th:each="prov:${listaProveedor}">
 
-					<!-- <td th:text="${ve.marca}" style="text-align: center;"></td>
-					<td th:text="${ve.modelo}" style="text-align: center;"></td> -->
+					
 					<td th:text="${prov.razonSocial}" style="text-align: center;"></td>
 					<td style="text-align: center;">
 						<button class="btn btn-success btn-sm"

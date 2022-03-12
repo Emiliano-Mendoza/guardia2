@@ -92,16 +92,16 @@ public class LogAspect {
 	}
 	
 	
-	@Before("expirarTransitoMetodo()")
-	public void hacerAntesExpiracion(JoinPoint jp) {
-		
-		logger.info("@@@@@@ Inspeccion de Transitos expirados ; Metodo : " + jp.getSignature().getName());
-		
-	}
-	@After("expirarTransitoMetodo()")
-	public void hacerDespuesExpiracion(JoinPoint jp) {
-		
-		logger.info("@@@@@@ Finalizacion de inspeccion ; Metodo : " + jp.getSignature().getName());
-		
-	}
+//	@Before("expirarTransitoMetodo()")
+//	public void hacerAntesExpiracion(JoinPoint jp) {
+//		
+//		logger.info("@@@@@@ Inspeccion de Transitos expirados ; Metodo : " + jp.getSignature().getName());
+//		
+//	}
+//	@After("expirarTransitoMetodo()")
+//	public void hacerDespuesExpiracion(JoinPoint jp) {
+//		
+//		logger.info("@@@@@@ Finalizacion de inspeccion ; Metodo : " + jp.getSignature().getName());
+//		
+//	}
 }
