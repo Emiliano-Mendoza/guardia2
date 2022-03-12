@@ -19,7 +19,7 @@
 					</div>
 					<button id="send" class="btn btn-default" type="button">Send</button>
 				</form>
-				<audio th:src="@{/audios/notification-sound.wav}" controls style="display: none;" id="notiSound"></audio>
+				
 			</div>
 		</div>
 		
@@ -45,60 +45,7 @@
 	<footer th:replace="plantilla/template ::footer"></footer>
 	
 	<script>
-		var stompClient = null;
-		var notificationCount = 0;
-	
-		$(document).ready(function() {
-		    console.log("Index page is ready");
-		    connect();
-	
-		    $("#send").click(function() {
-		        sendMessage();
-		    });
 		
-
-		});
-	
-		function connect() {
-		    var socket = new SockJS('/websocket');
-		    stompClient = Stomp.over(socket);
-		    stompClient.connect({}, function (frame) {
-		        //console.log('Connected: ' + frame);
-		        stompClient.subscribe('/topic/messages', function (message) {
-		            showMessage(JSON.parse(message.body).content);
-		        });
-	
-	
-		    });
-		}
-	
-		function showMessage(message) {
-		    $("#messages").append("<tr><td>" + message + "</td></tr>");
-		    //notificationSound();
-		    
-		    const noti = document.getElementById("notificacionAlert");
-		    noti.innerHTML=`
-		    	<div
-				class="alert alert-info gap-2 d-md-flex justify-content-between"
-				role="alert">
-					<label >${message}</label>
-					<button type="button" class="btn-close mr-auto"
-						data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-		    `;
-		    
-		}
-	
-		function sendMessage() {
-		    console.log("sending message");
-		    //let mensaje = ;
-		    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': nombreUsuario + " ha creado un nuevo evento."}));
-		    //stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': $("#message").val()}));
-		}
-	
-		function notificationSound(){
-			document.getElementById("notiSound").play();
-		}
 	</script>
 	
 </body>

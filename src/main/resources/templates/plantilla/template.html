@@ -11,6 +11,7 @@
 <link rel="stylesheet" th:href="@{/css/daterangepicker.css}">
 <link rel="stylesheet" th:href="@{/css/signin.css}">
 <link rel="stylesheet" th:href="@{/css/bootstrap-icons.css}">
+<link rel="stylesheet" th:href="@{/css/toastr.min.css}">
 <link rel="icon" th:href="@{/images/icono-pestaña.png}">
 
 </head>
@@ -167,7 +168,10 @@
 			<button type="button" class="btn-close mr-auto"
 				data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
+
+		<!-- Notificacion -->
 		<div id="notificacionAlert"></div>
+
 
 		<!-- Modal -->
 		<div class="modal fade" id="modalPlanta" tabindex="-1"
@@ -217,9 +221,9 @@
 				th:src="@{/images/casa.jpg}" width="35" height="35"></a>
 
 		</div>
-		<form th:action="@{/msj}" method="get">
-			<button type="submit">Mensajes</button>
-		</form>
+<!-- 		<form th:action="@{/msj}" method="get"> -->
+<!-- 			<button type="submit">Mensajes</button> -->
+<!-- 		</form> -->
 
 
 	</header>
@@ -248,6 +252,7 @@
 		<script type="text/javascript" th:src="@{/js/daterangeconfig.js}"></script>
 		<script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/toastr.min.js}"></script>
 
 		<script>
 			new bootnavbar();
@@ -257,7 +262,7 @@
 			
 			const roles = document.getElementById("rolesUsuario").textContent;
 			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
-			
+			let timeRefresh = 30000;
 			
 			var time = new Date().getTime();
 
@@ -269,14 +274,14 @@
 			function refresh() {
 				
 					//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
-					if (new Date().getTime() - time >= 60000)
+					if (new Date().getTime() - time >= timeRefresh)
 						window.location.reload(true);
 					else
 						setTimeout(refresh, 10000);
 			}
 			
 			// Se llama a refresh cada 10 segundos
-			//setTimeout(refresh, 10000);
+			setTimeout(refresh, 10000);
 			
 			
 			
@@ -360,9 +365,84 @@
 			}
 			
 			
+			var stompClient = null;
+			var notificationCount = 0;
+		
+			$(document).ready(function() {
+			    console.log("Index page is ready");
+			    connect();
+		
+			    $("#send").click(function() {
+			        sendMessage();
+			    });
 			
 
+			});
+		
+			function connect() {
+			    var socket = new SockJS('/websocket');
+			    
+			    stompClient = Stomp.over(socket);
+			    stompClient.connect({}, function (frame) {
+			        stompClient.subscribe('/topic/messages', function (message) {
+			            showMessage(JSON.parse(message.body).content);
+			        });
+				
+			    });
+			}
+		
+			function showMessage(message) {
+				
+				if(roles.indexOf("ROLE_GUARDIA") !== -1){
+					let aux = "El usuario "+ nombreUsuario + " ha creado";
+				    if(message.indexOf(aux)==-1){
+				    	 notificationSound();
+				    	 toastr["info"](message, "Notificación");
+				    	 timeRefresh = timeRefresh + 90000;
+				    }				    
+				}		    		    				    
+			}
+		
+			function sendMessage() {
+			    console.log("sending message");
+			   
+			    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': nombreUsuario + " ha creado un nuevo evento."}));
+			    //stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': $("#message").val()}));
+			}
 			
+			function sendEventoNoti() {
+			    console.log("sending message");
+			    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': "El usuario " + nombreUsuario + " ha creado un nuevo evento."}));
+				
+			}
+			function sendRetiroNoti() {
+			    console.log("sending message");
+			    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': "El usuario " + nombreUsuario + " ha creado una nueva autorización de retiro."}));
+				
+			}
+		
+			function notificationSound(){				
+				let audio = new Audio("/audios/notification-sound.wav");
+				audio.play();
+			}
+			
+			toastr.options = {
+					  "closeButton": true,
+					  "debug": false,
+					  "newestOnTop": true,
+					  "progressBar": false,
+					  "positionClass": "toast-bottom-right",
+					  "preventDuplicates": false,
+					  "onclick": null,
+					  "showDuration": "300",
+					  "hideDuration": "1000",
+					  "timeOut": "500000",
+					  "extendedTimeOut": "1000",
+					  "showEasing": "swing",
+					  "hideEasing": "linear",
+					  "showMethod": "fadeIn",
+					  "hideMethod": "fadeOut"
+					}
 
 		</script>
 
