@@ -101,8 +101,12 @@ public class PersonalController {
 			model.addAttribute("personal", personal);
 			model.addAttribute("error", "No se pudo crear el nuevo empleado");
 			
-			System.out.println("Formulario incorrecto");
-			System.out.println(result.toString());
+			List<SectorTrabajo> listaSectores = sectorTrabajoServ.getAllSectorTrabajo()
+					.stream()
+					.filter(s -> s.getEnabled())
+					.collect(Collectors.toList());
+			
+			model.addAttribute("listaSectores", listaSectores);
 			
 			
 			return "/views/personal/agregar";

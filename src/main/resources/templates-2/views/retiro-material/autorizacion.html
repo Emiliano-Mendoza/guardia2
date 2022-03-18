@@ -148,18 +148,13 @@
 
 		window.scroll(0, 0);
 		
-		/*
+		
  		$("#formAut").on('submit', function(event){
-		    event.preventDefault();
-		    
-		    if(result = window.confirm("Desea confirmar la autorización al empleado " + nombre+" "+ apellido + "?")){
-		    	//send();
-		    	this.submit();
-		    }
-		    
-		    
+		    event.preventDefault();		    
+		    sendRetiroNoti();
+		    this.submit();		    		    		    
 		});		
-		*/
+		
 		
 	}
 	
@@ -260,6 +255,11 @@
 		SetMateriales();
 		window.scroll(0, 0);
 		
+		$("#formAut").on('submit', function(event){
+		    event.preventDefault();		    
+		    sendRetiroNoti();
+		    this.submit();		    		    		    
+		});	
 	}
 	
 	

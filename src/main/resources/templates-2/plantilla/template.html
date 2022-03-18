@@ -11,13 +11,14 @@
 <link rel="stylesheet" th:href="@{/css/daterangepicker.css}">
 <link rel="stylesheet" th:href="@{/css/signin.css}">
 <link rel="stylesheet" th:href="@{/css/bootstrap-icons.css}">
+<link rel="stylesheet" th:href="@{/css/toastr.min.css}">
 <link rel="icon" th:href="@{/images/icono-pestaña.png}">
 
 </head>
 <body>
 
 	<!-- BARRA DE NAVEGACION -->
-	<header th:fragment="header" >
+	<header th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 			id="main_navbar">
 			<div class="container-fluid">
@@ -119,9 +120,9 @@
 					</ul>
 
 					<ul class="navbar-nav mr-auto">
-					
-						
-					
+
+
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/usuario/crear}">Crear Usuario</a></li>
@@ -129,13 +130,15 @@
 							class="nav-link active" aria-current="page"
 							th:href="@{/views/usuario/editar}" style="padding-right: 20px;">Editar
 								Usuarios</a></li>
-						
-						<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GUARDIA')" style="padding-right: 20px;">
+
+						<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GUARDIA')"
+							style="padding-right: 20px;">
 							<button type="button" class="btn btn-outline-info"
-									id="plantaButton" data-bs-toggle="modal" data-bs-target="#modalPlanta">Seleccionar Planta</button>
+								id="plantaButton" data-bs-toggle="modal"
+								data-bs-target="#modalPlanta">Seleccionar Planta</button>
 						</li>
-						
-						
+
+
 						<li class="nav-item" sec:authorize="!isAuthenticated()"><a
 							class="btn btn-outline-warning" aria-current="page"
 							th:href="@{/login}">Iniciar Sesión</a></li>
@@ -166,6 +169,9 @@
 				data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 
+		<!-- Notificacion -->
+		<div id="notificacionAlert"></div>
+
 
 		<!-- Modal -->
 		<div class="modal fade" id="modalPlanta" tabindex="-1"
@@ -175,7 +181,7 @@
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">Ingrese la
 							planta correspondiente:</h5>
-						
+
 					</div>
 					<form id="myformPlanta">
 						<div class="modal-body" id="modalbody">
@@ -185,8 +191,10 @@
 
 								<li class="list-group-item"><label>Planta: </label> <select
 									class="form-select" id="plantaSelect" name="plantaSelect">
-										<option value="Peñaloza-Planta2" selected>Av. Peñaloza 5750 - Planta II</option>
-										<option value="Facundo-Planta1">Av. Facundo Zuviría 4740 - Planta I</option>
+										<option value="Peñaloza-Planta2" selected>Av.
+											Peñaloza 5750 - Planta II</option>
+										<option value="Facundo-Planta1">Av. Facundo Zuviría
+											4740 - Planta I</option>
 
 
 								</select></li>
@@ -203,14 +211,21 @@
 				</div>
 			</div>
 		</div>
-	
-		<div class="d-md-flex justify-content-end" sec:authorize="isAuthenticated()" style="float: right; margin-top: 10px;">
-			<p sec:authentication='name'  style="margin-right: 2px; margin-top: 10px;"></p>		
-			<a class="navbar-brand" th:href="@{/home}" ><img th:src="@{/images/casa.jpg}" width="35" height="35" ></a>
-					
+
+		<div class="d-md-flex justify-content-end"
+			sec:authorize="isAuthenticated()"
+			style="float: right; margin-top: 10px;">
+			<p sec:authentication='name'
+				style="margin-right: 2px; margin-top: 10px;"></p>
+			<a class="navbar-brand" th:href="@{/home}"><img
+				th:src="@{/images/casa.jpg}" width="35" height="35"></a>
+
 		</div>
-		
-		
+<!-- 		<form th:action="@{/msj}" method="get"> -->
+<!-- 			<button type="submit">Mensajes</button> -->
+<!-- 		</form> -->
+
+
 	</header>
 
 	<!-- CONTENIDO -->
@@ -219,14 +234,14 @@
 	<!-- PIE DE PAGINA -->
 	<footer th:fragment="footer"
 		class="bg-dark text-white text-center fixed-bottom ">
-		
+
 		<div>
-			<span>Práctica Supervisada - Trabajo de Mendoza Emiliano</span>
-			<span sec:authentication='principal.authorities' id="rolesUsuario" hidden></span>
+			<span>Práctica Supervisada - Trabajo de Mendoza Emiliano</span> <span
+				sec:authentication='principal.authorities' id="rolesUsuario" hidden></span>
 			<span sec:authentication='name' id="nombreUsuario" hidden></span>
 		</div>
-		
-			
+
+
 		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
@@ -235,6 +250,9 @@
 		<script type="text/javascript" th:src="@{/js/moment.js}"></script>
 		<script type="text/javascript" th:src="@{/js/daterangepicker.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/daterangeconfig.js}"></script>
+		<script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/toastr.min.js}"></script>
 
 		<script>
 			new bootnavbar();
@@ -244,7 +262,8 @@
 			
 			const roles = document.getElementById("rolesUsuario").textContent;
 			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
-						
+			let timeRefresh = 30000;
+			
 			var time = new Date().getTime();
 
 			// cada vez que se mueva el mouse en el body o se toque una tecla se guarda el tiempo en el que se hizo
@@ -253,11 +272,12 @@
 			});
 
 			function refresh() {
-				//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
-				if (new Date().getTime() - time >= 60000)
-					window.location.reload(true);
-				else
-					setTimeout(refresh, 10000);
+				
+					//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
+					if (new Date().getTime() - time >= timeRefresh)
+						window.location.reload(true);
+					else
+						setTimeout(refresh, 10000);
 			}
 			
 			// Se llama a refresh cada 10 segundos
@@ -345,24 +365,89 @@
 			}
 			
 			
-// 			var cookies = document.cookie.split(";");
+			var stompClient = null;
+			var notificationCount = 0;
+		
+			$(document).ready(function() {
+			    console.log("Index page is ready");
+			    connect();
+		
+			    $("#send").click(function() {
+			        sendMessage();
+			    });
+			
 
-// 		    for (var i = 0; i < cookies.length; i++) {
-// 		        var cookie = cookies[i];
-// 		        var eqPos = cookie.indexOf("=");
-// 		        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-// 		        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-// 		    }
+			});
+		
+			function connect() {
+			    var socket = new SockJS('/websocket');
+			    
+			    stompClient = Stomp.over(socket);
+			    stompClient.connect({}, function (frame) {
+			        stompClient.subscribe('/topic/messages', function (message) {
+			            showMessage(JSON.parse(message.body).content);
+			        });
+				
+			    });
+			}
+		
+			function showMessage(message) {
+				
+				if(roles.indexOf("ROLE_GUARDIA") !== -1){
+					let aux = "El usuario "+ nombreUsuario + " ha creado";
+				    if(message.indexOf(aux)==-1){
+				    	 notificationSound();
+				    	 toastr["info"](message, "Notificación");
+				    	 timeRefresh = timeRefresh + 90000;
+				    }				    
+				}		    		    				    
+			}
+		
+			function sendMessage() {
+			    console.log("sending message");
+			   
+			    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': nombreUsuario + " ha creado un nuevo evento."}));
+			    //stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': $("#message").val()}));
+			}
 			
+			function sendEventoNoti() {
+			    console.log("sending message");
+			    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': "El usuario " + nombreUsuario + " ha creado un nuevo evento."}));
+				
+			}
+			function sendRetiroNoti() {
+			    console.log("sending message");
+			    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': "El usuario " + nombreUsuario + " ha creado una nueva autorización de retiro."}));
+				
+			}
+		
+			function notificationSound(){				
+				let audio = new Audio("/audios/notification-sound.wav");
+				audio.play();
+			}
 			
-// 			function zoom() {
-//             	document.body.style.zoom = "90%" 
-//        		 }
-// 			zoom();
+			toastr.options = {
+					  "closeButton": true,
+					  "debug": false,
+					  "newestOnTop": true,
+					  "progressBar": false,
+					  "positionClass": "toast-bottom-right",
+					  "preventDuplicates": false,
+					  "onclick": null,
+					  "showDuration": "300",
+					  "hideDuration": "1000",
+					  "timeOut": "500000",
+					  "extendedTimeOut": "1000",
+					  "showEasing": "swing",
+					  "hideEasing": "linear",
+					  "showMethod": "fadeIn",
+					  "hideMethod": "fadeOut"
+					}
+
 		</script>
 
 
-		
+
 
 	</footer>
 

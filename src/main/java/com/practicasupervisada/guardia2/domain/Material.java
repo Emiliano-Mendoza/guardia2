@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Material {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idMaterial;
 	
 	private String material;
