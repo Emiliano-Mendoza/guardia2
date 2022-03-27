@@ -79,11 +79,11 @@
 								Agregar Entidad</a>
 							<ul class="dropdown-menu mt-0" aria-labelledby="navbarDropdown">
 
-								<li><a class="dropdown-item"
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a class="dropdown-item"
 									th:href="@{/views/personal/agregar}">Empleado</a></li>
-								<li><a class="dropdown-item"
+								<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a class="dropdown-item"
 									th:href="@{/views/proveedor/agregar}">Proveedor</a></li>
-								<li><a class="dropdown-item"
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a class="dropdown-item"
 									th:href="@{/views/vehiculo/agregar}">Vehículo</a></li>
 
 							</ul></li>
