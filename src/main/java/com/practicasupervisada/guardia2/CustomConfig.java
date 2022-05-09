@@ -1,5 +1,5 @@
 package com.practicasupervisada.guardia2;
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,3 +21,4 @@ public class CustomConfig implements WebMvcConfigurer {
     }
 	
 }
+*/

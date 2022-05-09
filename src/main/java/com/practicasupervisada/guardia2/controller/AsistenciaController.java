@@ -410,31 +410,64 @@ public class AsistenciaController {
 	@GetMapping("/salidas-transitorias")
 	public String verSalidasTransitorias(Model model,
 						@RequestParam(name = "nroLegajo") Integer nroLegajo,
+						@RequestParam(name = "vehiculo") int idVehiculo,
 						@RequestParam(name = "date_range") String date_range) throws ParseException {
-		
+				
 		String[] parts = date_range.split("-");
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaInicioAux = formatter.parse(parts[0]);
 		Date fechaFinalAux = new Date(formatter.parse(parts[1]).getTime() + (1000 * 60 * 60 * 24));
 		List <Transito> listaTransito = transitoServ.findAllByOrderByFechaSalidaTransitoriaAsc();
-		
-		if(nroLegajo>0) {
+				
+		if(idVehiculo>0 && nroLegajo > 0) {
+			
 			listaTransito = listaTransito.stream()
-					.filter(t -> (t.getFechaSalidaTransitoria() != null
-								 && t.getUsuarioEgreso() != null
-								 && t.getAsistencia() != null
+					.filter(t -> (t.getFechaSalidaTransitoria() != null								 
+								 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
+							     && t.getFechaSalidaTransitoria().before(fechaFinalAux)							    
+							     && t.getPersonal().getNroLegajo().equals(nroLegajo)							    							    
+							     && ((t.getVehiculo() != null && t.getVehiculo().getIdVehiculo() == idVehiculo)
+							     || ( t.getVehiculo2() != null && t.getVehiculo2().getIdVehiculo() == idVehiculo))
+							     )
+								|| (t.getFechaReingreso() != null										 
+										 && t.getFechaReingreso().after(fechaInicioAux)
+									     && t.getFechaReingreso().before(fechaFinalAux)									     
+									     && t.getPersonal().getNroLegajo().equals(nroLegajo)
+									     && ((t.getVehiculo() != null && t.getVehiculo().getIdVehiculo() == idVehiculo)
+									    || ( t.getVehiculo2() != null && t.getVehiculo2().getIdVehiculo() == idVehiculo))
+									     ))
+					.collect(Collectors.toList());
+			
+		}else if (idVehiculo<0 && nroLegajo > 0) {
+			listaTransito = listaTransito.stream()
+					.filter(t -> (t.getFechaSalidaTransitoria() != null								 
+								 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
+							     && t.getFechaSalidaTransitoria().before(fechaFinalAux)							    
+							     && t.getPersonal().getNroLegajo().equals(nroLegajo)
+							     )
+								|| (t.getFechaReingreso() != null										 
+										 && t.getFechaReingreso().after(fechaInicioAux)
+									     && t.getFechaReingreso().before(fechaFinalAux)									     
+									     && t.getPersonal().getNroLegajo().equals(nroLegajo)
+									     ))
+					.collect(Collectors.toList());
+			
+		}else if(idVehiculo>0 && nroLegajo < 0) {			
+						
+			listaTransito = listaTransito.stream()
+					.filter(t -> (t.getFechaSalidaTransitoria() != null								 
 								 && t.getFechaSalidaTransitoria().after(fechaInicioAux)
 							     && t.getFechaSalidaTransitoria().before(fechaFinalAux)
-							     && t.getPersonal() != null
-							     && t.getPersonal().getNroLegajo() == nroLegajo)
-								|| (t.getFechaReingreso() != null
-										 && t.getUsuarioIngreso() != null
-										 && t.getAsistencia() == null
+							     && ((t.getVehiculo() != null && t.getVehiculo().getIdVehiculo() == idVehiculo)
+							    	|| ( t.getVehiculo2() != null && t.getVehiculo2().getIdVehiculo() == idVehiculo))
+							     )
+								|| (t.getFechaReingreso() != null										 
 										 && t.getFechaReingreso().after(fechaInicioAux)
-									     && t.getFechaReingreso().before(fechaFinalAux)
-									     && t.getPersonal() != null
-									     && t.getPersonal().getNroLegajo() == nroLegajo))
+									     && t.getFechaReingreso().before(fechaFinalAux)	
+									     && ((t.getVehiculo() != null && t.getVehiculo().getIdVehiculo() == idVehiculo)
+											|| ( t.getVehiculo2() != null && t.getVehiculo2().getIdVehiculo() == idVehiculo))
+									     ))
 					.collect(Collectors.toList());
 		}else {
 			listaTransito = listaTransito.stream()
@@ -451,6 +484,7 @@ public class AsistenciaController {
 					.collect(Collectors.toList());
 		}
 				
+		
 		model.addAttribute("listaTransito", listaTransito);
 		
 		

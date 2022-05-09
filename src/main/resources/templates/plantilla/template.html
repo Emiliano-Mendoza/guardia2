@@ -14,6 +14,16 @@
 <link rel="stylesheet" th:href="@{/css/toastr.min.css}">
 <link rel="icon" th:href="@{/images/icono-pestaña.png}">
 
+<style type="text/css">
+	.scrolling-table  { margin-top:  20px; display: inline-block; overflow: auto; }
+	/* design */
+	.scrolling-table { border-collapse: collapse; }
+	
+	.scrolling-thead {position: sticky; top: 0;  background: white;}
+	
+</style>
+
+
 </head>
 <body>
 
@@ -79,12 +89,13 @@
 								Agregar Entidad</a>
 							<ul class="dropdown-menu mt-0" aria-labelledby="navbarDropdown">
 
-								<li sec:authorize="hasRole('ROLE_ADMIN')"><a class="dropdown-item"
-									th:href="@{/views/personal/agregar}">Empleado</a></li>
-								<li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a class="dropdown-item"
-									th:href="@{/views/proveedor/agregar}">Proveedor</a></li>
-								<li sec:authorize="hasRole('ROLE_ADMIN')"><a class="dropdown-item"
-									th:href="@{/views/vehiculo/agregar}">Vehículo</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+									class="dropdown-item" th:href="@{/views/personal/agregar}">Empleado</a></li>
+								<li
+									sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GUARDIA')"><a
+									class="dropdown-item" th:href="@{/views/proveedor/agregar}">Proveedor</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+									class="dropdown-item" th:href="@{/views/vehiculo/agregar}">Vehículo</a></li>
 
 							</ul></li>
 
@@ -221,9 +232,9 @@
 				th:src="@{/images/casa.jpg}" width="35" height="35"></a>
 
 		</div>
-<!-- 		<form th:action="@{/msj}" method="get"> -->
-<!-- 			<button type="submit">Mensajes</button> -->
-<!-- 		</form> -->
+		<!-- 		<form th:action="@{/msj}" method="get"> -->
+		<!-- 			<button type="submit">Mensajes</button> -->
+		<!-- 		</form> -->
 
 
 	</header>
@@ -262,7 +273,7 @@
 			
 			const roles = document.getElementById("rolesUsuario").textContent;
 			const nombreUsuario = document.getElementById("nombreUsuario").textContent;
-			let timeRefresh = 30000;
+			let timeRefresh = 60000;
 			
 			var time = new Date().getTime();
 
@@ -273,7 +284,7 @@
 
 			function refresh() {
 				
-					//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 30000 (30 seg) se recarga
+					//Si la diferencia entre el tiempo actual y la ultima vez que me movio el mouse es mayor o igual a 60000 (60 seg) se recarga
 					if (new Date().getTime() - time >= timeRefresh)
 						window.location.reload(true);
 					else
