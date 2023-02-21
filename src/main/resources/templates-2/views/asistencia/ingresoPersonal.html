@@ -22,7 +22,7 @@
 
 			<div class="gap-2 d-md-flex justify-content-end">
 				<button type="button" class="btn btn-primary btn-sm"
-					data-bs-toggle="modal" data-bs-target="#modalTransito">Ver
+					data-bs-toggle="modal" data-bs-target="#modalTransito" id="verTransitosBtn">Ver
 					Tránsitos</button>
 
 				<button type="button" class="btn btn-primary btn-sm"
@@ -33,7 +33,7 @@
 
 
 		<input type="text" id="formulario" class="form-control mt-3">
-		<table class="table" style="width: 100%">
+		<table class="table" style="width: 100%;">
 			<thead>
 				<tr>
 
@@ -121,6 +121,15 @@
 										[[${p.nombre}]]</option>
 
 							</select></li>
+							
+							<li class="list-group-item"><label>Vehículo: </label> <select
+								class="form-select" id="vehiculosTransito" name="vehiculo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="v:${listaVehiculos}" th:value='${v.idVehiculo}'>[[${v.marca}]]
+										[[${v.modelo}]] - Patente: [[${v.patente}]]</option>									
+
+							</select></li>
+							
 						</ul>
 
 
@@ -361,8 +370,29 @@
 		
 		formulario.addEventListener('keyup', filtrar);
 		filtrar();
-		
-
+						
+		/*
+ 	    $('#verTransitosBtn').click(function() {
+	    	
+	    	let vehiculos = document.getElementById('vehiculosTransito');
+	    	
+	    	jQuery.ajax({
+		        url: '/views/vehiculo/listar',
+		        type: "GET",
+		        dataType: "json",
+		        contentType: "application/json; charset=utf-8",
+		        success: function(data){
+		            console.log(data);
+		            
+		            
+		            
+		            data.forEach(veh => vehiculos.innerHTML += `<option value=${veh.idVehiculo}>${veh.marca} ${veh.modelo} ${veh.patente}</option>`);		            
+		        	
+		        	
+		        }
+		    }) 
+	    			    		    
+	    });*/
 		
 	</script>
 </body>

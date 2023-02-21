@@ -3,50 +3,122 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="plantilla/template :: head">
 </head>
+
 <body>
 
 	<header th:replace="plantilla/template :: header"></header>
 
 	<div class="container-fluid px-5">
+		
+		
+		
 		<div class="gap-2 d-md-flex justify-content-between">
-			<h3 class="mt-3">
-				Salidas Transitorias:
-			</h3>
-			<button class="btn btn-success btn-sm mt-3" onclick="goBack()" style="margin-right: 20px;">Regresar</button>
+				
+				<div>
+				
+					<button class="btn btn-secondary btn-sm mt-2" id="ocultarBtn1" onclick="ocultar('primerTabla', 'ocultarBtn1')"
+					>Ocultar Tabla 1</button>
+					
+					<button class="btn btn-secondary btn-sm mt-2" id="ocultarBtn2" onclick="ocultar('segundaTabla', 'ocultarBtn2')"
+					>Ocultar Tabla 2</button>
+					
+				</div>
+				
+				<button class="btn btn-success btn-sm mt-3" onclick="goBack()"
+					style="margin-right: 20px;">Regresar</button>
+			</div>
+		
+		<div id="primerTabla">
+			
+			<h3 class="mt-2">Salidas Transitorias:</h3>
+			
+			
+			<div  style="width: auto;">
+			
+				<table class="table scrolling-table" id="myTable"
+					style="height: 250px; width: auto;">
+					<thead class="scrolling-thead">
+						<tr>
+							<th scope="col" style="width: 11%; text-align: center;">Egreso Transitorio</th>
+							<th scope="col" style="width: 11%; text-align: center;">Ingreso
+							</th>
+							<th scope="col" style="width: 11%; text-align: center;">Empleado</th>
+							<th scope="col" style="width: 11%; text-align: center;">1er
+								Guardia</th>
+							<th scope="col" style="width: 11%; text-align: center;">1er
+								Vehículo</th>
+							<th scope="col" style="width: 11%; text-align: center;">1er
+								Comentario</th>
+							<th scope="col" style="width: 11%; text-align: center;">2do
+								Guardia</th>
+							<th scope="col" style="width: 11%; text-align: center;">2do
+								Vehículo</th>
+							<th scope="col" style="width: 11%; text-align: center;">2do
+								Comentario</th>
+
+						</tr>
+					</thead>
+					<tbody id="fila" >
+
+					</tbody>
+				</table>
+
+			</div>
+
 		</div>
-		<table class="table mt-3" id="myTable">
-			<thead>
-				<tr>
-					<th scope="col" style="width: 11%; text-align: center;">Egreso
-					</th>
-					<th scope="col" style="width: 11%; text-align: center;">Ingreso
-					</th>
-					<th scope="col" style="width: 11%; text-align: center;">Empleado</th>														
-					<th scope="col" style="width: 11%; text-align: center;">1er Guardia</th>
-					<th scope="col" style="width: 11%; text-align: center;">1er Vehículo</th>
-					<th scope="col" style="width: 11%; text-align: center;">1er Comentario</th>
-					<th scope="col" style="width: 11%; text-align: center;">2do Guardia</th>
-					<th scope="col" style="width: 11%; text-align: center;">2do Vehículo</th>
-					<th scope="col" style="width: 11%; text-align: center;">2do Comentario</th>
 
-				</tr>
-			</thead>
-			<tbody id="fila">
+		<div class="" id="segundaTabla">
+			<div class="gap-2 d-md-flex justify-content-between">
+				<h3 class="mt-3">Ingresos Transitorios a Peñaloza:</h3>
+			</div>
+			
+			<div style=" width: auto;">
+			
+				<table class="table scrolling-table" id="myTable2"
+					style="height: 250px; width: auto;">
+					<thead class="scrolling-thead">
+						<tr>
+							<th scope="col" style="width: 11%; text-align: center;">Ingreso Transitorio</th>
+							<th scope="col" style="width: 11%; text-align: center;">Egreso
+							</th>
+							<th scope="col" style="width: 11%; text-align: center;">Empleado</th>
+							<th scope="col" style="width: 11%; text-align: center;">1er
+								Guardia</th>
+							<th scope="col" style="width: 11%; text-align: center;">1er
+								Vehículo</th>
+							<th scope="col" style="width: 11%; text-align: center;">1er
+								Comentario</th>
+							<th scope="col" style="width: 11%; text-align: center;">2do
+								Guardia</th>
+							<th scope="col" style="width: 11%; text-align: center;">2do
+								Vehículo</th>
+							<th scope="col" style="width: 11%; text-align: center;">2do
+								Comentario</th>
 
-			</tbody>
-		</table>
+						</tr>
+					</thead>
+					<tbody id="fila2" >
+
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
 
 
 	</div>
-
+	
+	<div class="mt-5"></div>
 	<div class="mt-5"></div>
 
 	<footer th:replace="plantilla/template ::footer"></footer>
-	
+
 	<script th:inline="javascript">
 			
 		let listaTransito =  /*[[${listaTransito}]]*/ 'default';
-		const resultado = document.querySelector('#fila');
+		const resultado = document.querySelector('#fila');		
+		const resultadoTabla2 = document.querySelector('#fila2');
 		
 		listaTransito = listaTransito.sort(compare);
 		
@@ -144,10 +216,10 @@
 				    d1.getMinutes().toString().padStart(2, '0')}`;
 			    
 				    
-				resultado.innerHTML += `
-					<tr style="background-color: #DEFFA0">
-						<td style="text-align:center;">${dformat1}</td>						
+				resultadoTabla2.innerHTML += `
+					<tr style="background-color: #DEFFA0">											
 						<td style="text-align:center;">${dformat2}</td>
+						<td style="text-align:center;">${dformat1}</td>	
 						<td style="text-align:center;">${tran.personal.nombre} ${tran.personal.apellido}</td>													
 						<td style="text-align:center;">${tran.usuarioIngreso.nombre} ${tran.usuarioIngreso.apellido}</td>
 						<td style="text-align:center;">${vehiculo}</td>
@@ -194,8 +266,27 @@
 			window.history.back();
 		}
 	
+		
+		function ocultar(idtabla, idbtn){
+			
+			let tablaAux = document.getElementById(idtabla);
+			
+			if(tablaAux.style.display == 'none'){
+				 $("#" + idtabla).show();
+				 $("#" + idbtn).text( idbtn == 'ocultarBtn1' ? "Ocultar Tabla 1" : "Ocultar Tabla 2");				 
+				 $('#' + (idbtn == 'ocultarBtn1' ? 'myTable2' : 'myTable') ).height('250px');
+				 
+			}else{
+				$("#" + idtabla).hide();
+				$("#" + idbtn).text(idbtn == 'ocultarBtn1' ? "Mostrar Tabla 1" : "Mostrar Tabla 2");
+				$('#' + (idbtn == 'ocultarBtn1' ? 'myTable2' : 'myTable') ).height('600px');
+				
+			}			
+		}
+		
+		
 	</script>
-	
-	
+
+
 </body>
 </html>

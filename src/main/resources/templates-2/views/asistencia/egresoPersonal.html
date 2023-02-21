@@ -67,6 +67,14 @@
 										[[${p.nombre}]]</option>
 
 							</select></li>
+							
+							<li class="list-group-item"><label>Vehículo: </label> <select
+								class="form-select" id="vehiculosTransito" name="vehiculo">
+									<option value=-1 selected>Todos</option>
+									<option th:each="v:${listaVehiculos}" th:value='${v.idVehiculo}'>[[${v.marca}]]
+										[[${v.modelo}]] - Patente: [[${v.patente}]]</option>									
+
+							</select></li>
 						</ul>
 
 
@@ -108,6 +116,8 @@
 										[[${p.nombre}]]</option>
 
 							</select></li>
+							
+							
 						</ul>
 
 
