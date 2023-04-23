@@ -21,7 +21,7 @@ public class LeerArchivo {
 		
 		Map<String,List<Object>> map = new HashMap<String,List<Object>>();
 		
-		File folder = new File("C:\\Personal");
+		File folder = new File("C:\\Guardia\\Personal");
 		File[] listOfFiles = folder.listFiles();
 
 		for (int i = 0; i < listOfFiles.length; i++) {
@@ -29,7 +29,7 @@ public class LeerArchivo {
 				System.out.println("File " + listOfFiles[i].getName());
 
 				try {
-					File myObj = new File("C:\\Personal\\" + listOfFiles[i].getName());
+					File myObj = new File("C:\\Guardia\\Personal\\" + listOfFiles[i].getName());
 					Scanner myReader = new Scanner(myObj);
 					while (myReader.hasNextLine()) {
 						String data = myReader.nextLine();

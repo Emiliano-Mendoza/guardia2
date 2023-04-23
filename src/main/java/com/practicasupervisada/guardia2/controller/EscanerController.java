@@ -36,7 +36,7 @@ public class EscanerController {
 		
 		Map<String,List<Object>> map = new HashMap<String,List<Object>>();
 		
-		File folder = new File("C:\\Personal");
+		File folder = new File("C:\\Guardia\\Escaneo");
 		File[] listOfFiles = folder.listFiles();
 
 		for (int i = 0; i < listOfFiles.length; i++) {
@@ -44,7 +44,7 @@ public class EscanerController {
 				System.out.println("File " + listOfFiles[i].getName());
 
 				try {
-					File myObj = new File("C:\\Personal\\" + listOfFiles[i].getName());
+					File myObj = new File("C:\\Guardia\\Escaneo\\" + listOfFiles[i].getName());
 					Scanner myReader = new Scanner(myObj);
 					while (myReader.hasNextLine()) {
 						String data = myReader.nextLine();
